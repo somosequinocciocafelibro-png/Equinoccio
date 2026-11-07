@@ -25,5 +25,5 @@ jobs:
       - name: Subir el sitio a DreamHost
         run: |
           rsync -avz --delete \
-            --exclude ".git*" --exclude "README.md" \
+            --exclude ".git*" --exclude "README.md" --exclude "impresion" \
             ./ "${{ secrets.DH_USER }}@${{ secrets.DH_HOST }}:${{ secrets.DH_PATH }}/"
