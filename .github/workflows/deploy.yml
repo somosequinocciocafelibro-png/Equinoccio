@@ -5,25 +5,30 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 concurrency:
-  group: deploy
+  group: pages
   cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Preparar llave SSH
+      - name: Preparar archivos del sitio
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DH_SSH_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H "${{ secrets.DH_HOST }}" >> ~/.ssh/known_hosts
-
-      - name: Subir el sitio a DreamHost
-        run: |
-          rsync -avz --delete \
-            --exclude ".git*" --exclude "README.md" --exclude "impresion" \
-            ./ "${{ secrets.DH_USER }}@${{ secrets.DH_HOST }}:${{ secrets.DH_PATH }}/"
+          mkdir _site
+          cp -r index.html carta assets CNAME .nojekyll _site/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
