@@ -136,14 +136,17 @@ section{padding-block:clamp(3.5rem,8vw,6rem)}
 
 /* Salones */
 .salones{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:1.2rem;align-items:stretch}
-.salon{border-radius:22px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.salon{position:relative;border-radius:22px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
 .salon .body{padding:1.5rem;display:grid;gap:.5rem;align-content:start}
 .salon h3{font-size:1.6rem}
 .salon .tag{font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
 .salon.luna{background:var(--luna-band);color:#F5EFE0}
 .salon.sol{background:var(--sol-band);color:var(--cafe)}
 .salon.eq{background:var(--card);border:1px solid var(--line)}
-.salon.eq img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:45% center;max-width:100%;height:auto}
+.salon .ph{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:45% center;max-width:100%;height:auto}
+.salon.luna .ph{object-position:60% center}.salon.sol .ph{object-position:78% center}
+.salon.luna .glyph,.salon.sol .glyph{position:absolute;top:.9rem;left:.9rem;width:52px;height:52px;margin:0;padding:9px;border-radius:50%;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:1}
+.salon.luna .glyph{background:rgba(34,49,79,.62)}.salon.sol .glyph{background:rgba(248,221,166,.78)}
 .salon .glyph{width:64px;height:64px;margin:1.5rem 1.5rem 0}
 @media (max-width:860px){.salones{grid-template-columns:1fr}}
 
@@ -297,6 +300,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
       </div>
       <div class="salones">
         <article class="salon luna">
+          <img class="ph" src="assets/salon-luna.jpg" alt="Salón Luna: paredes azul cielo con nubes pintadas, techo azul con luces, sillas de lectura y sofá de terciopelo turquesa" loading="lazy" width="1800" height="1013">
           <svg class="glyph" viewBox="0 0 64 64" aria-hidden="true"><path d="M40 8a24 24 0 1 0 16 40A20 20 0 0 1 40 8z" fill="#F5EFE0"/><circle cx="50" cy="14" r="1.6" fill="#F2B766"/><circle cx="56" cy="26" r="1.1" fill="#F2B766"/></svg>
           <div class="body">
             <p class="tag">Silencio y lectura</p>
@@ -305,7 +309,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
           </div>
         </article>
         <article class="salon eq">
-          <img src="assets/salon-equinoccio.jpg" alt="Salón Equinoccio: chimenea de leña, sillones de terciopelo y la ventana con el logo de Equinoccio" loading="lazy" width="1600" height="900">
+          <img class="ph" src="assets/salon-equinoccio.jpg" alt="Salón Equinoccio: chimenea de leña, sillones de terciopelo y la ventana con el logo de Equinoccio" loading="lazy" width="1600" height="900">
           <div class="body">
             <p class="tag" style="color:var(--accent)">El centro de la casa</p>
             <h3>Salón Equinoccio</h3>
@@ -313,6 +317,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
           </div>
         </article>
         <article class="salon sol">
+          <img class="ph" src="assets/salon-sol.jpg" alt="Salón Sol: pared amarilla con un sol pintado, grandes ventanales, mesas de madera y sillas negras" loading="lazy" width="1800" height="1013">
           <svg class="glyph" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="12" fill="#3B2A20"/><g stroke="#3B2A20" stroke-width="3.5" stroke-linecap="round"><path d="M32 6v8M32 50v8M6 32h8M50 32h8M13.6 13.6l5.7 5.7M44.7 44.7l5.7 5.7M13.6 50.4l5.7-5.7M44.7 19.3l5.7-5.7"/></g></svg>
           <div class="body">
             <p class="tag">Compartir y aprender</p>
