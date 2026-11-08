@@ -33,7 +33,8 @@ La pieza 1 debe dejar espacio para las otras dos sin implementarlas.
 - **Flujo de cuentas:** mixto. Hay cuentas abiertas por mesa (se agregan productos durante la visita y se cobra al final) y venta rápida con pago al pedir.
 - **Medios de pago:** efectivo, transferencia (Bancolombia), Bre-B y Bold (datáfono).
 - **Pagos divididos:** frecuentes. Un ticket puede pagarse con varios medios.
-- **Propinas:** fuera del sistema; se entregan aparte y la caja no las toca.
+- **Servicio voluntario:** se incluye en la cuenta solo si el cliente quiere pagarlo (decisión del 8 de noviembre; reemplaza la decisión anterior de dejar las propinas fuera del sistema). Ver sección 6.2.
+- **Salones y mesas:** salón Luna (3 mesas y una barra de 2 personas), salón Equinoccio (4 mesas) y salón Sol (3 mesas y una barra de 2 personas), más venta para llevar.
 - **Conectividad:** internet confiable. Aplicación web en la nube, sin modo sin conexión.
 - **Enfoque técnico:** aplicación web propia (no Google Sheets ni POS comercial).
 
@@ -45,17 +46,17 @@ La pieza 1 debe dejar espacio para las otras dos sin implementarlas.
 - Tickets con líneas y extras.
 - Pagos múltiples por ticket.
 - Cierre de caja diario.
-- Reportes: ventas por día, por producto, por mesa y por medio de pago.
+- Reportes: ventas por día, por producto, por salón, por mesa y por medio de pago, con el servicio recaudado separado de las ventas.
 - Importación única del Excel histórico.
 - Login con dos roles (caja y admin).
 
-**Fuera del MVP:** gastos y compras, inventario y recetas, propinas, facturación electrónica, modo sin conexión, conciliación de abonos de Bold con su comisión, cruce contra el extracto bancario completo, múltiples usuarios simultáneos de caja.
+**Fuera del MVP:** gastos y compras, inventario y recetas, facturación electrónica, reparto del servicio entre el equipo, modo sin conexión, conciliación de abonos de Bold con su comisión, cruce contra el extracto bancario completo, múltiples usuarios simultáneos de caja.
 
 ## 5. Pantallas
 
 1. **Mesas:** tablero con las mesas y la venta rápida. Muestra cuáles tienen cuenta abierta y su total acumulado.
 2. **Ticket:** buscador rápido de productos, cantidades, extras, total y botón de cobrar. Pantalla principal de uso diario; debe operarse con teclado.
-3. **Cobro:** agregar uno o varios pagos, con saldo pendiente visible y cambio a devolver cuando el pago en efectivo excede el saldo.
+3. **Cobro:** muestra subtotal, servicio voluntario (activable y editable) y total a pagar; permite agregar uno o varios pagos, con saldo pendiente visible y cambio a devolver cuando el pago en efectivo excede el saldo.
 4. **Cierre del día:** resumen esperado por medio de pago, campos de valores reales, diferencias y notas.
 5. **Reportes y catálogo (admin):** consulta de reportes y mantenimiento de productos y mesas.
 
@@ -64,8 +65,8 @@ La pieza 1 debe dejar espacio para las otras dos sin implementarlas.
 | Tabla | Campos principales | Reglas |
 |---|---|---|
 | **Producto** | nombre (único), categoría, precio (COP entero), activo | Se desactiva, no se borra. |
-| **Mesa** | nombre, activa | Se pueden agregar o quitar mesas sin cambiar código. |
-| **Ticket** | mesa, estado (abierto / cerrado / anulado), abierto_en, cerrado_en, total, motivo_anulación, anulado_por | Una mesa tiene como máximo un ticket abierto. El día de venta es la fecha local (America/Bogota) de `cerrado_en`. |
+| **Mesa** | nombre, salón (Sol, Luna o Equinoccio), capacidad (opcional), activa, es_para_llevar | Las barras son mesas con capacidad 2. Se pueden agregar o quitar mesas sin cambiar código. Mesas iniciales: Luna (Mesa 1, 2, 3 y Barra), Equinoccio (Mesa 1 a 4), Sol (Mesa 1, 2, 3 y Barra) y Para llevar. |
+| **Ticket** | mesa, estado (abierto / cerrado / anulado), abierto_en, cerrado_en, salón, subtotal, servicio (activo y monto), total (subtotal + servicio), motivo_anulación, anulado_por | Una mesa tiene como máximo un ticket abierto. El día de venta es la fecha local (America/Bogota) de `cerrado_en`. |
 | **LíneaTicket** | ticket, producto, cantidad, precio_unitario, extras (lista de {nombre, diferencia_precio}) | Guarda el precio del momento. Cambiar el catálogo no altera ventas pasadas. |
 | **Pago** | ticket, medio (efectivo / transferencia / bre_b / bold), monto_recibido, monto_aplicado, creado_en | `monto_aplicado` ≤ saldo. Para efectivo, `monto_recibido` puede exceder el saldo (cambio). El ticket se cierra cuando la suma de `monto_aplicado` iguala el total. |
 | **CierreDía** | fecha (única), base_caja, esperado y real por medio, diferencia por medio, notas, cerrado_por | Una vez creado, el día queda bloqueado. |
@@ -75,6 +76,15 @@ La pieza 1 debe dejar espacio para las otras dos sin implementarlas.
 - Montos en pesos enteros, sin decimales.
 - **Extras** (vainilla, caramelo, bocadillo) se guardan como lista dentro de la línea, no como productos aparte, para que "Cappuccino + vainilla" cuente como cappuccino en reportes y cobre el precio correcto.
 - **Preparado para crecer:** un producto podrá tener receta (pieza 3) y las compras entrarán como tablas nuevas (pieza 2) sin modificar las anteriores.
+
+## 6.2 Servicio voluntario
+
+- **Porcentaje sugerido:** configurable por el admin, 10% por defecto. Se calcula sobre el subtotal (productos con extras) y se redondea a los $100.
+- **Al cobrar**, el servicio aparece activado como sugerencia. La persona en caja puede quitarlo con un clic o escribir otro valor si el cliente prefiere dar otra cantidad.
+- **Se congela con el primer pago.** Antes de registrar un pago se puede activar, quitar o cambiar; después, queda fijo. Si se quitan todos los pagos, vuelve a poder editarse.
+- **No es venta.** Los reportes de ventas (por día, producto, salón y mesa) usan el subtotal. El servicio se muestra aparte como "servicio recaudado".
+- **Sí pasa por la caja.** El cliente lo paga junto con la cuenta, por cualquier medio. Por eso los pagos y el esperado del cierre lo incluyen, y el cierre muestra cuánto del total es servicio para que el equipo lo reciba.
+- **Cuentas anteriores** al servicio, o sin servicio, tienen monto 0 y no cambian.
 
 ## 6.1 Importación del Excel
 
@@ -99,6 +109,7 @@ La pieza 1 debe dejar espacio para las otras dos sin implementarlas.
 - No se puede cerrar el día con cuentas abiertas; deben cobrarse o anularse.
 - **Base de caja:** campo opcional (por defecto 0). Efectivo esperado = base + pagos en efectivo del día. *Supuesto a confirmar con el dueño.*
 - Reabrir un día: solo admin, con motivo registrado.
+- **Servicio en el cierre:** el esperado por medio incluye el servicio cobrado. El resumen del día muestra aparte el servicio recaudado, y el cierre guarda ese monto. El reparto del servicio entre el equipo no es parte del MVP.
 
 ## 8. Arquitectura
 
@@ -138,6 +149,8 @@ La app vive en una **subcarpeta `app/`** del repositorio `somosequinocciocafelib
 
 - ¿Se usa base de caja (sencillo inicial)? Valor por defecto: sí, opcional, en 0.
 - Lista final de extras y sus precios.
+- Servicio voluntario: confirmar el 10% sugerido, el redondeo a $100 y que aparezca activado por defecto.
+- Numeración real de las mesas de cada salón (hoy se usan Mesa 1, 2, 3 y Barra) y capacidad de cada una.
 - Lista oficial de mesas y categorías del catálogo.
 - Tabla de equivalencias de nombres de producto para la importación.
 - Subdominio definitivo para la app (propuesta: `caja.equinoccio.online`) y acceso al DNS de DreamHost para crearlo.
