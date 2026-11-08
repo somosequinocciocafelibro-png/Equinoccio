@@ -12,7 +12,7 @@
 <meta name="description" content="Café de especialidad, alta repostería y libros para prestar e intercambiar en Cajicá. Donde el sol y la luna se encuentran.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,800;1,6..12,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Marcellus&family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,800;1,6..12,400&display=swap">
 <style>
 /* Layout: the page is split along an "equinox line": Sol (warm day) and Luna (night blue) meet at the seal. Light theme = Sol, dark theme = Luna. */
 :root{
@@ -89,8 +89,9 @@ p{margin:0}
 .hero canvas{position:absolute;inset:0 0 0 50%;width:50%;height:100%}
 .hero .wrap{max-width:1360px;padding-inline:max(clamp(1rem,5vw,4.5rem),env(safe-area-inset-left,0px));position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:2rem;padding-block:clamp(3rem,7vw,5.5rem)}
 .hero-sol{color:var(--cafe)}
-.hero-sol .hero-eyebrow{font-size:1.5rem;letter-spacing:.1em;color:var(--cafe);line-height:1.2;margin-bottom:.4rem;text-wrap:balance}
-.hero-sol h1{font-size:var(--s-1)}
+.hero-sol .hero-eyebrow{font-family:'Marcellus','Young Serif',Georgia,serif;font-weight:400;font-size:clamp(2.2rem,4.2vw,3.4rem);letter-spacing:.08em;color:var(--cafe);line-height:1.05;margin-bottom:1.1rem;text-wrap:balance;-webkit-text-stroke:.7px currentColor}
+.hero-sol .hero-eyebrow span{display:block;font-size:.4em;letter-spacing:.42em;margin-top:.35em;-webkit-text-stroke:.3px currentColor;opacity:.85}
+.hero-sol h1{font-size:clamp(1.55rem,6.4vw,2.1rem);line-height:1.2}
 .hero-sol p{margin-top:1rem;max-width:30ch;font-size:1.1rem}
 .hero-sol .cta{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem}
 .hero-sol .btn-primary{background:var(--cafe);color:#FFF8EE}
@@ -105,7 +106,7 @@ p{margin:0}
 @keyframes shine{0%,55%{background-position:-150% 0}100%{background-position:250% 0}}
 .brand img{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
 .brand:hover img,.brand:focus-visible img{transform:rotate(360deg)}
-@media (min-width:861px){.hero-sol h1{font-size:clamp(2.4rem,3.9vw,3.4rem)}.hero .wrap{gap:1.5rem}.hero-sol p{max-width:34ch}}
+@media (min-width:861px){.hero-sol h1{font-size:clamp(1.6rem,2.5vw,2.3rem)}.hero .wrap{gap:1.5rem}.hero-sol p{max-width:34ch}}
 @keyframes spin-in{from{transform:rotate(-24deg) scale(.92)}to{transform:none}}
 .hero-luna{justify-self:end;text-align:right;max-width:30ch}
 .hero-luna .k{font-family:var(--f-display);font-size:clamp(1.5rem,2.5vw,2rem);line-height:1.25;text-wrap:balance}
@@ -262,8 +263,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
     <canvas id="stars" aria-hidden="true"></canvas>
     <div class="wrap">
       <div class="hero-sol">
-        <p class="eyebrow hero-eyebrow">Café Libro · Cajicá</p>
-        <h1>Donde el sol y la luna se encuentran.</h1>
+        <p class="eyebrow hero-eyebrow">Café Libro<span>Cajicá</span></p>
+        <h1>La calidez del sol, el aroma del buen café y el placer de compartir.</h1>
         <p>Café colombiano de origen, alta repostería y una biblioteca para prestar e intercambiar libros.</p>
         <div class="cta">
           <a class="btn btn-primary" href="#carta">Ver la carta</a>
