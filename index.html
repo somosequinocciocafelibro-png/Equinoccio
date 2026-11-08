@@ -174,14 +174,15 @@ section{padding-block:clamp(3.5rem,8vw,6rem)}
 /* Biblioteca + agenda */
 .lib{display:grid;grid-template-columns:.9fr 1.1fr;gap:3rem;align-items:center}
 .lib figure{margin:0;border-radius:200px 200px 22px 22px;overflow:hidden;border:1px solid var(--line)}
-.lib figure img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:center 30%;max-width:100%}
+.lib figure a{display:block}
+.lib figure img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:center top;max-width:100%}
 .agenda{list-style:none;padding:0;margin:1.6rem 0 0;display:grid;gap:.7rem}
 .agenda li{display:grid;grid-template-columns:7.5rem 1fr;gap:1rem;align-items:baseline;padding:.85rem 1rem;background:var(--card);border:1px solid var(--line);border-radius:14px}
 .agenda .freq{font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
 .agenda b{font-weight:800}
 .agenda p{color:var(--fg-soft);font-size:.92rem}
 .note{font-size:var(--s-small);color:var(--fg-soft);margin-top:1rem;font-style:italic}
-@media (max-width:760px){.lib{grid-template-columns:1fr;gap:2rem}.lib figure{max-width:340px}.agenda li{grid-template-columns:1fr;gap:.2rem}}
+@media (max-width:760px){.lib{grid-template-columns:1fr;gap:2rem}.lib figure{max-width:460px;margin-inline:auto}.agenda li{grid-template-columns:1fr;gap:.2rem}}
 
 /* Visítanos */
 .visit{background:var(--luna-band);color:#F5EFE0}
@@ -364,7 +365,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 
   <section id="biblioteca" style="background:var(--bg-2)">
     <div class="wrap lib">
-      <figure><img src="assets/luna-manana.jpg" alt="Árbol pintado en el Salón Luna con repisas de libros entre las ramas y un café en primer plano" loading="lazy" width="1080" height="1440"></figure>
+      <figure><a href="assets/publicidad.jpg" target="_blank" rel="noopener" aria-label="Abrir el afiche de Equinoccio en tamaño completo"><img src="assets/publicidad.jpg" alt="Afiche de Equinoccio: ¡Déjate envolver por la magia de Equinoccio! Un encuentro único entre el café, los libros y tus momentos favoritos. Café de origen, alta repostería, clubes de lectura, taller de barismo y conversación en inglés. Carrera 6 #4B-19, barrio Santa Cruz, Cajicá." loading="lazy" width="1200" height="1607"></a></figure>
       <div>
         <div class="sec-head" style="margin:0">
           <p class="eyebrow">Biblioteca y agenda</p>
