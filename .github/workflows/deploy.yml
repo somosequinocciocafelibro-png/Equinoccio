@@ -25,7 +25,7 @@ jobs:
       - name: Preparar archivos del sitio
         run: |
           mkdir _site
-          cp -r index.html carta assets CNAME .nojekyll _site/
+          cp -r index.html carta resena assets CNAME .nojekyll _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
