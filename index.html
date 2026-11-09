@@ -43,14 +43,14 @@
   --s-body:1.0625rem;
   --s-small:.875rem;
   --wrap:1120px;
-  --g-luna:#AFC4EE;--g-sol:#F6CB7E;--g-luna2:rgba(120,156,226,.42);--g-sol2:rgba(244,184,92,.46);--star:rgba(34,49,79,.55);--star2:rgba(217,140,43,.8);--moon:#2A4380;--moon-o:.05;--sun:#E9A04A;--sun-o:.1;
+  --g-luna:#AFC4EE;--g-sol:#F6CB7E;--g-luna2:rgba(120,156,226,.42);--g-sol2:rgba(244,184,92,.46);--star:rgba(34,49,79,.55);--star2:rgba(217,140,43,.8);--moon:#2A4380;--moon-o:.2;--sun:#E9A04A;--sun-o:.22;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#141C2E;--bg-2:#1B2540;--fg:#F5EFE0;--fg-soft:#B9B3A6;--line:#2E3A57;
-  --accent:#E9A04A;--accent-ink:#1A1408;--card:#1A2339;--g-luna:#2A4380;--g-sol:#6A4520;--g-luna2:rgba(70,104,184,.42);--g-sol2:rgba(190,118,40,.36);--star:#F5EFE0;--star2:#F2B766;--moon:#A9BDEB;--moon-o:.08;--sun-o:.1;color-scheme:dark}}
+  --accent:#E9A04A;--accent-ink:#1A1408;--card:#1A2339;--g-luna:#2A4380;--g-sol:#6A4520;--g-luna2:rgba(70,104,184,.42);--g-sol2:rgba(190,118,40,.36);--star:#F5EFE0;--star2:#F2B766;--moon:#A9BDEB;--moon-o:.2;--sun-o:.17;color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#141C2E;--bg-2:#1B2540;--fg:#F5EFE0;--fg-soft:#B9B3A6;--line:#2E3A57;
-  --accent:#E9A04A;--accent-ink:#1A1408;--card:#1A2339;--g-luna:#2A4380;--g-sol:#6A4520;--g-luna2:rgba(70,104,184,.42);--g-sol2:rgba(190,118,40,.36);--star:#F5EFE0;--star2:#F2B766;--moon:#A9BDEB;--moon-o:.08;--sun-o:.1;color-scheme:dark}
+  --accent:#E9A04A;--accent-ink:#1A1408;--card:#1A2339;--g-luna:#2A4380;--g-sol:#6A4520;--g-luna2:rgba(70,104,184,.42);--g-sol2:rgba(190,118,40,.36);--star:#F5EFE0;--star2:#F2B766;--moon:#A9BDEB;--moon-o:.2;--sun-o:.17;color-scheme:dark}
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -76,11 +76,17 @@ p{margin:0}
   radial-gradient(120% 70% at 100% 100%,var(--g-sol) 0%,transparent 62%),
   linear-gradient(100deg,var(--g-luna2) 0%,transparent 45%,transparent 55%,var(--g-sol2) 100%),var(--bg)}
 .cosmos canvas{position:absolute;inset:0;width:100%;height:100%}
-.cosmos .moon,.cosmos .sun{position:absolute;display:block;inset:auto;height:auto;aspect-ratio:1}
-.cosmos .moon{left:-15vmax;top:4vh;width:min(66vmax,900px);height:auto;opacity:calc(var(--moon-o) + .13);animation:moon-sway 18s ease-in-out infinite}
-.cosmos .sun{right:-20vmax;top:-18vmax;width:min(86vmax,1150px);height:auto;opacity:calc(var(--sun-o) + .17);animation:sun-spin 240s linear infinite,sun-breathe 9s ease-in-out infinite}
-@keyframes sun-spin{to{rotate:360deg}}
-@keyframes sun-breathe{0%,100%{scale:.985}50%{scale:1.03}}
+.cosmos .moon,.cosmos .sun{position:absolute;display:block;height:min(92vh,860px);width:auto;aspect-ratio:400/520;top:5vh}
+.cosmos .moon{left:-6vmax;opacity:var(--moon-o);transform-origin:50% 90%;animation:moon-sway 18s ease-in-out infinite}
+.cosmos .sun{right:-6vmax;opacity:var(--sun-o);animation:sun-float 20s ease-in-out infinite}
+.sun .rays{transform-origin:190px 205px;animation:sun-spin 90s linear infinite}
+.sun .flame{animation:flame 6s ease-in-out infinite}
+.moon .mh{animation:hair 12s ease-in-out infinite;transform-origin:230px 60px}
+@keyframes sun-spin{to{transform:rotate(360deg)}}
+@keyframes sun-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.4vh)}}
+@keyframes flame{0%,100%{opacity:.85}50%{opacity:1}}
+@keyframes hair{0%,100%{transform:rotate(0)}50%{transform:rotate(1.6deg)}}
+@media (max-width:760px){.cosmos .moon,.cosmos .sun{height:70vh;top:12vh}.cosmos .moon{left:-24vw}.cosmos .sun{right:-24vw}}
 @keyframes moon-sway{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-1.6vh) rotate(1deg)}}
 
 /* Header */
@@ -273,8 +279,30 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 </head>
 <body>
 <div class="cosmos" aria-hidden="true">
-  <canvas class="moon" id="moon-tex" width="900" height="900"></canvas>
-  <canvas class="sun" id="sun-tex" width="900" height="900"></canvas>
+  <svg class="moon" viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="hairM" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1B2F80"/><stop offset="1" stop-color="#3F68C8"/></linearGradient><radialGradient id="crM" cx="30%" cy="30%" r="80%"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#BFCDEB"/></radialGradient></defs><path d="M268 58 C110 70 52 240 120 350 C145 392 200 420 262 426 C170 388 150 220 268 58 Z" fill="url(#crM)"/><g class="mh"><path d="M236 34 C150 20 60 90 62 200 C64 270 100 330 96 450 L196 450 C176 380 180 310 196 250 C190 190 200 120 236 34 Z" fill="url(#hairM)"/><path d="M226 52 C130 40 44 124 72 226 C92 296 46 346 98 430" fill="none" stroke="#5B86D8" stroke-width="14" stroke-linecap="round" opacity=".9"/><path d="M212 86 C128 90 86 160 108 232 C124 282 96 332 138 392" fill="none" stroke="#7FA6EA" stroke-width="11" stroke-linecap="round" opacity=".9"/><path d="M200 124 C152 134 132 190 144 242" fill="none" stroke="#9DBBF2" stroke-width="9" stroke-linecap="round" opacity=".9"/><path d="M236 70 C170 64 108 120 114 190" fill="none" stroke="#2A4BA0" stroke-width="8" stroke-linecap="round" opacity=".9"/><path d="M150 300 C120 330 150 360 128 410" fill="none" stroke="#5B86D8" stroke-width="9" stroke-linecap="round" opacity=".9"/><path d="M72 262 c-34 -10 -40 -56 -6 -64 c28 -6 46 24 28 44 c-14 14 -34 6 -32 -10" fill="none" stroke="#9DBBF2" stroke-width="7" stroke-linecap="round"/><path d="M100 120 c-30 -14 -22 -52 8 -50 c22 2 28 28 12 38" fill="none" stroke="#7FA6EA" stroke-width="6" stroke-linecap="round"/><g fill="#FFF"><circle cx="120" cy="150" r="3"/><circle cx="86" cy="260" r="2.4"/><circle cx="150" cy="330" r="2.6"/><circle cx="170" cy="200" r="2"/><circle cx="110" cy="360" r="2.2"/><circle cx="196" cy="110" r="2"/></g></g><defs><linearGradient id="skM" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A9C6F6"/><stop offset="1" stop-color="#4C74CC"/></linearGradient>
+<linearGradient id="skMh" x1="170" y1="0" x2="232" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+<linearGradient id="skMv" x1="0" y1="330" x2="0" y2="430" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>
+<mask id="skMmh" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="520"><rect width="400" height="520" fill="url(#skMh)"/></mask>
+<mask id="skMmv" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="520"><rect width="400" height="520" fill="url(#skMv)"/><rect width="400" height="330" fill="#fff"/></mask></defs>
+<g mask="url(#skMmv)"><g mask="url(#skMmh)"><path d="M232 38 C262 56 270 100 264 128 C262 140 270 160 284 188 C289 197 284 205 270 207 C265 208 265 214 270 218 C275 223 273 229 266 231 C271 237 270 243 264 248 C266 257 262 268 256 277 C252 296 244 316 228 334 L218 440 L170 440 L170 60 Z" fill="url(#skM)"/></g></g>
+<path d="M232 38 C262 56 270 100 264 128 C262 140 270 160 284 188 C289 197 284 205 270 207 C265 208 265 214 270 218 C275 223 273 229 266 231 C271 237 270 243 264 248 C266 257 262 268 256 277 C252 296 244 316 228 334" fill="none" stroke="#10246B" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>
+<path d="M262 206 q6 12 4 24" fill="none" stroke="#2F4FA8" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+<path d="M232 138 q17 -9 32 -2" fill="none" stroke="#10246B" stroke-width="3.2" stroke-linecap="round"/>
+<path d="M234 152 q15 11 30 0" fill="none" stroke="#10246B" stroke-width="3.4" stroke-linecap="round"/>
+<g stroke="#10246B" stroke-width="1.6" stroke-linecap="round"><path d="M240 160 l-3 6"/><path d="M249 163 l-1 7"/><path d="M258 161 l2 6"/></g>
+<circle cx="248" cy="180" r="14" fill="#fff" opacity=".12"/></svg>
+  <svg class="sun" viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(400,0) scale(-1,1)"><defs><radialGradient id="dsS" cx="45%" cy="40%" r="70%"><stop offset="0" stop-color="#FFB347"/><stop offset="1" stop-color="#E4631C"/></radialGradient><linearGradient id="rayS" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFC247"/><stop offset="1" stop-color="#E4501E"/></linearGradient></defs><g class="rays"><path d="M329.3 191.0 L405.0 205.0 L329.3 219.0 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity="1"/><path d="M328.6 224.8 L359.9 246.9 L321.9 251.9 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity=".8"/><path d="M319.8 257.4 L380.4 304.9 L306.8 282.1 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity="1"/><path d="M303.5 286.9 L321.0 321.0 L285.0 307.8 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity=".8"/><path d="M280.6 311.7 L312.1 381.9 L257.6 327.6 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity="1"/><path d="M252.5 330.3 L252.1 368.6 L226.3 340.2 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity=".8"/><path d="M220.7 341.6 L215.9 418.4 L192.9 345.0 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity="1"/><path d="M187.1 345.0 L168.9 378.7 L159.3 341.6 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity=".8"/><path d="M153.7 340.2 L113.8 406.0 L127.5 330.3 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity="1"/><path d="M122.4 327.6 L90.6 349.0 L99.4 311.7 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity=".8"/><path d="M95.0 307.8 L29.1 347.6 L76.5 286.9 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity="1"/><path d="M73.2 282.1 L35.0 286.3 L60.2 257.4 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity=".8"/><path d="M58.1 251.9 L-18.8 256.5 L51.4 224.8 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity="1"/><path d="M50.7 219.0 L15.0 205.0 L50.7 191.0 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity=".8"/><path d="M51.4 185.2 L-18.8 153.5 L58.1 158.1 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity="1"/><path d="M60.2 152.6 L35.0 123.7 L73.2 127.9 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity=".8"/><path d="M76.5 123.1 L29.1 62.4 L95.0 102.2 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity="1"/><path d="M99.4 98.3 L90.6 61.0 L122.4 82.4 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity=".8"/><path d="M127.5 79.7 L113.8 4.0 L153.7 69.8 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity="1"/><path d="M159.3 68.4 L168.9 31.3 L187.1 65.0 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity=".8"/><path d="M192.9 65.0 L215.9 -8.4 L220.7 68.4 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity="1"/><path d="M226.3 69.8 L252.1 41.4 L252.5 79.7 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity=".8"/><path d="M257.6 82.4 L312.1 28.1 L280.6 98.3 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity="1"/><path d="M285.0 102.2 L321.0 89.0 L303.5 123.1 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity=".8"/><path d="M306.8 127.9 L380.4 105.1 L319.8 152.6 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity="1"/><path d="M321.9 158.1 L359.9 163.1 L328.6 185.2 Z" fill="url(#rayS)" transform="rotate(0 190 205)" opacity=".8"/></g><circle cx="190" cy="205" r="148" fill="url(#dsS)"/><g fill="#E78914" opacity=".5"><circle cx="110" cy="130" r="17"/><circle cx="262" cy="118" r="12"/><circle cx="120" cy="290" r="14"/><circle cx="235" cy="300" r="19"/><circle cx="160" cy="90" r="9"/><circle cx="290" cy="215" r="10"/><circle cx="100" cy="215" r="8"/></g><g class="flame"><path d="M170 40 C110 60 74 130 90 210 C98 250 78 290 110 330" fill="none" stroke="#FFB224" stroke-width="14" stroke-linecap="round" opacity=".9"/><path d="M160 80 C112 100 96 170 116 226" fill="none" stroke="#FF8A1F" stroke-width="11" stroke-linecap="round" opacity=".9"/><path d="M190 60 C150 40 100 60 70 110" fill="none" stroke="#E4501E" stroke-width="9" stroke-linecap="round" opacity=".9"/><path d="M130 330 C100 360 118 400 96 440" fill="none" stroke="#FFB224" stroke-width="10" stroke-linecap="round" opacity=".9"/></g><defs><linearGradient id="skS" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF6CF"/><stop offset="1" stop-color="#FFD76A"/></linearGradient>
+<linearGradient id="skSh" x1="170" y1="0" x2="232" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+<linearGradient id="skSv" x1="0" y1="330" x2="0" y2="430" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>
+<mask id="skSmh" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="520"><rect width="400" height="520" fill="url(#skSh)"/></mask>
+<mask id="skSmv" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="520"><rect width="400" height="520" fill="url(#skSv)"/><rect width="400" height="330" fill="#fff"/></mask></defs>
+<g mask="url(#skSmv)"><g mask="url(#skSmh)"><path d="M232 38 C262 56 270 100 264 128 C262 140 270 160 284 188 C289 197 284 205 270 207 C265 208 265 214 270 218 C275 223 273 229 266 231 C271 237 270 243 264 248 C266 257 262 268 256 277 C252 296 244 316 228 334 L218 440 L170 440 L170 60 Z" fill="url(#skS)"/></g></g>
+<path d="M232 38 C262 56 270 100 264 128 C262 140 270 160 284 188 C289 197 284 205 270 207 C265 208 265 214 270 218 C275 223 273 229 266 231 C271 237 270 243 264 248 C266 257 262 268 256 277 C252 296 244 316 228 334" fill="none" stroke="#7A2E05" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>
+<path d="M262 206 q6 12 4 24" fill="none" stroke="#C0501A" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+<path d="M232 138 q17 -9 32 -2" fill="none" stroke="#7A2E05" stroke-width="3.2" stroke-linecap="round"/>
+<path d="M234 152 q15 11 30 0" fill="none" stroke="#7A2E05" stroke-width="3.4" stroke-linecap="round"/>
+<g stroke="#7A2E05" stroke-width="1.6" stroke-linecap="round"><path d="M240 160 l-3 6"/><path d="M249 163 l-1 7"/><path d="M258 161 l2 6"/></g>
+<circle cx="248" cy="180" r="14" fill="#fff" opacity=".12"/></g></svg>
   <canvas id="cosmos-stars"></canvas>
 </div>
 
@@ -577,58 +605,6 @@ document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () =
 })();
 
 
-
-/* ---- Luna llena y sol con textura realista (se dibujan una sola vez) ---- */
-(function(){
-  function rng(seed){ let t = seed >>> 0; return function(){ t += 0x6D2B79F5; let r = Math.imul(t ^ t>>>15, 1|t); r ^= r + Math.imul(r ^ r>>>7, 61|r); return ((r ^ r>>>14) >>> 0) / 4294967296; }; }
-  function blob(x, cx, cy, r, rgb, a){ const g = x.createRadialGradient(cx,cy,0,cx,cy,r); g.addColorStop(0,`rgba(${rgb},${a})`); g.addColorStop(.6,`rgba(${rgb},${a*.55})`); g.addColorStop(1,`rgba(${rgb},0)`); x.fillStyle = g; x.beginPath(); x.arc(cx,cy,r,0,6.2832); x.fill(); }
-  function drawMoon(c){
-    const S = c.width, x = c.getContext("2d"), R = S*.36, cx = S/2, cy = S/2, rnd = rng(11);
-    // soft halo
-    let g = x.createRadialGradient(cx,cy,R*.9,cx,cy,S*.5); g.addColorStop(0,"rgba(190,205,240,.55)"); g.addColorStop(1,"rgba(190,205,240,0)"); x.fillStyle = g; x.fillRect(0,0,S,S);
-    x.save(); x.beginPath(); x.arc(cx,cy,R,0,6.2832); x.clip();
-    g = x.createRadialGradient(cx-R*.35,cy-R*.35,R*.1,cx,cy,R*1.05); g.addColorStop(0,"#F3F5FA"); g.addColorStop(.55,"#CBD2E0"); g.addColorStop(1,"#8E98B0"); x.fillStyle = g; x.fillRect(0,0,S,S);
-    // maria (dark seas)
-    [[-.28,-.2,.34,.34],[.05,-.34,.26,.3],[.3,-.05,.3,.32],[-.05,.1,.22,.26],[-.3,.22,.2,.24],[.2,.36,.2,.22],[.38,.26,.14,.2]].forEach(([dx,dy,rr,a])=>blob(x,cx+dx*R,cy+dy*R,rr*R,"78,88,112",a));
-    // highlands speckle
-    for (let i=0;i<5200;i++){ const a = rnd()*6.2832, d = Math.sqrt(rnd())*R; x.fillStyle = rnd()<.5 ? "rgba(255,255,255,.07)" : "rgba(60,70,95,.07)"; x.fillRect(cx+Math.cos(a)*d, cy+Math.sin(a)*d, 1+rnd()*2, 1+rnd()*2); }
-    // craters with lit/shaded rims
-    for (let i=0;i<95;i++){
-      const a = rnd()*6.2832, d = Math.sqrt(rnd())*R*.95, px = cx+Math.cos(a)*d, py = cy+Math.sin(a)*d, r = (i<10 ? 26+rnd()*30 : 5+Math.pow(rnd(),2.2)*24);
-      g = x.createRadialGradient(px,py,r*.1,px,py,r); g.addColorStop(0,"rgba(70,80,105,.34)"); g.addColorStop(.8,"rgba(70,80,105,.16)"); g.addColorStop(1,"rgba(70,80,105,0)"); x.fillStyle = g; x.beginPath(); x.arc(px,py,r,0,6.2832); x.fill();
-      x.lineWidth = Math.max(1,r*.12); x.strokeStyle = "rgba(255,255,255,.34)"; x.beginPath(); x.arc(px,py,r*.92,.6,2.3); x.stroke();
-      x.strokeStyle = "rgba(40,50,75,.3)"; x.beginPath(); x.arc(px,py,r*.92,3.75,5.45); x.stroke();
-    }
-    // bright ray crater (Tycho-like)
-    for (let k=0;k<26;k++){ const a = rnd()*6.2832, L = R*(.25+rnd()*.5); x.strokeStyle = "rgba(255,255,255,.12)"; x.lineWidth = 1+rnd()*2; x.beginPath(); x.moveTo(cx-R*.08,cy+R*.52); x.lineTo(cx-R*.08+Math.cos(a)*L, cy+R*.52+Math.sin(a)*L); x.stroke(); }
-    // limb darkening
-    g = x.createRadialGradient(cx,cy,R*.55,cx,cy,R); g.addColorStop(0,"rgba(30,40,70,0)"); g.addColorStop(1,"rgba(30,40,70,.5)"); x.fillStyle = g; x.fillRect(0,0,S,S);
-    x.restore();
-  }
-  function drawSun(c){
-    const S = c.width, x = c.getContext("2d"), R = S*.2, cx = S/2, cy = S/2, rnd = rng(5);
-    // corona glow
-    let g = x.createRadialGradient(cx,cy,R*.8,cx,cy,S*.5); g.addColorStop(0,"rgba(255,190,70,.75)"); g.addColorStop(.25,"rgba(255,150,40,.4)"); g.addColorStop(.6,"rgba(255,120,30,.12)"); g.addColorStop(1,"rgba(255,120,30,0)"); x.fillStyle = g; x.fillRect(0,0,S,S);
-    // streamers
-    for (let i=0;i<44;i++){
-      const a = rnd()*6.2832, L = S*(.3+rnd()*.2), w = .018+rnd()*.03; x.save(); x.translate(cx,cy); x.rotate(a);
-      const lg = x.createLinearGradient(R*.9,0,L,0); lg.addColorStop(0,"rgba(255,176,56,.5)"); lg.addColorStop(1,"rgba(255,150,40,0)");
-      x.fillStyle = lg; x.beginPath(); x.moveTo(R*.9,-R*w*6); x.lineTo(L,0); x.lineTo(R*.9,R*w*6); x.closePath(); x.fill(); x.restore();
-    }
-    // disc
-    x.save(); x.beginPath(); x.arc(cx,cy,R,0,6.2832); x.clip();
-    g = x.createRadialGradient(cx-R*.2,cy-R*.2,0,cx,cy,R); g.addColorStop(0,"#FFF3B8"); g.addColorStop(.45,"#FFC84A"); g.addColorStop(.85,"#F18A1F"); g.addColorStop(1,"#D8641A"); x.fillStyle = g; x.fillRect(0,0,S,S);
-    // granulation
-    for (let i=0;i<1700;i++){ const a = rnd()*6.2832, d = Math.sqrt(rnd())*R, r = 4+rnd()*11; blob(x,cx+Math.cos(a)*d,cy+Math.sin(a)*d,r, rnd()<.5 ? "255,235,150" : "190,80,20", .12); }
-    // sunspots
-    [[.3,-.2,13],[.38,-.1,8],[-.35,.3,11],[-.2,-.42,7]].forEach(([dx,dy,r])=>{ blob(x,cx+dx*R,cy+dy*R,r*2.1,"120,40,10",.28); blob(x,cx+dx*R,cy+dy*R,r,"60,20,5",.7); });
-    // limb darkening
-    g = x.createRadialGradient(cx,cy,R*.5,cx,cy,R); g.addColorStop(0,"rgba(120,40,0,0)"); g.addColorStop(1,"rgba(120,40,0,.45)"); x.fillStyle = g; x.fillRect(0,0,S,S);
-    x.restore();
-  }
-  const go = () => { const m = document.getElementById("moon-tex"), s = document.getElementById("sun-tex"); if (m) drawMoon(m); if (s) drawSun(s); };
-  (window.requestIdleCallback || (f => setTimeout(f, 30)))(go);
-})();
 
 /* ---- Estrellas que destellan en el fondo ---- */
 (function(){
