@@ -43,14 +43,14 @@
   --s-body:1.0625rem;
   --s-small:.875rem;
   --wrap:1120px;
-  --g-luna:#C9D6F0;--g-sol:#F8DDA6;--g-luna2:rgba(160,184,232,.35);--g-sol2:rgba(246,196,120,.35);--star:rgba(34,49,79,.55);--star2:rgba(217,140,43,.8);--moon:#22314F;--moon-o:.075;--sun:#E9A04A;--sun-o:.2;
+  --g-luna:#AFC4EE;--g-sol:#F6CB7E;--g-luna2:rgba(120,156,226,.42);--g-sol2:rgba(244,184,92,.46);--star:rgba(34,49,79,.55);--star2:rgba(217,140,43,.8);--moon:#22314F;--moon-o:.075;--sun:#E9A04A;--sun-o:.2;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#141C2E;--bg-2:#1B2540;--fg:#F5EFE0;--fg-soft:#B9B3A6;--line:#2E3A57;
-  --accent:#E9A04A;--accent-ink:#1A1408;--card:#1A2339;--g-luna:#24365F;--g-sol:#4A3320;--g-luna2:rgba(60,88,150,.35);--g-sol2:rgba(150,92,34,.30);--star:#F5EFE0;--star2:#F2B766;--moon:#A9BDEB;--moon-o:.11;--sun-o:.13;color-scheme:dark}}
+  --accent:#E9A04A;--accent-ink:#1A1408;--card:#1A2339;--g-luna:#2A4380;--g-sol:#6A4520;--g-luna2:rgba(70,104,184,.42);--g-sol2:rgba(190,118,40,.36);--star:#F5EFE0;--star2:#F2B766;--moon:#A9BDEB;--moon-o:.11;--sun-o:.13;color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#141C2E;--bg-2:#1B2540;--fg:#F5EFE0;--fg-soft:#B9B3A6;--line:#2E3A57;
-  --accent:#E9A04A;--accent-ink:#1A1408;--card:#1A2339;--g-luna:#24365F;--g-sol:#4A3320;--g-luna2:rgba(60,88,150,.35);--g-sol2:rgba(150,92,34,.30);--star:#F5EFE0;--star2:#F2B766;--moon:#A9BDEB;--moon-o:.11;--sun-o:.13;color-scheme:dark}
+  --accent:#E9A04A;--accent-ink:#1A1408;--card:#1A2339;--g-luna:#2A4380;--g-sol:#6A4520;--g-luna2:rgba(70,104,184,.42);--g-sol2:rgba(190,118,40,.36);--star:#F5EFE0;--star2:#F2B766;--moon:#A9BDEB;--moon-o:.11;--sun-o:.13;color-scheme:dark}
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -152,6 +152,8 @@ section{padding-block:clamp(3.5rem,8vw,6rem)}
 .sec-head p{color:var(--fg-soft)}
 
 /* Salones */
+.salones-band{background:linear-gradient(100deg,color-mix(in srgb,var(--g-luna) 70%,transparent) 0%,transparent 48%,color-mix(in srgb,var(--g-sol) 70%,transparent) 100%)}
+.salon{box-shadow:0 10px 28px rgba(20,30,60,.22)}
 .salones{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:1.2rem;align-items:stretch}
 .salon{position:relative;border-radius:22px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
 .salon .body{padding:1.5rem;display:grid;gap:.5rem;align-content:start}
@@ -219,18 +221,27 @@ footer{padding-block:2rem;font-size:var(--s-small);color:var(--fg-soft);border-t
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 
 /* ---------- CARTA VIEW ---------- */
-.carta-hero{background:var(--luna-band);color:#F5EFE0;text-align:center}
+.carta-hero{background:linear-gradient(100deg,#1D3470 0%,#2F4F98 38%,#7A4E7E 56%,#B5582A 80%,#D98C2B 100%);color:#F5EFE0;text-align:center}
+.salon-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;width:100%;max-width:760px;margin-top:1rem}
+.salon-strip a{position:relative;display:block;border-radius:16px;overflow:hidden;aspect-ratio:4/3;text-decoration:none;color:#fff;box-shadow:0 6px 18px rgba(10,16,34,.35);border:1px solid rgba(255,255,255,.28)}
+.salon-strip img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;width:100%;max-width:none}
+.salon-strip a::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(10,16,34,.78) 100%)}
+.salon-strip b{position:absolute;left:.7rem;bottom:.55rem;z-index:1;font:400 1.05rem/1.1 var(--f-display);text-shadow:0 1px 6px rgba(0,0,0,.5)}
+@media (max-width:560px){.salon-strip{gap:.45rem}.salon-strip b{font-size:.78rem;left:.45rem;right:.3rem;bottom:.4rem;line-height:1.12}.salon-strip a{border-radius:12px;aspect-ratio:1/1}}
+.salon-strip a:hover img{transform:scale(1.04)}.salon-strip img{transition:transform .5s ease}
+.salon-strip a.l{border-color:#8FB0F0}.salon-strip a.e{border-color:#F2D9A8}.salon-strip a.s{border-color:#F5B94A}
+.carta-hero .salon-strip + p,.carta-hero p.strip-note{font-size:.85rem;color:#E4DAC6;margin-top:.2rem}
 .carta-hero .wrap{padding-block:2.4rem 2rem;display:grid;justify-items:center;gap:.6rem}
-.carta-hero img{width:110px}
+.carta-hero>.wrap>img{width:110px}
 .carta-hero h1{font-size:var(--s-2)}
 .carta-hero p{color:#C9C3B4;max-width:40ch}
 .tabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 57px);z-index:15;background:var(--bg);border-bottom:1px solid var(--line)}
 .tabs .wrap{display:flex;gap:.5rem;overflow-x:auto;padding-block:.7rem;scrollbar-width:none}
 .tabs .wrap::-webkit-scrollbar{display:none}
 .tabs a{flex:none;text-decoration:none;font-weight:700;font-size:.88rem;padding:.6rem 1rem;border-radius:999px;border:1px solid var(--line);background:var(--card)}
-.tabs a.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tabs a.on{background:linear-gradient(100deg,#2F4F98,#C46A2A);color:#fff;border-color:transparent}
 .cat{padding-block:2.4rem 1rem;scroll-margin-top:130px}
-.cat-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:.4rem 1rem;border-bottom:2px solid var(--fg);padding-bottom:.6rem;margin-bottom:.4rem}
+.cat-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:.4rem 1rem;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,#3C5FAE,#E9A04A) 1;padding-bottom:.6rem;margin-bottom:.4rem}
 .cat-head h2{font-size:1.8rem}
 .cat-head small{color:var(--fg-soft);font-size:.85rem}
 .cols{margin-left:auto;display:flex;gap:1rem;font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-soft)}
@@ -320,7 +331,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
     </div>
   </div>
 
-  <section id="salones">
+  <section id="salones" class="salones-band">
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow">Tres salones</p>
@@ -443,6 +454,11 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
       <p class="eyebrow" style="color:#F2B766">La carta</p>
       <h1>Equinoccio Café Libro</h1>
       <p>Leche a elección en todas las bebidas con café: entera, deslactosada o de almendras.</p>
+      <div class="salon-strip" aria-label="Nuestros tres salones">
+        <a class="l" href="#salones"><img src="assets/salon-luna.jpg" alt="Salón Luna" loading="lazy" width="1800" height="1013"><b>Salón Luna</b></a>
+        <a class="e" href="#salones"><img src="assets/salon-equinoccio.jpg" alt="Salón Equinoccio" loading="lazy" width="1600" height="900"><b>Salón Equinoccio</b></a>
+        <a class="s" href="#salones"><img src="assets/salon-sol.jpg" alt="Salón Sol" loading="lazy" width="1800" height="1013"><b>Salón Sol</b></a>
+      </div>
     </div>
   </div>
   <nav class="tabs" aria-label="Categorías de la carta"><div class="wrap" id="tabs"></div></nav>
