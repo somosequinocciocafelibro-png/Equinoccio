@@ -1,7 +1,8 @@
 """Genera la hoja para el portaprecios de acrílico tipo T, media carta (14 x 21,6 cm), con los dos QR en los colores del logo.
-Uso: pip install segno pillow && python3 generar-acrilico.py salida.html ../assets/logo.png [a4|exact]
-  a4    -> hoja A4 con marcas de corte y 3 mm de sangrado (para imprimir en casa u oficina)
-  exact -> 140 x 216 mm exactos (para llevar a una imprenta)
+Uso: pip install segno pillow && python3 generar-acrilico.py salida.html ../assets/logo.png [a4|exact|imprenta]
+  a4        -> hoja A4 con marcas de corte y 3 mm de sangrado (para imprimir en casa u oficina)
+  exact     -> 140 x 216 mm exactos, sin sangrado
+  imprenta  -> 146 x 222 mm = 140 x 216 mm + 3 mm de sangrado por lado (para llevar a una imprenta)
 Luego abrir salida.html en Chrome e imprimir a PDF (100 %, con gráficos de fondo). Salen 2 páginas: frente y reverso iguales."""
 """Builds the folded table-tent card (A4 landscape, two tents per sheet) with QR codes styled after the Equinoccio color logo."""
 import base64, io, math, random, sys
@@ -84,7 +85,7 @@ bg = watercolor_bg()
 star = '<svg viewBox="0 0 24 24" width="5.2mm" height="5.2mm"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" fill="#E9A04A" stroke="#B85A1E" stroke-width="1"/></svg>'
 
 
-MODE = sys.argv[3] if len(sys.argv) > 3 else "a4"     # "a4" (crop marks + bleed) or "exact" (140x216 mm)
+MODE = sys.argv[3] if len(sys.argv) > 3 else "a4"     # "a4" (crop marks + bleed), "exact" (140x216 mm) or "imprenta" (146x222 mm = 140x216 + 3 mm bleed per side)
 
 def row(url, title, sub, extra):
     return f"""<div class="qrrow"><div class="qrsvg">{qr_svg(url, logo_small, 46)}</div>
@@ -108,6 +109,9 @@ if MODE == "a4":
         (35,32,.2,6),(175,32,.2,6),(35,258.5,.2,6),(175,258.5,.2,6)])      # vertical ticks
     page = f'<section class="sheet a4">{marks}<div class="pos">{card()}</div></section>'
     size = "210mm 297mm"
+elif MODE == "imprenta":
+    page = f'<section class="sheet imp"><div class="pos2">{card()}</div></section>'
+    size = "146mm 222mm"
 else:
     page = f'<section class="sheet exact">{card()}</section>'
     size = "140mm 216mm"
@@ -120,6 +124,7 @@ html{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 body{{margin:0;font-family:"Nunito Sans",sans-serif;color:{CAFE}}}
 .sheet{{position:relative;page-break-after:always;overflow:hidden;background:#fff}}
 .a4{{width:210mm;height:297mm}}.exact{{width:140mm;height:216mm}}
+.imp{{width:146mm;height:222mm}}.pos2{{position:absolute;left:3mm;top:3mm}}
 .pos{{position:absolute;left:35mm;top:40.5mm}}
 .m{{position:absolute;background:#000}}
 .card{{position:relative;width:140mm;height:216mm}}
