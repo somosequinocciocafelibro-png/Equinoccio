@@ -43,14 +43,14 @@
   --s-body:1.0625rem;
   --s-small:.875rem;
   --wrap:1120px;
-  --g-luna:#AFC4EE;--g-sol:#F6CB7E;--g-luna2:rgba(120,156,226,.42);--g-sol2:rgba(244,184,92,.46);--star:rgba(34,49,79,.55);--star2:rgba(217,140,43,.8);--moon:#2A4380;--moon-o:.075;--sun:#E9A04A;--sun-o:.2;
+  --g-luna:#AFC4EE;--g-sol:#F6CB7E;--g-luna2:rgba(120,156,226,.42);--g-sol2:rgba(244,184,92,.46);--star:rgba(34,49,79,.55);--star2:rgba(217,140,43,.8);--moon:#2A4380;--moon-o:.05;--sun:#E9A04A;--sun-o:.1;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#141C2E;--bg-2:#1B2540;--fg:#F5EFE0;--fg-soft:#B9B3A6;--line:#2E3A57;
-  --accent:#E9A04A;--accent-ink:#1A1408;--card:#1A2339;--g-luna:#2A4380;--g-sol:#6A4520;--g-luna2:rgba(70,104,184,.42);--g-sol2:rgba(190,118,40,.36);--star:#F5EFE0;--star2:#F2B766;--moon:#A9BDEB;--moon-o:.11;--sun-o:.13;color-scheme:dark}}
+  --accent:#E9A04A;--accent-ink:#1A1408;--card:#1A2339;--g-luna:#2A4380;--g-sol:#6A4520;--g-luna2:rgba(70,104,184,.42);--g-sol2:rgba(190,118,40,.36);--star:#F5EFE0;--star2:#F2B766;--moon:#A9BDEB;--moon-o:.08;--sun-o:.1;color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#141C2E;--bg-2:#1B2540;--fg:#F5EFE0;--fg-soft:#B9B3A6;--line:#2E3A57;
-  --accent:#E9A04A;--accent-ink:#1A1408;--card:#1A2339;--g-luna:#2A4380;--g-sol:#6A4520;--g-luna2:rgba(70,104,184,.42);--g-sol2:rgba(190,118,40,.36);--star:#F5EFE0;--star2:#F2B766;--moon:#A9BDEB;--moon-o:.11;--sun-o:.13;color-scheme:dark}
+  --accent:#E9A04A;--accent-ink:#1A1408;--card:#1A2339;--g-luna:#2A4380;--g-sol:#6A4520;--g-luna2:rgba(70,104,184,.42);--g-sol2:rgba(190,118,40,.36);--star:#F5EFE0;--star2:#F2B766;--moon:#A9BDEB;--moon-o:.08;--sun-o:.1;color-scheme:dark}
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -76,15 +76,11 @@ p{margin:0}
   radial-gradient(120% 70% at 100% 100%,var(--g-sol) 0%,transparent 62%),
   linear-gradient(100deg,var(--g-luna2) 0%,transparent 45%,transparent 55%,var(--g-sol2) 100%),var(--bg)}
 .cosmos canvas{position:absolute;inset:0;width:100%;height:100%}
-.cosmos svg{position:absolute;display:block}
-.moon{left:-8vmax;top:10vh;width:min(44vmax,620px);height:auto;opacity:calc(var(--moon-o) + .1);animation:moon-sway 16s ease-in-out infinite}
-.moon .mhalo{transform-origin:200px 200px;animation:moon-glow 8s ease-in-out infinite}
-@keyframes moon-glow{0%,100%{opacity:.6;transform:scale(.97)}50%{opacity:1;transform:scale(1.05)}}
-.sun{right:-12vmax;top:-9vmax;width:min(60vmax,820px);height:auto;opacity:var(--sun-o)}
-.sun .rays{transform-origin:200px 200px;animation:sun-spin 120s linear infinite}
-.sun .halo{transform-origin:200px 200px;animation:sun-breathe 7s ease-in-out infinite}
-@keyframes sun-spin{to{transform:rotate(360deg)}}
-@keyframes sun-breathe{0%,100%{opacity:.55;transform:scale(.96)}50%{opacity:1;transform:scale(1.06)}}
+.cosmos .moon,.cosmos .sun{position:absolute;display:block;inset:auto;height:auto;aspect-ratio:1}
+.cosmos .moon{left:-15vmax;top:4vh;width:min(66vmax,900px);height:auto;opacity:calc(var(--moon-o) + .13);animation:moon-sway 18s ease-in-out infinite}
+.cosmos .sun{right:-20vmax;top:-18vmax;width:min(86vmax,1150px);height:auto;opacity:calc(var(--sun-o) + .17);animation:sun-spin 240s linear infinite,sun-breathe 9s ease-in-out infinite}
+@keyframes sun-spin{to{rotate:360deg}}
+@keyframes sun-breathe{0%,100%{scale:.985}50%{scale:1.03}}
 @keyframes moon-sway{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-1.6vh) rotate(1deg)}}
 
 /* Header */
@@ -277,17 +273,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 </head>
 <body>
 <div class="cosmos" aria-hidden="true">
-  <svg class="moon" viewBox="0 0 400 400"><defs>
-    <radialGradient id="mg" cx="38%" cy="36%" r="75%"><stop offset="0" stop-color="var(--moon)" stop-opacity=".62"/><stop offset="1" stop-color="var(--moon)" stop-opacity=".95"/></radialGradient>
-    <radialGradient id="mh" cx="50%" cy="50%" r="50%"><stop offset=".55" stop-color="var(--moon)" stop-opacity=".5"/><stop offset="1" stop-color="var(--moon)" stop-opacity="0"/></radialGradient></defs>
-    <circle class="mhalo" cx="200" cy="200" r="200" fill="url(#mh)"/>
-    <circle cx="200" cy="200" r="132" fill="url(#mg)"/>
-    <g fill="var(--moon)" opacity=".42"><circle cx="160" cy="165" r="26"/><circle cx="238" cy="150" r="14"/><circle cx="246" cy="232" r="30"/><circle cx="176" cy="255" r="16"/><circle cx="212" cy="196" r="9"/><circle cx="140" cy="215" r="10"/></g>
-    <g fill="var(--moon)" opacity=".7"><circle cx="352" cy="96" r="3"/><circle cx="46" cy="130" r="2.4"/><circle cx="360" cy="300" r="2.2"/><circle cx="60" cy="320" r="2"/></g></svg>
-  <svg class="sun" viewBox="0 0 400 400"><defs><radialGradient id="sg"><stop offset="0" stop-color="var(--sun)" stop-opacity="1"/><stop offset=".55" stop-color="var(--sun)" stop-opacity=".55"/><stop offset="1" stop-color="var(--sun)" stop-opacity="0"/></radialGradient></defs>
-    <circle class="halo" cx="200" cy="200" r="200" fill="url(#sg)"/>
-    <g class="rays" fill="var(--sun)" opacity=".85"><path d="M193.5 106L200 36L206.5 106z" transform="rotate(0 200 200)"/><path d="M193.5 106L200 62L206.5 106z" transform="rotate(15 200 200)"/><path d="M193.5 106L200 36L206.5 106z" transform="rotate(30 200 200)"/><path d="M193.5 106L200 62L206.5 106z" transform="rotate(45 200 200)"/><path d="M193.5 106L200 36L206.5 106z" transform="rotate(60 200 200)"/><path d="M193.5 106L200 62L206.5 106z" transform="rotate(75 200 200)"/><path d="M193.5 106L200 36L206.5 106z" transform="rotate(90 200 200)"/><path d="M193.5 106L200 62L206.5 106z" transform="rotate(105 200 200)"/><path d="M193.5 106L200 36L206.5 106z" transform="rotate(120 200 200)"/><path d="M193.5 106L200 62L206.5 106z" transform="rotate(135 200 200)"/><path d="M193.5 106L200 36L206.5 106z" transform="rotate(150 200 200)"/><path d="M193.5 106L200 62L206.5 106z" transform="rotate(165 200 200)"/><path d="M193.5 106L200 36L206.5 106z" transform="rotate(180 200 200)"/><path d="M193.5 106L200 62L206.5 106z" transform="rotate(195 200 200)"/><path d="M193.5 106L200 36L206.5 106z" transform="rotate(210 200 200)"/><path d="M193.5 106L200 62L206.5 106z" transform="rotate(225 200 200)"/><path d="M193.5 106L200 36L206.5 106z" transform="rotate(240 200 200)"/><path d="M193.5 106L200 62L206.5 106z" transform="rotate(255 200 200)"/><path d="M193.5 106L200 36L206.5 106z" transform="rotate(270 200 200)"/><path d="M193.5 106L200 62L206.5 106z" transform="rotate(285 200 200)"/><path d="M193.5 106L200 36L206.5 106z" transform="rotate(300 200 200)"/><path d="M193.5 106L200 62L206.5 106z" transform="rotate(315 200 200)"/><path d="M193.5 106L200 36L206.5 106z" transform="rotate(330 200 200)"/><path d="M193.5 106L200 62L206.5 106z" transform="rotate(345 200 200)"/></g>
-    <circle cx="200" cy="200" r="78" fill="var(--sun)"/></svg>
+  <canvas class="moon" id="moon-tex" width="900" height="900"></canvas>
+  <canvas class="sun" id="sun-tex" width="900" height="900"></canvas>
   <canvas id="cosmos-stars"></canvas>
 </div>
 
@@ -589,6 +576,59 @@ document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () =
   hero.addEventListener("pointerleave", () => seal.style.setProperty("--tilt", "0deg"));
 })();
 
+
+
+/* ---- Luna llena y sol con textura realista (se dibujan una sola vez) ---- */
+(function(){
+  function rng(seed){ let t = seed >>> 0; return function(){ t += 0x6D2B79F5; let r = Math.imul(t ^ t>>>15, 1|t); r ^= r + Math.imul(r ^ r>>>7, 61|r); return ((r ^ r>>>14) >>> 0) / 4294967296; }; }
+  function blob(x, cx, cy, r, rgb, a){ const g = x.createRadialGradient(cx,cy,0,cx,cy,r); g.addColorStop(0,`rgba(${rgb},${a})`); g.addColorStop(.6,`rgba(${rgb},${a*.55})`); g.addColorStop(1,`rgba(${rgb},0)`); x.fillStyle = g; x.beginPath(); x.arc(cx,cy,r,0,6.2832); x.fill(); }
+  function drawMoon(c){
+    const S = c.width, x = c.getContext("2d"), R = S*.36, cx = S/2, cy = S/2, rnd = rng(11);
+    // soft halo
+    let g = x.createRadialGradient(cx,cy,R*.9,cx,cy,S*.5); g.addColorStop(0,"rgba(190,205,240,.55)"); g.addColorStop(1,"rgba(190,205,240,0)"); x.fillStyle = g; x.fillRect(0,0,S,S);
+    x.save(); x.beginPath(); x.arc(cx,cy,R,0,6.2832); x.clip();
+    g = x.createRadialGradient(cx-R*.35,cy-R*.35,R*.1,cx,cy,R*1.05); g.addColorStop(0,"#F3F5FA"); g.addColorStop(.55,"#CBD2E0"); g.addColorStop(1,"#8E98B0"); x.fillStyle = g; x.fillRect(0,0,S,S);
+    // maria (dark seas)
+    [[-.28,-.2,.34,.34],[.05,-.34,.26,.3],[.3,-.05,.3,.32],[-.05,.1,.22,.26],[-.3,.22,.2,.24],[.2,.36,.2,.22],[.38,.26,.14,.2]].forEach(([dx,dy,rr,a])=>blob(x,cx+dx*R,cy+dy*R,rr*R,"78,88,112",a));
+    // highlands speckle
+    for (let i=0;i<5200;i++){ const a = rnd()*6.2832, d = Math.sqrt(rnd())*R; x.fillStyle = rnd()<.5 ? "rgba(255,255,255,.07)" : "rgba(60,70,95,.07)"; x.fillRect(cx+Math.cos(a)*d, cy+Math.sin(a)*d, 1+rnd()*2, 1+rnd()*2); }
+    // craters with lit/shaded rims
+    for (let i=0;i<95;i++){
+      const a = rnd()*6.2832, d = Math.sqrt(rnd())*R*.95, px = cx+Math.cos(a)*d, py = cy+Math.sin(a)*d, r = (i<10 ? 26+rnd()*30 : 5+Math.pow(rnd(),2.2)*24);
+      g = x.createRadialGradient(px,py,r*.1,px,py,r); g.addColorStop(0,"rgba(70,80,105,.34)"); g.addColorStop(.8,"rgba(70,80,105,.16)"); g.addColorStop(1,"rgba(70,80,105,0)"); x.fillStyle = g; x.beginPath(); x.arc(px,py,r,0,6.2832); x.fill();
+      x.lineWidth = Math.max(1,r*.12); x.strokeStyle = "rgba(255,255,255,.34)"; x.beginPath(); x.arc(px,py,r*.92,.6,2.3); x.stroke();
+      x.strokeStyle = "rgba(40,50,75,.3)"; x.beginPath(); x.arc(px,py,r*.92,3.75,5.45); x.stroke();
+    }
+    // bright ray crater (Tycho-like)
+    for (let k=0;k<26;k++){ const a = rnd()*6.2832, L = R*(.25+rnd()*.5); x.strokeStyle = "rgba(255,255,255,.12)"; x.lineWidth = 1+rnd()*2; x.beginPath(); x.moveTo(cx-R*.08,cy+R*.52); x.lineTo(cx-R*.08+Math.cos(a)*L, cy+R*.52+Math.sin(a)*L); x.stroke(); }
+    // limb darkening
+    g = x.createRadialGradient(cx,cy,R*.55,cx,cy,R); g.addColorStop(0,"rgba(30,40,70,0)"); g.addColorStop(1,"rgba(30,40,70,.5)"); x.fillStyle = g; x.fillRect(0,0,S,S);
+    x.restore();
+  }
+  function drawSun(c){
+    const S = c.width, x = c.getContext("2d"), R = S*.2, cx = S/2, cy = S/2, rnd = rng(5);
+    // corona glow
+    let g = x.createRadialGradient(cx,cy,R*.8,cx,cy,S*.5); g.addColorStop(0,"rgba(255,190,70,.75)"); g.addColorStop(.25,"rgba(255,150,40,.4)"); g.addColorStop(.6,"rgba(255,120,30,.12)"); g.addColorStop(1,"rgba(255,120,30,0)"); x.fillStyle = g; x.fillRect(0,0,S,S);
+    // streamers
+    for (let i=0;i<44;i++){
+      const a = rnd()*6.2832, L = S*(.3+rnd()*.2), w = .018+rnd()*.03; x.save(); x.translate(cx,cy); x.rotate(a);
+      const lg = x.createLinearGradient(R*.9,0,L,0); lg.addColorStop(0,"rgba(255,176,56,.5)"); lg.addColorStop(1,"rgba(255,150,40,0)");
+      x.fillStyle = lg; x.beginPath(); x.moveTo(R*.9,-R*w*6); x.lineTo(L,0); x.lineTo(R*.9,R*w*6); x.closePath(); x.fill(); x.restore();
+    }
+    // disc
+    x.save(); x.beginPath(); x.arc(cx,cy,R,0,6.2832); x.clip();
+    g = x.createRadialGradient(cx-R*.2,cy-R*.2,0,cx,cy,R); g.addColorStop(0,"#FFF3B8"); g.addColorStop(.45,"#FFC84A"); g.addColorStop(.85,"#F18A1F"); g.addColorStop(1,"#D8641A"); x.fillStyle = g; x.fillRect(0,0,S,S);
+    // granulation
+    for (let i=0;i<1700;i++){ const a = rnd()*6.2832, d = Math.sqrt(rnd())*R, r = 4+rnd()*11; blob(x,cx+Math.cos(a)*d,cy+Math.sin(a)*d,r, rnd()<.5 ? "255,235,150" : "190,80,20", .12); }
+    // sunspots
+    [[.3,-.2,13],[.38,-.1,8],[-.35,.3,11],[-.2,-.42,7]].forEach(([dx,dy,r])=>{ blob(x,cx+dx*R,cy+dy*R,r*2.1,"120,40,10",.28); blob(x,cx+dx*R,cy+dy*R,r,"60,20,5",.7); });
+    // limb darkening
+    g = x.createRadialGradient(cx,cy,R*.5,cx,cy,R); g.addColorStop(0,"rgba(120,40,0,0)"); g.addColorStop(1,"rgba(120,40,0,.45)"); x.fillStyle = g; x.fillRect(0,0,S,S);
+    x.restore();
+  }
+  const go = () => { const m = document.getElementById("moon-tex"), s = document.getElementById("sun-tex"); if (m) drawMoon(m); if (s) drawSun(s); };
+  (window.requestIdleCallback || (f => setTimeout(f, 30)))(go);
+})();
 
 /* ---- Estrellas que destellan en el fondo ---- */
 (function(){
