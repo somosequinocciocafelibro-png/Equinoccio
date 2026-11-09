@@ -1,4 +1,4 @@
-"""Genera la tarjeta de mesa doblada (A4 horizontal, 2 por hoja) con QR en los colores del logo.
+"""Genera la tarjeta de mesa doblada (A4 horizontal, 2 por hoja) con los dos QR (carta y ubicación) en los colores del logo.
 Uso: pip install segno pillow && python3 generar-tarjeta-doblada.py salida.html ../assets/logo.png
 Luego abrir salida.html en Chrome e imprimir a PDF (A4 horizontal, 100 %, con gráficos de fondo)."""
 import base64, io, math, random, sys
@@ -80,22 +80,19 @@ logo_head = png_b64(LOGO, 360)
 bg = watercolor_bg()
 star = '<svg viewBox="0 0 24 24" width="5.2mm" height="5.2mm"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" fill="#E9A04A" stroke="#B85A1E" stroke-width="1"/></svg>'
 
-def panel(kind):
-    if kind == "menu":
-        svg = qr_svg(URL_MENU, logo_small, 49)
-        head, sub, extra = "Mira la carta", "Bebidas, hojaldres y precios", '<div class="pill">equinoccio.online/carta</div>'
-    else:
-        svg = qr_svg(URL_REVIEW, logo_small, 49)
-        head, sub = "Déjanos tu reseña", "Tu opinión en Google nos ayuda a crecer"
-        extra = f'<div class="stars">{star*5}</div>'
-    return f'''<div class="panel"><div class="left">
-<img class="seal" src="data:image/png;base64,{logo_head}" alt="">
-<h2>{head}</h2><p class="sub">{sub}</p>{extra}
+def qrbox(url, title, sub, extra=""):
+    return f'''<div class="qrcard"><div class="qrsvg">{qr_svg(url, logo_small, 41)}</div>
+<h3>{title}</h3><p class="sub">{sub}</p>{extra}</div>'''
+
+def panel():
+    menu = qrbox(URL_MENU, "Mira la carta", "Bebidas, hojaldres y precios", '<div class="pill">equinoccio.online/carta</div>')
+    ubic = qrbox(URL_REVIEW, "Ubicación y reseñas", "Encuéntranos y cuéntanos tu experiencia en Google", f'<div class="stars">{star*5}</div>')
+    return f'''<div class="panel"><div class="head"><img class="seal" src="data:image/png;base64,{logo_head}" alt="">
 <p class="lema">Un encuentro único entre el café, los libros y tus momentos favoritos</p></div>
-<div class="qrcard">{svg}</div>
+<div class="row">{menu}{ubic}</div>
 <p class="addr">Equinoccio Café Libro · Cra. 6 #4B-19, 2.º piso · Cajicá</p></div>'''
 
-tent = f'''<div class="tent"><div class="top">{panel("review")}</div><div class="fold"><span>doblar aquí</span></div><div class="bottom">{panel("menu")}</div></div>'''
+tent = f'''<div class="tent"><div class="top">{panel()}</div><div class="fold"><span>doblar aquí</span></div><div class="bottom">{panel()}</div></div>'''
 
 html = f'''<!doctype html><html lang="es"><meta charset="utf-8"><title>Tarjeta de mesa Equinoccio</title>
 <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Nunito+Sans:ital,wght@0,400;0,800;1,400&display=swap" rel="stylesheet">
@@ -109,16 +106,17 @@ body{{margin:0;width:297mm;height:210mm;display:grid;grid-template-columns:148.5
 .fold span{{position:absolute;left:50%;top:-1.6mm;transform:translateX(-50%);background:#fff;padding:0 2mm;font-size:5.5pt;letter-spacing:.2em;text-transform:uppercase;color:#8a7a6c}}
 .panel{{position:relative;width:148.5mm;height:105mm;background:url(data:image/jpeg;base64,{bg}) center/cover;overflow:hidden}}
 .panel::before{{content:"";position:absolute;inset:3.2mm;border:.3mm solid {BEIGE};border-radius:5mm;pointer-events:none}}
-.left{{position:absolute;left:11mm;top:10mm;width:70mm;height:78mm;display:flex;flex-direction:column;align-items:flex-start}}
-.seal{{width:21mm;filter:drop-shadow(0 .8mm 1.2mm rgba(60,40,20,.3))}}
-h2{{font:400 21pt/1.05 "Young Serif",serif;margin:4mm 0 1.6mm;color:{NOCHE}}}
-.sub{{margin:0;font-size:9.5pt;color:#5a4538}}
-.pill{{margin-top:3.4mm;background:#fff;border:.3mm solid {BEIGE};border-radius:6mm;padding:1.1mm 3.4mm;font-weight:800;font-size:8.5pt;color:{NOCHE}}}
-.stars{{margin-top:3mm;display:flex;gap:.8mm}}
-.lema{{margin:auto 0 0;font-size:7.6pt;font-style:italic;line-height:1.3;color:#5a4538;max-width:62mm}}
-.qrcard{{position:absolute;right:11mm;top:50%;transform:translateY(-50%);width:57mm;height:57mm;background:#fff;border-radius:5mm;display:grid;place-items:center;box-shadow:0 1mm 3mm rgba(60,40,20,.22);border:.3mm solid {BEIGE}}}
-.qrcard svg{{display:block}}
-.addr{{position:absolute;left:0;right:0;bottom:6.2mm;margin:0;text-align:center;font-size:7pt;letter-spacing:.06em;color:#5a4538}}
+.head{{position:absolute;left:0;right:0;top:7.5mm;display:flex;align-items:center;justify-content:center;gap:4.5mm}}
+.seal{{width:16mm;filter:drop-shadow(0 .6mm 1mm rgba(60,40,20,.3))}}
+.lema{{margin:0;font:400 11pt/1.25 "Young Serif",serif;color:{NOCHE};max-width:94mm;text-wrap:balance}}
+.row{{position:absolute;left:0;right:0;top:27mm;display:flex;justify-content:center;gap:9mm}}
+.qrcard{{width:55mm;background:#fff;border-radius:4.5mm;padding:3.8mm 2.5mm 3.2mm;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 1mm 3mm rgba(60,40,20,.22);border:.3mm solid {BEIGE}}}
+.qrsvg svg{{display:block}}
+h3{{font:400 12.5pt/1.1 "Young Serif",serif;margin:1.4mm 0 .8mm;color:{NOCHE}}}
+.sub{{margin:0;font-size:7.8pt;line-height:1.25;color:#5a4538;max-width:47mm;text-wrap:balance}}
+.pill{{margin-top:1.4mm;background:#fff;border:.3mm solid {BEIGE};border-radius:6mm;padding:.5mm 2.8mm;font-weight:800;font-size:7.4pt;color:{NOCHE}}}
+.stars{{margin-top:1mm;display:flex;gap:.5mm}}.stars svg{{width:3.6mm;height:3.6mm}}
+.addr{{position:absolute;left:0;right:0;bottom:5.8mm;margin:0;text-align:center;font-size:6.8pt;letter-spacing:.06em;color:#5a4538}}
 </style>
 <body>{tent}{tent}</body></html>'''
 open(OUT, "w").write(html)
