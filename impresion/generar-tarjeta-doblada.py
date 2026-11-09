@@ -1,4 +1,5 @@
-"""Genera la tarjeta de mesa doblada (A4 horizontal, 2 por hoja) con los dos QR (carta y ubicación) en los colores del logo.
+"""Genera la tarjeta de mesa doblada (A4 horizontal, 2 por hoja) con los dos QR (carta y ubicación/reseñas) en los colores del logo.
+Los QR apuntan a equinoccio.online/carta y equinoccio.online/resena. El destino de /resena se cambia en resena/index.html, sin reimprimir.
 Uso: pip install segno pillow && python3 generar-tarjeta-doblada.py salida.html ../assets/logo.png
 Luego abrir salida.html en Chrome e imprimir a PDF (A4 horizontal, 100 %, con gráficos de fondo)."""
 import base64, io, math, random, sys
@@ -8,7 +9,7 @@ from PIL import Image, ImageFilter, ImageDraw
 OUT = sys.argv[1]            # output html path
 LOGO = sys.argv[2]           # wooden seal png
 URL_MENU = "https://equinoccio.online/carta"
-URL_REVIEW = "https://maps.google.com/?cid=13207318301799707814"
+URL_REVIEW = "https://equinoccio.online/resena"
 
 # Palette taken from the watercolor logo, deepened so the QR keeps scanning contrast
 NOCHE, NOCHE2 = "#22314F", "#2F4575"
