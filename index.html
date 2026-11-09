@@ -697,12 +697,21 @@ document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () =
     for (let i = shoots.length-1; i >= 0; i--){
       const m = shoots[i], k = (t - m.t0) / m.dur;
       if (k >= 1){ shoots.splice(i,1); continue; }
-      const e = 1 - Math.pow(1-k, 2), hx = m.x0 + m.dx*e, hy = m.y0 + m.dy*e, fade = k < .15 ? k/.15 : 1 - (k-.15)/.85;
-      const tx = hx - m.dx*.22, ty = hy - m.dy*.22, g = x.createLinearGradient(tx,ty,hx,hy);
-      g.addColorStop(0,"rgba(255,255,255,0)"); g.addColorStop(1,col2);
-      x.globalAlpha = Math.max(0,fade); x.strokeStyle = g; x.lineWidth = 2.2; x.lineCap = "round";
-      x.beginPath(); x.moveTo(tx,ty); x.lineTo(hx,hy); x.stroke();
-      x.fillStyle = "#fff"; x.beginPath(); x.arc(hx,hy,2.2,0,6.28); x.fill();
+      const e = 1 - Math.pow(1-k, 1.8), hx = m.x0 + m.dx*e, hy = m.y0 + m.dy*e, fade = k < .1 ? k/.1 : 1 - Math.pow((k-.1)/.9, 1.4);
+      const light = /^rgba?\(\s*(\d+)/.test(col1) ? +RegExp.$1 < 120 : false, core = light ? "#D9731A" : "#ffffff";
+      const T = .42, tx = hx - m.dx*T, ty = hy - m.dy*T;
+      // estela cónica: varias capas de más ancha/tenue a más fina/brillante
+      [[10,.2,col2],[6,.42,col2],[2.8,.95,core]].forEach(([lw,al,c]) => {
+        const g = x.createLinearGradient(tx,ty,hx,hy); g.addColorStop(0,"rgba(255,255,255,0)"); g.addColorStop(1,c);
+        x.globalAlpha = Math.max(0,fade)*al; x.strokeStyle = g; x.lineWidth = lw; x.lineCap = "round";
+        x.beginPath(); x.moveTo(tx,ty); x.lineTo(hx,hy); x.stroke();
+      });
+      // chispas que quedan en la estela
+      for (let j = 1; j <= 6; j++){ const q = j/7, px = hx - m.dx*T*q + Math.sin(j*7+m.t0)*5, py = hy - m.dy*T*q + Math.cos(j*5+m.t0)*5; x.globalAlpha = Math.max(0,fade)*(1-q)*.9; x.fillStyle = "#fff"; x.beginPath(); x.arc(px,py,2.4*(1-q)+.6,0,6.28); x.fill(); }
+      // cabeza con halo
+      const hg = x.createRadialGradient(hx,hy,0,hx,hy,26); hg.addColorStop(0,light ? "rgba(255,170,60,.95)" : "rgba(255,255,255,.95)"); hg.addColorStop(.35,col2); hg.addColorStop(1,"rgba(255,255,255,0)");
+      x.globalAlpha = Math.max(0,fade); x.fillStyle = hg; x.beginPath(); x.arc(hx,hy,26,0,6.28); x.fill();
+      x.fillStyle = light ? "#B8560F" : "#fff"; x.beginPath(); x.arc(hx,hy,4.2,0,6.28); x.fill();
     }
   }
   let lastShot = 0;
@@ -710,9 +719,9 @@ document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () =
     if (reduce || document.hidden) return;
     const now = performance.now(); if (now - lastShot < 900) return; lastShot = now;
     const fromLeft = Math.random() < .5, sx = fromLeft ? w*(.05+Math.random()*.35) : w*(.6+Math.random()*.35);
-    const len = Math.min(w, 700)*(.55+Math.random()*.25), ang = (fromLeft ? 1 : -1) * (.25 + Math.random()*.2) + (fromLeft ? 0 : Math.PI);
+    const len = Math.min(w, 1100)*(.7+Math.random()*.25), ang = (fromLeft ? 1 : -1) * (.25 + Math.random()*.2) + (fromLeft ? 0 : Math.PI);
     const sy = h*(.05+Math.random()*.3);
-    shoots.push({t0:now, dur:1100+Math.random()*400, x0:sx, y0:sy, dx:Math.cos(ang)*len, dy:Math.abs(Math.sin(ang))*len*.8});
+    shoots.push({t0:now, dur:1500+Math.random()*500, x0:sx, y0:sy, dx:Math.cos(ang)*len, dy:Math.abs(Math.sin(ang))*len*.8});
   };
   size(); raf = requestAnimationFrame(draw);
   let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { size(); if (reduce) draw(0); }, 150); });
