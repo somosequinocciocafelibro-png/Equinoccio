@@ -277,10 +277,26 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 .zoom figcaption{padding:.9rem 1.2rem;font-weight:800;color:#3B2A20;display:flex;justify-content:space-between;gap:1rem}
 .zoom button{position:absolute;top:-14px;right:-6px;width:44px;height:44px;border-radius:50%;border:0;background:#fff;color:#22314F;font-size:1.4rem;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.3)}
 .bake figcaption span{display:block;font-weight:600;color:var(--fg-soft);font-variant-numeric:tabular-nums}
+/* Pastelería y Panadería en dos columnas */
+#c-pasteleria-y-panaderia{display:grid;grid-template-columns:1fr 1fr;column-gap:2.2rem;align-items:start}
+#c-pasteleria-y-panaderia .cat-head{grid-column:1/-1}
+#c-pasteleria-y-panaderia .item.has-img{grid-template-columns:96px 1fr auto;column-gap:.9rem}
+#c-pasteleria-y-panaderia .item.has-img .thumb{width:96px;height:96px;border-radius:16px}
+#c-pasteleria-y-panaderia .item .prices{flex-direction:column;align-items:flex-end;gap:.1rem}
+#c-pasteleria-y-panaderia .item .prices span{width:auto;min-width:0}
+@media (max-width:760px){
+  #c-pasteleria-y-panaderia{grid-template-columns:1fr 1fr;column-gap:.7rem}
+  #c-pasteleria-y-panaderia .item.has-img{grid-template-columns:1fr;grid-template-rows:auto;row-gap:.35rem;padding:.7rem 0;text-align:center;justify-items:center;align-content:start;border-bottom:1px dashed var(--line)}
+  #c-pasteleria-y-panaderia .item.has-img .thumb{grid-row:auto;grid-column:1;width:100%;height:auto;max-width:150px;aspect-ratio:1}
+  #c-pasteleria-y-panaderia .item.has-img h3{grid-column:1;justify-content:center;font-size:.92rem;line-height:1.2}
+  #c-pasteleria-y-panaderia .item.has-img .prices{grid-column:1;grid-row:auto;flex-direction:row;gap:.5rem;font-size:.95rem;justify-content:center}
+  #c-pasteleria-y-panaderia .item.has-img .desc,#c-pasteleria-y-panaderia .item.has-img .add{grid-column:1;font-size:.78rem}
+}
 .bake-h{margin-top:2.6rem;font-size:1.4rem}
 @media (max-width:760px){.bake{grid-template-columns:repeat(3,1fr);gap:.8rem}.item.has-img{grid-template-columns:104px 1fr auto}.item.has-img .thumb{width:104px;height:104px}}
-@media (max-width:360px){.cols span,.prices span{width:3.4rem}.prices{gap:.3rem;font-size:.9rem}.cols{gap:.3rem}.item.has-img{grid-template-columns:80px 1fr auto}.item.has-img .thumb{width:80px;height:80px}}
+@media (max-width:360px){.cols span,.prices span{width:3.4rem}.prices{gap:.3rem;font-size:.9rem}.cols{gap:.3rem}.item.has-img{grid-template-columns:60px 1fr auto}.item.has-img .thumb{width:60px;height:60px}}
 @media (max-width:480px){.bake{grid-template-columns:repeat(2,1fr);gap:1rem}.bake figure{font-size:.9rem}.item.has-img{grid-template-columns:92px 1fr auto;column-gap:.8rem}.item.has-img .thumb{width:92px;height:92px;border-radius:14px}}
+@media (max-width:360px){.item.has-img{grid-template-columns:60px 1fr auto;column-gap:.6rem}.item.has-img .thumb{width:60px;height:60px;border-radius:12px}}
 </style>
 </head>
 <body>
