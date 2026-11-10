@@ -68,3 +68,8 @@ export async function seedTicket(db: Db, spec: SeedTicketSpec): Promise<string> 
   }
   return id;
 }
+
+/** Vacía las tablas de movimientos para reutilizar la misma base entre pruebas (más rápido que crear una nueva). */
+export async function resetData(db: Db): Promise<void> {
+  await db.query(`truncate payments, ticket_lines, tickets, day_closings cascade`);
+}
