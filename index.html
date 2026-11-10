@@ -403,7 +403,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 
   <div class="strip">
     <div class="wrap">
-      <span><i class="dot" id="open-dot"></i><span id="open-txt">Lunes a sábado, 10:00 a 19:00</span></span>
+      <span><i class="dot" id="open-dot"></i><span id="open-txt">Todos los días, 10:00 a 20:30</span></span>
       <span>Cra. 6 #4B-19, segundo piso · Cajicá</span>
       <span>Leche entera, deslactosada o de almendras</span>
     </div>
@@ -511,7 +511,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
       <div class="visit-grid">
         <div><h3>Dirección</h3><p>Carrera 6 #4B-19, segundo piso<br>Cajicá, Cundinamarca</p></div>
         <div><h3>Horario</h3>
-          <div class="hours"><span>Lunes a sábado</span><span>10:00 a 19:00</span><span>Domingo</span><span>Cerrado</span></div>
+          <div class="hours"><span>Todos los días</span><span>10:00 a 20:30</span></div>
         </div>
         <div><h3>WhatsApp</h3><p><span id="tel">310 292 2345</span><button class="copy" type="button" data-copy="tel">Copiar</button></p></div>
         <div><h3>Correo</h3><p><span id="mail">somosequinocciocafelibro@gmail.com</span><button class="copy" type="button" data-copy="mail">Copiar</button></p></div>
@@ -659,10 +659,10 @@ addEventListener("hashchange", route); route();
 /* ---- Open now (Bogotá time) ---- */
 (function(){
   try{
-    const p = Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:"America/Bogota",weekday:"short",hour:"numeric",hourCycle:"h23"}).formatToParts(new Date()).map(x=>[x.type,x.value]));
-    const open = p.weekday !== "Sun" && +p.hour >= 10 && +p.hour < 19;
+    const p = Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:"America/Bogota",weekday:"short",hour:"numeric",hourCycle:"h23",minute:"numeric"}).formatToParts(new Date()).map(x=>[x.type,x.value]));
+    const mins = +p.hour*60 + +p.minute, open = mins >= 10*60 && mins < 20*60+30;
     document.getElementById("open-dot").classList.add(open ? "open" : "closed");
-    document.getElementById("open-txt").textContent = (open ? "Abierto ahora · " : "Cerrado ahora · ") + "Lun a sáb, 10:00 a 19:00";
+    document.getElementById("open-txt").textContent = (open ? "Abierto ahora · " : "Cerrado ahora · ") + "Todos los días, 10:00 a 20:30";
   }catch(e){}
 })();
 
