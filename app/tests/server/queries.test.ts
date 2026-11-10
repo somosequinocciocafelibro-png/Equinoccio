@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test } from "vitest";
 import type { Db } from "@/server/db";
-import { getServicePct, listExtras, listProducts, listTables } from "@/server/queries";
-import { makeTestDb } from "../helpers/testDb";
+import { getServicePct, listExtras, listProducts, listTables, listVoidedOn } from "@/server/queries";
+import { makeTestDb, seedTicket } from "../helpers/testDb";
 
 let db: Db;
 beforeAll(async () => {
@@ -30,6 +30,18 @@ describe("queries", () => {
     expect(after).toHaveLength(42);
     expect(after[0]).toEqual({ id: "espresso", name: "Espresso", category: "Café", price: 4000 });
     await db.query(`update products set active = true where id = 'latte'`);
+  });
+
+  test("listVoidedOn devuelve las cuentas anuladas de ese día en hora de Bogotá", async () => {
+    const id = await seedTicket(db, { tableId: "luna-1", status: "anulado", lines: [{ productId: "latte", qty: 1 }] });
+    await db.query(`update tickets set void_reason = 'pedido equivocado', voided_at = $2::timestamptz where id = $1`, [
+      id,
+      "2026-11-09T04:30:00.000Z",
+    ]);
+    expect(await listVoidedOn(db, "2026-11-08")).toEqual([
+      { id, tableName: "Luna · Mesa 1", reason: "pedido equivocado", at: "2026-11-09T04:30:00.000Z" },
+    ]);
+    expect(await listVoidedOn(db, "2026-11-09")).toEqual([]);
   });
 
   test("listExtras y getServicePct", async () => {

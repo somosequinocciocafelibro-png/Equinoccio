@@ -1,3 +1,4 @@
+import { businessDay } from "@/domain/day";
 import type { Db } from "./db";
 
 export interface TableInfo {
@@ -45,4 +46,30 @@ export async function listExtras(db: Db): Promise<ExtraInfo[]> {
 export async function getServicePct(db: Db): Promise<number> {
   const [row] = await db.query<{ service_pct: number }>(`select service_pct from settings`);
   return row.service_pct;
+}
+
+export interface VoidedInfo {
+  id: string;
+  tableName: string;
+  reason: string;
+  at: string;
+}
+
+/** Cuentas anuladas ese día (hora de Bogotá), para la lista del cierre. */
+export async function listVoidedOn(db: Db, day: string): Promise<VoidedInfo[]> {
+  const rows = await db.query<{ id: string; table_name: string; salon: string | null; void_reason: string | null; voided_at: Date | string }>(
+    `select id, table_name, salon, void_reason, voided_at from tickets
+     where status = 'anulado' and voided_at is not null
+       and voided_at >= $1::timestamptz - interval '1 day' and voided_at < $1::timestamptz + interval '2 days'
+     order by voided_at`,
+    [`${day}T00:00:00Z`],
+  );
+  return rows
+    .map((r) => ({
+      id: r.id,
+      tableName: r.salon ? `${r.salon} · ${r.table_name}` : r.table_name,
+      reason: r.void_reason ?? "",
+      at: new Date(r.voided_at).toISOString(),
+    }))
+    .filter((r) => businessDay(r.at) === day);
 }

@@ -63,3 +63,17 @@
   .mesas-layout, .ticket-layout { grid-template-columns: minmax(0, 1fr); }
   .cuenta { position: static; }
 }
+/* Tablas, cierre y cobro */
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; }
+td.r, th.r { text-align: right; }
+.diff.ok { color: var(--ok); }
+.diff.bad { color: var(--bad); font-weight: 600; }
+.sw { display: flex; gap: 6px; align-items: center; font-size: 14px; }
+input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+.seg { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+.seg button { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 10px; font-weight: 600; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.pay { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); }

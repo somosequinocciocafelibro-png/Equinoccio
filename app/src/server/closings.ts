@@ -45,6 +45,63 @@ type PaymentRow = {
 };
 
 const iso = (d: Date | string) => new Date(d).toISOString();
+const DAY_FORMAT = /^\d{4}-\d{2}-\d{2}$/;
+
+function assertDay(day: string): void {
+  if (!DAY_FORMAT.test(day) || Number.isNaN(new Date(`${day}T12:00:00Z`).getTime())) throw new AppError("INVALID_DAY");
+}
+
+function assertPesos(n: number | null | undefined): void {
+  if (n === null || n === undefined) return;
+  if (!Number.isInteger(n) || n < 0) throw new AppError("INVALID_AMOUNT");
+}
+
+export interface ClosingRecord {
+  day: string;
+  base: number;
+  expected: Record<Medio, number>;
+  real: Record<Medio, number | null>;
+  diff: Record<Medio, number | null>;
+  sales: number;
+  service: number;
+  ticketCount: number;
+  note: string;
+  closedAt: string;
+  locked: boolean;
+  reopened: { at: string; reason: string; by: string }[];
+}
+
+export async function getClosing(db: Db, day: string): Promise<ClosingRecord | null> {
+  const [r] = await db.query<{
+    day: string;
+    base: number;
+    expected: ClosingRecord["expected"];
+    real: ClosingRecord["real"];
+    diff: ClosingRecord["diff"];
+    sales: number;
+    service: number;
+    ticket_count: number;
+    note: string;
+    closed_at: Date | string;
+    locked: boolean;
+    reopened: ClosingRecord["reopened"];
+  }>(`select * from day_closings where day = $1`, [day]);
+  if (!r) return null;
+  return {
+    day: r.day,
+    base: r.base,
+    expected: r.expected,
+    real: r.real,
+    diff: r.diff,
+    sales: r.sales,
+    service: r.service,
+    ticketCount: r.ticket_count,
+    note: r.note,
+    closedAt: iso(r.closed_at),
+    locked: r.locked,
+    reopened: r.reopened,
+  };
+}
 
 /** Carga cuentas con sus líneas y pagos. El filtro por día usa businessDay para no duplicar la regla de Bogotá en SQL. */
 export async function loadTickets(db: Db, f: TicketFilter = {}): Promise<Ticket[]> {
@@ -127,6 +184,9 @@ export async function closeDay(
   db: Db,
   a: { day: string; base: number; real: Partial<Record<Medio, number | null>>; note: string; userId: string },
 ): Promise<void> {
+  assertDay(a.day);
+  assertPesos(a.base);
+  for (const m of MEDIOS) assertPesos(a.real[m]);
   await db.tx(async (t) => {
     const [existing] = await t.query<{ locked: boolean; reopened: unknown[] }>(
       `select locked, reopened from day_closings where day = $1 for update`,
@@ -176,6 +236,7 @@ export async function closeDay(
 }
 
 export async function reopenDay(db: Db, a: { day: string; reason: string; userId: string }): Promise<void> {
+  assertDay(a.day);
   const reason = a.reason.trim();
   if (!reason) throw new AppError("REASON_REQUIRED");
   await db.tx(async (t) => {

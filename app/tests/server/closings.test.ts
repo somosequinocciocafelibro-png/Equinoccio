@@ -1,5 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, test } from "vitest";
-import { closeDay, isDayClosed, loadTickets, reopenDay } from "@/server/closings";
+import { closeDay, getClosing, isDayClosed, loadTickets, reopenDay } from "@/server/closings";
 import type { Db } from "@/server/db";
 import { makeTestDb, resetData, seedTicket } from "../helpers/testDb";
 
@@ -57,6 +57,14 @@ describe("closeDay", () => {
     expect((row.diff as Record<string, number | null>).efectivo).toBe(0);
   });
 
+  test("rechaza un día mal escrito y montos que no son pesos enteros", async () => {
+    await venta();
+    await expect(cerrar({ day: "mañana" })).rejects.toMatchObject({ code: "INVALID_DAY" });
+    await expect(cerrar({ base: -1 })).rejects.toMatchObject({ code: "INVALID_AMOUNT" });
+    await expect(cerrar({ real: { efectivo: 1.5 } })).rejects.toMatchObject({ code: "INVALID_AMOUNT" });
+    await expect(reopenDay(db, { day: "mañana", reason: "x", userId: user })).rejects.toMatchObject({ code: "INVALID_DAY" });
+  });
+
   test("rechaza un segundo cierre del mismo día con ALREADY_CLOSED", async () => {
     await venta();
     await cerrar();
@@ -108,6 +116,37 @@ describe("reopenDay e isDayClosed", () => {
   test("reabrir exige motivo y un día cerrado", async () => {
     await expect(reopenDay(db, { day: DAY, reason: "  ", userId: user })).rejects.toMatchObject({ code: "REASON_REQUIRED" });
     await expect(reopenDay(db, { day: DAY, reason: "x", userId: user })).rejects.toMatchObject({ code: "NOT_CLOSED" });
+  });
+});
+
+describe("getClosing", () => {
+  test("devuelve null si el día no tiene cierre y el registro completo después", async () => {
+    expect(await getClosing(db, DAY)).toBeNull();
+    await venta();
+    await cerrar({ note: "todo bien" });
+    const c = await getClosing(db, DAY);
+    expect(c).toMatchObject({
+      day: DAY,
+      base: 20000,
+      sales: 8000,
+      service: 0,
+      ticketCount: 1,
+      note: "todo bien",
+      locked: true,
+      reopened: [],
+    });
+    expect(c?.expected.efectivo).toBe(28000);
+    expect(c?.real.bold).toBeNull();
+    expect(typeof c?.closedAt).toBe("string");
+  });
+
+  test("después de reabrir queda desbloqueado con el motivo registrado", async () => {
+    await venta();
+    await cerrar();
+    await reopenDay(db, { day: DAY, reason: "corrección", userId: user });
+    const c = await getClosing(db, DAY);
+    expect(c?.locked).toBe(false);
+    expect(c?.reopened).toMatchObject([{ reason: "corrección", by: user }]);
   });
 });
 

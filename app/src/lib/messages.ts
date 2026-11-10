@@ -17,6 +17,8 @@ const MESSAGES: Record<string, string> = {
   LINE_NOT_FOUND: "No se encontró el producto en la cuenta.",
   PAYMENT_NOT_FOUND: "No se encontró el pago.",
   INVALID_QTY: "La cantidad no es válida.",
+  INVALID_DAY: "La fecha no es válida.",
+  INVALID_AMOUNT: "Los montos deben ser pesos enteros, sin decimales ni negativos.",
   AMOUNT_ZERO: "Escribe un monto mayor a cero.",
   EXCEEDS_BALANCE: "El monto no puede ser mayor al saldo.",
   INVALID_MEDIO: "Ese medio de pago no existe.",
