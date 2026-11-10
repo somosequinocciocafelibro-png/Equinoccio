@@ -6,6 +6,18 @@ export interface Db {
   tx<R>(fn: (t: Db) => Promise<R>): Promise<R>;
 }
 
+let shared: Db | undefined;
+
+/** Conexión compartida del servidor, creada la primera vez que se pide. */
+export function getDb(): Db {
+  if (!shared) {
+    const url = process.env.DATABASE_URL;
+    if (!url) throw new Error("Falta la variable de entorno DATABASE_URL");
+    shared = createDb(url);
+  }
+  return shared;
+}
+
 export function createDb(url: string): Db {
   const sql = postgres(url, { prepare: false, max: 5 });
   const wrap = (q: postgres.Sql | postgres.TransactionSql, inTx: boolean): Db => {
