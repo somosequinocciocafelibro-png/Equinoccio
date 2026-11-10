@@ -77,3 +77,14 @@ input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent);
 .seg button { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 10px; font-weight: 600; }
 .seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 .pay { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+/* Catálogo y reportes */
+.prow { display: grid; grid-template-columns: minmax(120px, 2fr) minmax(100px, 1.2fr) 110px auto; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.bars { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.bar { position: relative; display: flex; justify-content: space-between; gap: 12px; padding: 7px 10px; border-radius: 6px; background: var(--surface2); overflow: hidden; }
+.bar i { position: absolute; inset: 0 auto 0 0; background: var(--accent-soft); z-index: 0; }
+.bar span { position: relative; z-index: 1; }
+.days { display: flex; align-items: flex-end; gap: 6px; height: 130px; margin-top: 12px; overflow-x: auto; padding-bottom: 2px; }
+.day { display: flex; flex-direction: column; align-items: center; gap: 4px; justify-content: flex-end; height: 100%; min-width: 34px; font-size: 11px; color: var(--muted); }
+.day b { display: block; width: 100%; background: var(--accent); border-radius: 4px 4px 0 0; min-height: 2px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+@media (max-width: 900px) { .prow { grid-template-columns: 1fr 1fr; } }

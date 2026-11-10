@@ -25,6 +25,9 @@ const MESSAGES: Record<string, string> = {
   CASH_SHORT: "El efectivo recibido es menor al monto del pago.",
   EMPTY_TICKET: "La cuenta no tiene productos.",
   NAME_TAKEN: "Ya existe un producto con ese nombre.",
+  NAME_REQUIRED: "Escribe el nombre.",
+  INVALID_CAPACITY: "Las personas deben ser un número entero mayor a cero.",
+  TABLE_IN_USE: "Esa mesa tiene una cuenta abierta. Cóbrala o anúlala antes de desactivarla.",
   INVALID_PCT: "El porcentaje debe estar entre 0 y 30.",
 };
 

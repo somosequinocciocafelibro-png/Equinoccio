@@ -73,3 +73,31 @@ export async function listVoidedOn(db: Db, day: string): Promise<VoidedInfo[]> {
     }))
     .filter((r) => businessDay(r.at) === day);
 }
+
+export async function listAllProducts(db: Db): Promise<(ProductInfo & { active: boolean })[]> {
+  return db.query(`select id, name, category, price, active from products order by sort, name`);
+}
+
+export async function listAllExtras(db: Db): Promise<(ExtraInfo & { active: boolean })[]> {
+  return db.query(`select id, name, delta, active from extras order by name`);
+}
+
+export async function listAllTables(db: Db): Promise<(TableInfo & { active: boolean })[]> {
+  const rows = await db.query<{
+    id: string;
+    name: string;
+    salon: string | null;
+    capacity: number | null;
+    is_takeout: boolean;
+    active: boolean;
+  }>(`select id, name, salon, capacity, is_takeout, active from dining_tables order by sort`);
+  return rows.map((r) => ({
+    id: r.id,
+    name: r.name,
+    salon: r.salon,
+    capacity: r.capacity,
+    isTakeout: r.is_takeout,
+    active: r.active,
+    displayName: r.salon ? `${r.salon} · ${r.name}` : r.name,
+  }));
+}
