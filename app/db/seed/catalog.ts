@@ -42,7 +42,7 @@ export const PRODUCTS: P[] = [
   ["soda-nectar-solar", "Soda Néctar Solar", "Sodas", 10000],
   ["soda-bosque-tropical", "Soda Bosque Tropical", "Sodas", 10000],
   ["soda-frutos-amarillos", "Soda frutos amarillos", "Sodas", 10000],
-  ["soda-frutos-rojos", "Soda frutos rojos", "Sodas", 8000],
+  ["soda-frutos-rojos", "Soda frutos rojos", "Sodas", 10000],
   ["croissant-frutos-rojos", "Croissant frutos rojos", "Panadería", 6500],
   ["croissant-chocolate", "Croissant chocolate", "Panadería", 6500],
   ["crookie", "Crookie", "Panadería", 6500],
