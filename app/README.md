@@ -15,6 +15,16 @@ npm run lint && npm run build
 
 No subas `.env*` ni datos reales de ventas al repositorio.
 
+### Pruebas contra Postgres real (opcional)
+
+`npm test` usa una base en memoria. Hay además pruebas contra un Postgres de verdad (guardado de `jsonb` y
+concurrencia entre conexiones), que se saltan si no defines una base de pruebas. Su nombre debe incluir `test`,
+porque se vacía al empezar:
+
+```bash
+TEST_DATABASE_URL='postgres://usuario@127.0.0.1:5432/caja_test' npm test
+```
+
 ## Puesta en marcha (una sola vez)
 
 Necesitas una cuenta de **Supabase**, una de **Vercel** y acceso al DNS de **DreamHost**. Haz todo en una rama y revisa

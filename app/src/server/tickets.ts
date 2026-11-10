@@ -129,7 +129,8 @@ export async function toggleExtra(db: Db, a: { lineId: string; extraId: string }
     const [line] = await t.query<{ extras: Extra[] }>(`select extras from ticket_lines where id = $1`, [a.lineId]);
     const has = line.extras.some((e) => e.id === ex.id);
     const next = has ? line.extras.filter((e) => e.id !== ex.id) : [...line.extras, { id: ex.id, name: ex.name, delta: ex.delta }];
-    await t.query(`update ticket_lines set extras = $2::jsonb where id = $1`, [a.lineId, JSON.stringify(next)]);
+    // El driver ya convierte a JSON los valores de columnas jsonb: pasar texto lo guardaría codificado dos veces.
+    await t.query(`update ticket_lines set extras = $2::jsonb where id = $1`, [a.lineId, next]);
     await afterEdit(t, await lineTicket(t, a.lineId));
   });
 }

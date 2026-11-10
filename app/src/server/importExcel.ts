@@ -416,7 +416,7 @@ export async function importTickets(
           await q.query(
             `insert into ticket_lines (id, ticket_id, product_id, name, unit_price, qty, extras)
              values ($1, $2, $3, $4, $5, $6, $7::jsonb)`,
-            [`${p.t.key}-l${i + 1}`, p.t.key, l.productId, l.name, l.unitPrice, l.qty, JSON.stringify(l.extras)],
+            [`${p.t.key}-l${i + 1}`, p.t.key, l.productId, l.name, l.unitPrice, l.qty, l.extras],
           );
         }
         await q.query(

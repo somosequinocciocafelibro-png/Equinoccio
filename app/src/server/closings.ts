@@ -210,9 +210,9 @@ export async function closeDay(
     const values = [
       a.day,
       a.base,
-      JSON.stringify(expected),
-      JSON.stringify(real),
-      JSON.stringify(diff),
+      expected, // jsonb: se pasan los objetos tal cual, el driver los convierte a JSON
+      real,
+      diff,
       r.sales,
       r.service,
       r.ticketCount,
@@ -247,9 +247,6 @@ export async function reopenDay(db: Db, a: { day: string; reason: string; userId
     );
     if (!row?.locked) throw new AppError("NOT_CLOSED");
     const log = [...row.reopened, { at: new Date().toISOString(), reason, by: a.userId }];
-    await t.query(`update day_closings set locked = false, reopened = $2::jsonb where day = $1`, [
-      a.day,
-      JSON.stringify(log),
-    ]);
+    await t.query(`update day_closings set locked = false, reopened = $2::jsonb where day = $1`, [a.day, log]);
   });
 }
