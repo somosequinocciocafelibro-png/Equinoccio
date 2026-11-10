@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { businessDay } from "@/domain/day";
-import { balance, planPayment, serviceAmount } from "@/domain/money";
+import { balance, planPayment, serviceAmount, total } from "@/domain/money";
 import { MEDIOS, type Extra, type Medio } from "@/domain/types";
 import { isDayClosed, loadTickets } from "./closings";
 import type { Db } from "./db";
@@ -17,6 +17,29 @@ async function lockOpenTicket(t: Db, ticketId: string): Promise<void> {
   const [row] = await t.query<{ status: string }>(`select status from tickets where id = $1 for update`, [ticketId]);
   if (!row) throw new AppError("TICKET_NOT_FOUND");
   if (row.status !== "abierto") throw new AppError("TICKET_NOT_OPEN");
+}
+
+/**
+ * Después de quitar o cambiar líneas: una cuenta sin pagos y sin productos se anula como vacía (la mesa queda libre);
+ * una cuenta con pagos no puede quedar por debajo de lo ya pagado, y si el saldo queda en cero se cierra.
+ */
+async function afterEdit(t: Db, ticketId: string): Promise<void> {
+  const [ticket] = await loadTickets(t, { ids: [ticketId] });
+  const [{ service_pct: pct }] = await t.query<{ service_pct: number }>(`select service_pct from settings`);
+  if (ticket.payments.length === 0) {
+    if (ticket.lines.length === 0) {
+      await t.query(
+        `update tickets set status = 'anulado', void_reason = 'Cuenta vacía', voided_by = 'sistema', voided_at = now() where id = $1`,
+        [ticketId],
+      );
+    }
+    return;
+  }
+  const saldo = balance(ticket, pct);
+  if (saldo < 0) throw new AppError("BELOW_PAID");
+  if (saldo === 0 && ticket.lines.length > 0) {
+    await t.query(`update tickets set status = 'cerrado', closed_at = now() where id = $1`, [ticketId]);
+  }
 }
 
 export async function openTicket(db: Db, a: { tableId: string; userId: string }): Promise<string> {
@@ -83,13 +106,15 @@ async function lineTicket(t: Db, lineId: string): Promise<string> {
 
 export async function setLineQty(db: Db, a: { lineId: string; qty: number }): Promise<void> {
   await db.tx(async (t) => {
-    await lockOpenTicket(t, await lineTicket(t, a.lineId));
+    const ticketId = await lineTicket(t, a.lineId);
+    await lockOpenTicket(t, ticketId);
     if (a.qty <= 0) {
       await t.query(`delete from ticket_lines where id = $1`, [a.lineId]);
-      return;
+    } else {
+      if (!Number.isInteger(a.qty)) throw new AppError("INVALID_QTY");
+      await t.query(`update ticket_lines set qty = $2 where id = $1`, [a.lineId, a.qty]);
     }
-    if (!Number.isInteger(a.qty)) throw new AppError("INVALID_QTY");
-    await t.query(`update ticket_lines set qty = $2 where id = $1`, [a.lineId, a.qty]);
+    await afterEdit(t, ticketId);
   });
 }
 
@@ -105,6 +130,7 @@ export async function toggleExtra(db: Db, a: { lineId: string; extraId: string }
     const has = line.extras.some((e) => e.id === ex.id);
     const next = has ? line.extras.filter((e) => e.id !== ex.id) : [...line.extras, { id: ex.id, name: ex.name, delta: ex.delta }];
     await t.query(`update ticket_lines set extras = $2::jsonb where id = $1`, [a.lineId, JSON.stringify(next)]);
+    await afterEdit(t, await lineTicket(t, a.lineId));
   });
 }
 
@@ -135,6 +161,8 @@ export async function addPayment(
     received: number | null;
     idempotencyKey: string;
     userId: string;
+    /** Total que vio quien cobra; si ya no coincide con el de la cuenta, el pago se rechaza. */
+    expectedTotal?: number;
   },
 ): Promise<{ paymentId: string; change: number; closed: boolean }> {
   if (!MEDIOS.includes(a.medio)) throw new AppError("INVALID_MEDIO");
@@ -152,6 +180,7 @@ export async function addPayment(
     await assertTodayOpen(t);
     const [ticket] = await loadTickets(t, { ids: [a.ticketId] });
     const [{ service_pct: pct }] = await t.query<{ service_pct: number }>(`select service_pct from settings`);
+    if (a.expectedTotal !== undefined && total(ticket, pct) !== a.expectedTotal) throw new AppError("TOTAL_CHANGED");
     const plan = planPayment(ticket, pct, { medio: a.medio, amount: a.amount, received: a.received });
     if (!plan.ok) throw new AppError(plan.error);
     const remaining = balance(ticket, pct) - plan.applied;

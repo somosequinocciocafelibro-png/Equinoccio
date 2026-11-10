@@ -185,6 +185,7 @@ export async function closeDay(
   a: { day: string; base: number; real: Partial<Record<Medio, number | null>>; note: string; userId: string },
 ): Promise<void> {
   assertDay(a.day);
+  if (a.day > businessDay(new Date().toISOString())) throw new AppError("FUTURE_DAY");
   assertPesos(a.base);
   for (const m of MEDIOS) assertPesos(a.real[m]);
   await db.tx(async (t) => {

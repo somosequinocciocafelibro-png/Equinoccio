@@ -1,5 +1,6 @@
 import { AppShell } from "@/components/AppShell";
 import { businessDay } from "@/domain/day";
+import { subtotal } from "@/domain/money";
 import { requireRole } from "@/server/auth";
 import { nowMs } from "@/server/clock";
 import { getClosing, loadTickets } from "@/server/closings";
@@ -31,6 +32,12 @@ export default async function CierrePage({ searchParams }: { searchParams: Promi
         voided={voided}
         openCount={open.length}
         closing={closing}
+        openTickets={open.map((t) => ({
+          id: t.id,
+          tableId: t.tableId,
+          tableName: t.salon ? `${t.salon} · ${t.tableName}` : t.tableName,
+          subtotal: subtotal(t),
+        }))}
       />
     </AppShell>
   );

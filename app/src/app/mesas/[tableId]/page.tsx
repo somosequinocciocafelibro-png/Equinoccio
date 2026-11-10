@@ -38,7 +38,7 @@ export default async function TablePage({
 
   return (
     <AppShell role={role} active="mesas">
-      <TicketScreen table={table} ticket={ticket} products={products} extras={extras} pct={pct} />
+      <TicketScreen table={table} ticket={ticket} products={products} extras={extras} pct={pct} canVoid={role === "admin"} />
     </AppShell>
   );
 }

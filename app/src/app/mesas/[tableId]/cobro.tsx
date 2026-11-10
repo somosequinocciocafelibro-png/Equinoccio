@@ -36,6 +36,8 @@ export function PaymentPanel({ ticket, pct, onPaid }: { ticket: Ticket; pct: num
   const [svcOn, setSvcOn] = useState(ticket.service.enabled);
   const [svcCustom, setSvcCustom] = useState(ticket.service.custom === null ? "" : String(ticket.service.custom));
   const [error, setError] = useState<string | null>(null);
+  const [svcSaves, setSvcSaves] = useState(0);
+  const [svcError, setSvcError] = useState<string | null>(null);
   const inFlight = useRef(false);
   const key = useRef(newKey());
 
@@ -50,8 +52,35 @@ export function PaymentPanel({ ticket, pct, onPaid }: { ticket: Ticket; pct: num
     received: medio === "efectivo" && received !== "" ? digits(received) : null,
   });
 
+  /** El servicio se guarda antes de cobrar: mientras se guarda, o si falló, no se deja registrar el pago. */
   function saveService(enabled: boolean, value: number | null) {
-    void setServiceAction({ ticketId: ticket.id, enabled, custom: value });
+    setSvcSaves((n) => n + 1);
+    void (async () => {
+      try {
+        const r = await setServiceAction({ ticketId: ticket.id, enabled, custom: value });
+        setSvcError(r.ok ? null : errorMessage(r.error));
+      } catch {
+        setSvcError("No se pudo guardar el servicio. Revisa la conexión e inténtalo de nuevo.");
+      } finally {
+        setSvcSaves((n) => n - 1);
+      }
+    })();
+  }
+
+  function removePayment(paymentId: string) {
+    if (inFlight.current || !online) return;
+    inFlight.current = true;
+    setError(null);
+    startTransition(async () => {
+      try {
+        const r = await removePaymentAction({ paymentId });
+        if (!r.ok) setError(errorMessage(r.error));
+      } catch {
+        setError("No se pudo quitar el pago. Revisa la conexión e inténtalo de nuevo.");
+      } finally {
+        inFlight.current = false;
+      }
+    });
   }
 
   function submit() {
@@ -64,6 +93,7 @@ export function PaymentPanel({ ticket, pct, onPaid }: { ticket: Ticket; pct: num
       amount: amount === "" ? null : digits(amount),
       received: medio === "efectivo" && received !== "" ? digits(received) : null,
       idempotencyKey: key.current,
+      expectedTotal: total(preview, pct),
     };
     const totalToPay = total(preview, pct);
     startTransition(async () => {
@@ -139,7 +169,7 @@ export function PaymentPanel({ ticket, pct, onPaid }: { ticket: Ticket; pct: num
               <span>{LABEL[p.medio]}</span>
               <span>
                 {fmt(p.applied)}{" "}
-                <button type="button" className="x" aria-label="Quitar pago" onClick={() => void removePaymentAction({ paymentId: p.id })}>
+                <button type="button" className="x" aria-label="Quitar pago" disabled={pending || !online} onClick={() => removePayment(p.id)}>
                   ✕
                 </button>
               </span>
@@ -190,8 +220,9 @@ export function PaymentPanel({ ticket, pct, onPaid }: { ticket: Ticket; pct: num
           </div>
         </>
       ) : null}
+      {svcError ? <div className="banner bad">{svcError}</div> : null}
       {error ? <div className="banner bad">{error}</div> : null}
-      <button type="button" className="btn primary" disabled={pending || !online} onClick={submit}>
+      <button type="button" className="btn primary" disabled={pending || !online || svcSaves > 0 || svcError !== null} onClick={submit}>
         Registrar pago
       </button>
     </div>

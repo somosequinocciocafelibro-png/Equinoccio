@@ -178,3 +178,67 @@ describe("importTickets", () => {
     expect(await loadTickets(db, { status: "cerrado" })).toHaveLength(5);
   });
 });
+
+describe("revisión final: el importador no adivina", () => {
+  const filas = (extra: Row[]): Row[] => extra;
+  const correr = async (rows: Row[], opts: { dateOverrides?: Record<string, string> } = {}) => {
+    const fresh = await makeTestDb();
+    const parsed = parseWorkbook(libro(rows));
+    return { parsed, report: await importTickets(fresh, parsed.tickets, eq, { dryRun: false, ...opts }), db: fresh };
+  };
+
+  test("dos bloques con el mismo encabezado de fecha se listan como ambiguos y tienen claves distintas", async () => {
+    const rows = filas([
+      ["04/11/2026", "", "", "", ""],
+      ["Mesa Sol", "Latte", 1, " $8,000 ", E(8000), "Bold"],
+      ["", "Total", "", "", E(8000)],
+      ["Total ventas 04/11/2026", "", "", "", E(8000)],
+      ["04/11/2026", "", "", "", ""],
+      ["Mesa Luna", "Espresso", 1, " $4,000 ", E(4000), "Bold"],
+      ["", "Total", "", "", E(4000)],
+      ["Total ventas 04/11/2026", "", "", "", E(4000)],
+    ]);
+    const { parsed, report } = await correr(rows);
+    expect(new Set(parsed.tickets.map((t) => t.key)).size).toBe(2);
+    expect(report.imported).toBe(0);
+    expect(report.ambiguousDates).toEqual(["04/11/2026 (aparece más de una vez)"]);
+    const { report: conArreglo } = await correr(rows, { dateOverrides: { "04/11/2026": "04/11/2026" } });
+    expect(conArreglo.imported).toBe(2);
+  });
+
+  test("un encabezado de fecha que no se reconoce no deja pasar las cuentas siguientes con la fecha anterior", async () => {
+    const rows = filas([
+      ["03/11/2026", "", "", "", ""],
+      ["Mesa Sol", "Latte", 1, " $8,000 ", E(8000), "Bold"],
+      ["", "Total", "", "", E(8000)],
+      ["05/11", "", "", "", ""],
+      ["Mesa Luna", "Espresso", 1, " $4,000 ", E(4000), "Bold"],
+      ["", "Total", "", "", E(4000)],
+    ]);
+    const { parsed, report } = await correr(rows);
+    expect(parsed.discarded.some((d) => d.reason.includes("encabezado no reconocido"))).toBe(true);
+    expect(report.imported).toBe(1);
+    expect(report.skipped.some((s) => s.reason === "FECHA_AMBIGUA" && s.mesa === "Mesa Luna")).toBe(true);
+  });
+
+  test("un monto con punto de miles o con decimales no se interpreta: la cuenta no se importa", async () => {
+    const rows = filas([
+      ["03/11/2026", "", "", "", ""],
+      ["Mesa Sol", "Latte", 1, " $8.000 ", "$8.000", "Bold"],
+      ["", "Total", "", "", E(8000)],
+      ["Mesa Luna", "Espresso", 1, 4000, 4000.5, "Bold"],
+      ["", "Total", "", "", E(4000)],
+      ["Mesa Equinoccio", "Latte", 1, " $8,000 ", E(8000), "Bold"],
+      ["", "Total", "", "", "$8.000"],
+    ]);
+    const { report } = await correr(rows);
+    expect(report.imported).toBe(0);
+    expect(report.skipped.filter((s) => s.reason === "FILAS_DESCARTADAS")).toHaveLength(3);
+  });
+
+  test("compara el total de cada día con lo que se importa", async () => {
+    const { report } = await correr(ROWS);
+    expect(report.dayChecks).toContainEqual({ headerDate: "03/11/2026", declared: 52500, importable: 52500, notImported: 0 });
+    expect(report.dayChecks).toContainEqual({ headerDate: "04/11/2026", declared: 20000, importable: 0, notImported: 37500 });
+  });
+});

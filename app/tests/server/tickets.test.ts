@@ -225,3 +225,57 @@ describe("voidTicket", () => {
     await expect(pagar(id)).rejects.toMatchObject({ code: "TICKET_NOT_OPEN" });
   });
 });
+
+describe("revisión final: cuentas vacías, ediciones tras pagos y total esperado", () => {
+  test("al quitar el último producto de una cuenta sin pagos queda anulada como vacía y la mesa queda libre", async () => {
+    const id = await conLatte();
+    const lineId = (await leer(id)).lines[0].id;
+    await setLineQty(db, { lineId, qty: 0 });
+    const [row] = await db.query<{ status: string; void_reason: string; voided_by: string }>(
+      `select status, void_reason, voided_by from tickets where id = $1`,
+      [id],
+    );
+    expect(row).toEqual({ status: "anulado", void_reason: "Cuenta vacía", voided_by: "sistema" });
+    expect(await abrir()).not.toBe(id);
+  });
+
+  test("no deja reducir la cuenta por debajo de lo ya pagado", async () => {
+    const id = await abrir();
+    await addLine(db, { ticketId: id, productId: "latte", qty: 1 });
+    await addLine(db, { ticketId: id, productId: "espresso", qty: 1 });
+    await pagar(id, { medio: "bold", amount: 10000 });
+    const latte = (await leer(id)).lines.find((l) => l.productId === "latte")!;
+    await expect(setLineQty(db, { lineId: latte.id, qty: 0 })).rejects.toMatchObject({ code: "BELOW_PAID" });
+    await expect(toggleExtra(db, { lineId: latte.id, extraId: "vainilla" })).resolves.toBeUndefined();
+    const t = await leer(id);
+    expect(t.lines).toHaveLength(2);
+    expect(t.status).toBe("abierto");
+  });
+
+  test("si la edición deja el saldo en cero, la cuenta se cierra", async () => {
+    const id = await abrir();
+    await addLine(db, { ticketId: id, productId: "latte", qty: 1 });
+    await addLine(db, { ticketId: id, productId: "espresso", qty: 1 });
+    await pagar(id, { medio: "bold", amount: 9200 }); // total 13200 con servicio de 1200; queda 4000
+    const espresso = (await leer(id)).lines.find((l) => l.productId === "espresso")!;
+    await setLineQty(db, { lineId: espresso.id, qty: 0 }); // total 9200 = pagado
+    const t = await leer(id);
+    expect(t.status).toBe("cerrado");
+    expect(t.closedAt).not.toBeNull();
+  });
+
+  test("no deja quitar todos los productos de una cuenta que ya tiene pagos", async () => {
+    const id = await conLatte();
+    await pagar(id, { medio: "bold", amount: 3000 });
+    const lineId = (await leer(id)).lines[0].id;
+    await expect(setLineQty(db, { lineId, qty: 0 })).rejects.toMatchObject({ code: "BELOW_PAID" });
+  });
+
+  test("rechaza un pago si el total que vio quien cobra ya no coincide con el de la cuenta", async () => {
+    const id = await conLatte();
+    await expect(pagar(id, { expectedTotal: 8000 })).rejects.toMatchObject({ code: "TOTAL_CHANGED" });
+    expect((await leer(id)).payments).toEqual([]);
+    const ok = await pagar(id, { expectedTotal: 8800 });
+    expect(ok.closed).toBe(true);
+  });
+});

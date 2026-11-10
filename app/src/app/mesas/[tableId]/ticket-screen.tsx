@@ -9,6 +9,7 @@ import { errorMessage } from "@/lib/messages";
 import { matchProducts, parseSearch } from "@/lib/parseSearch";
 import { useOnline } from "@/lib/useOnline";
 import type { ExtraInfo, ProductInfo, TableInfo } from "@/server/queries";
+import { voidTicketAction } from "@/app/cierre/actions";
 import { addLineAction, setQtyAction, toggleExtraAction } from "../actions";
 import { PaymentPanel } from "./cobro";
 
@@ -20,9 +21,11 @@ interface Props {
   products: ProductInfo[];
   extras: ExtraInfo[];
   pct: number;
+  /** Solo el administrador puede anular una cuenta abierta. */
+  canVoid?: boolean;
 }
 
-export function TicketScreen({ table, ticket, products, extras, pct }: Props) {
+export function TicketScreen({ table, ticket, products, extras, pct, canVoid = false }: Props) {
   const router = useRouter();
   const online = useOnline();
   const [pending, startTransition] = useTransition();
@@ -31,6 +34,10 @@ export function TicketScreen({ table, ticket, products, extras, pct }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [cobrando, setCobrando] = useState(false);
   const [done, setDone] = useState<{ total: number; change: number } | null>(null);
+  // Cuenta recién creada por el primer producto: la pantalla tarda en recibir su id y un segundo toque no debe abrir otra.
+  const [created, setCreated] = useState<string | null>(null);
+  const [voiding, setVoiding] = useState(false);
+  const [voidReason, setVoidReason] = useState("");
 
   const { qty, text } = parseSearch(q);
   const categories = useMemo(() => ["Todos", ...new Set(products.map((p) => p.category))], [products]);
@@ -40,19 +47,52 @@ export function TicketScreen({ table, ticket, products, extras, pct }: Props) {
   function run(action: () => Promise<{ ok: boolean; error?: string; ticketId?: string }>) {
     setError(null);
     startTransition(async () => {
-      const r = await action();
-      if (!r.ok) {
-        setError(errorMessage(r.error ?? ""));
-        return;
+      try {
+        const r = await action();
+        if (!r.ok) {
+          setError(errorMessage(r.error ?? ""));
+          return;
+        }
+        if (r.ticketId) {
+          setCreated(r.ticketId);
+          if (r.ticketId !== ticket?.id) router.replace(`/mesas/${table.id}?ticket=${r.ticketId}`);
+        }
+      } catch {
+        setError("No se pudo guardar. Revisa la conexión e inténtalo de nuevo.");
       }
-      if (r.ticketId && r.ticketId !== ticket?.id) router.replace(`/mesas/${table.id}?ticket=${r.ticketId}`);
     });
   }
 
   function add(productId: string, n: number) {
     setQ("");
     setDone(null);
-    run(() => addLineAction({ tableId: table.id, ticketId: ticket?.id ?? null, productId, qty: n }));
+    const send = (ticketId: string | null) => addLineAction({ tableId: table.id, ticketId, productId, qty: n });
+    const id = ticket?.id ?? created;
+    run(async () => {
+      const r = await send(id);
+      if (!r.ok && id && (r.error === "TICKET_NOT_OPEN" || r.error === "TICKET_NOT_FOUND")) {
+        setCreated(null);
+        return send(null);
+      }
+      return r;
+    });
+  }
+
+  function confirmVoid() {
+    if (!ticket) return;
+    if (!voidReason.trim()) {
+      setError(errorMessage("REASON_REQUIRED"));
+      return;
+    }
+    run(async () => {
+      const r = await voidTicketAction({ ticketId: ticket.id, reason: voidReason.trim() });
+      if (r.ok) {
+        setVoiding(false);
+        setVoidReason("");
+        setCreated(null);
+      }
+      return r;
+    });
   }
 
   const lines = ticket?.lines ?? [];
@@ -195,11 +235,34 @@ export function TicketScreen({ table, ticket, products, extras, pct }: Props) {
               pct={pct}
               onPaid={(r) => {
                 if (r.closed) {
+                  setCreated(null);
                   setCobrando(false);
                   setDone({ total: r.total, change: r.change });
                 }
               }}
             />
+          ) : null}
+          {canVoid && ticket && !done ? (
+            voiding ? (
+              <div className="stack">
+                <label className="f" htmlFor="void-reason">
+                  Motivo
+                  <input id="void-reason" type="text" value={voidReason} onChange={(e) => setVoidReason(e.target.value)} placeholder="Ej. el cliente se fue" />
+                </label>
+                <div className="row">
+                  <button type="button" className="btn danger" disabled={blocked} onClick={confirmVoid}>
+                    Confirmar anulación
+                  </button>
+                  <button type="button" className="btn" onClick={() => setVoiding(false)}>
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button type="button" className="btn danger" onClick={() => setVoiding(true)}>
+                Anular cuenta
+              </button>
+            )
           ) : null}
           <Link className="btn" href="/mesas" style={{ textAlign: "center" }}>
             Volver a mesas

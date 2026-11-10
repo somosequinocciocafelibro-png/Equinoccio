@@ -25,6 +25,12 @@ export interface ImportTicket {
   firstRow: number;
   /** Tuvo filas descartadas con valor: la cuenta no es confiable. */
   dirty: boolean;
+  /** El mismo encabezado de fecha aparece más de una vez en el libro. */
+  duplicateDate: boolean;
+  /** Monto escrito en "Total ventas" del mismo día, si existe. */
+  declaredDayTotal: number | null;
+  /** Identifica cada bloque de día (fecha del encabezado y número de aparición). */
+  dayId: string;
 }
 
 export interface ParseResult {
@@ -37,12 +43,19 @@ const TOTAL_VENTAS_RE = /^total ventas\s+(\d{1,2}\/\d{1,2}\/\d{4})/i;
 const str = (v: unknown) => (v === null || v === undefined ? "" : String(v)).trim();
 const padDate = (s: string) => s.split("/").map((p, i) => (i < 2 ? p.padStart(2, "0") : p)).join("/");
 
-function parseMoney(v: unknown): number | null {
-  if (typeof v === "number") return Number.isFinite(v) ? Math.round(v) : null;
-  const t = str(v).replace(/[$\s,]/g, "");
-  if (t === "") return null;
-  const n = Number(t);
-  return Number.isFinite(n) ? Math.round(n) : null;
+/**
+ * Lee un monto en pesos. Solo acepta enteros, con comas de miles y, como mucho, ".0" o ".00" al final.
+ * Cualquier otra forma ("$8.000", "4000.5") es ilegible: no se interpreta, porque podría ser 8 o 8.000.
+ */
+function moneyCell(v: unknown): { value: number | null; invalid: boolean } {
+  if (typeof v === "number") return Number.isInteger(v) ? { value: v, invalid: false } : { value: null, invalid: true };
+  const raw = str(v);
+  if (raw === "") return { value: null, invalid: false };
+  const t = raw.replace(/[$\s]/g, "");
+  if (/^-?\d+(\.0{1,2})?$/.test(t) || /^-?\d{1,3}(,\d{3})+(\.0{1,2})?$/.test(t)) {
+    return { value: Number(t.replace(/,/g, "")), invalid: false };
+  }
+  return { value: null, invalid: true };
 }
 
 function dateCell(v: unknown): string | null {
@@ -60,6 +73,8 @@ export function parseRows(rows: unknown[][]): ParseResult {
   const discarded: { row: number; reason: string }[] = [];
   let headerDate = "";
   let counter = 0;
+  let occurrence = 1;
+  const seen = new Map<string, number>();
   let dayTickets: ImportTicket[] = [];
   let cur: ImportTicket | null = null;
 
@@ -81,15 +96,19 @@ export function parseRows(rows: unknown[][]): ParseResult {
     const B = str(raw[1]);
     const C = raw[2];
     const D = raw[3];
-    const E = parseMoney(raw[4]);
+    const Em = moneyCell(raw[4]);
+    const Dm = moneyCell(D);
+    const E = Em.value;
     const markers = [5, 6, 7].map((k) => str(raw[k])).filter(Boolean);
 
     if (normalize(str(C)) === "unidad") return; // encabezado de columnas
 
     const header = dateCell(raw[0]);
-    if (header && B === "" && E === null) {
+    if (header && B === "" && E === null && !Em.invalid) {
       close();
       headerDate = header;
+      occurrence = (seen.get(header) ?? 0) + 1;
+      seen.set(header, occurrence);
       counter = 0;
       dayTickets = [];
       return;
@@ -97,15 +116,20 @@ export function parseRows(rows: unknown[][]): ParseResult {
     const tv = A.match(TOTAL_VENTAS_RE);
     if (tv) {
       close();
-      for (const t of dayTickets) t.declaredDate = padDate(tv[1]);
+      for (const t of dayTickets) {
+        t.declaredDate = padDate(tv[1]);
+        t.declaredDayTotal = E;
+      }
       return;
     }
+    let startedBlock = false;
     if (/^(mesa|llevar)\b/.test(normalize(A))) {
+      startedBlock = true;
       close();
       counter += 1;
       const ymd = headerDate ? headerDate.split("/").reverse().join("") : "sinfecha";
       cur = {
-        key: `imp-${ymd}-${counter}`,
+        key: `imp-${ymd}${occurrence > 1 ? `-d${occurrence}` : ""}-${counter}`,
         headerDate,
         declaredDate: null,
         mesaLabel: A,
@@ -114,6 +138,9 @@ export function parseRows(rows: unknown[][]): ParseResult {
         medioLabel: null,
         firstRow: row,
         dirty: false,
+        duplicateDate: false,
+        declaredDayTotal: null,
+        dayId: `${headerDate}#${occurrence}`,
       };
     }
 
@@ -127,6 +154,10 @@ export function parseRows(rows: unknown[][]): ParseResult {
       }
       const t = cur as ImportTicket;
       t.declaredTotal = E;
+      if (Em.invalid) {
+        t.dirty = true;
+        discard(row, "total ilegible", false);
+      }
       if (!t.medioLabel && markers[0]) t.medioLabel = markers[0];
       close();
       return;
@@ -137,6 +168,13 @@ export function parseRows(rows: unknown[][]): ParseResult {
       return;
     }
 
+    if (A !== "" && !startedBlock) {
+      // Un texto en la primera columna que no es mesa, total ni fecha conocida: no se sabe a qué día pertenece lo que sigue.
+      close();
+      headerDate = "";
+      discard(row, `encabezado no reconocido: "${A}"`, false);
+      return;
+    }
     if (!cur) {
       discard(row, "fila fuera de una mesa", false);
       return;
@@ -144,6 +182,10 @@ export function parseRows(rows: unknown[][]): ParseResult {
     const t = cur as ImportTicket;
     if (!B) {
       discard(row, "producto sin nombre", (E ?? 0) > 0);
+      return;
+    }
+    if (Em.invalid || Dm.invalid) {
+      discard(row, "monto ilegible", true);
       return;
     }
     const qty = typeof C === "number" ? C : Number(str(C));
@@ -155,7 +197,7 @@ export function parseRows(rows: unknown[][]): ParseResult {
       discard(row, "producto sin valor", true);
       return;
     }
-    const unit = parseMoney(D) ?? Math.round(E / qty);
+    const unit = Dm.value ?? Math.round(E / qty);
     if (unit * qty !== E) {
       discard(row, "valor unitario por cantidad no cuadra con el valor total", true);
       return;
@@ -164,6 +206,7 @@ export function parseRows(rows: unknown[][]): ParseResult {
     if (!t.medioLabel && markers[0]) t.medioLabel = markers[0];
   });
   close();
+  for (const t of tickets) t.duplicateDate = (seen.get(t.headerDate) ?? 0) > 1;
   return { tickets, discarded };
 }
 
@@ -205,6 +248,8 @@ export interface ImportReport {
   sinMedio: number;
   unknownMedios: string[];
   ambiguousDates: string[];
+  /** Por cada día con "Total ventas": lo que dice el libro frente a lo que se importaría. */
+  dayChecks: { headerDate: string; declared: number; importable: number; notImported: number }[];
 }
 
 function mapMedio(label: string | null): PaymentMedio | null {
@@ -247,6 +292,7 @@ export async function importTickets(
     sinMedio: 0,
     unknownMedios: [],
     ambiguousDates: [],
+    dayChecks: [],
   };
   const products = new Map((await db.query<{ id: string; name: string }>(`select id, name from products`)).map((p) => [p.id, p.name]));
   const extras = new Map(
@@ -266,7 +312,11 @@ export async function importTickets(
     const header = padDate(t.headerDate);
     let effective = header;
     if (overrides[header]) effective = overrides[header];
-    else if (t.declaredDate && t.declaredDate !== header) {
+    else if (t.duplicateDate) {
+      ambiguous.add(`${t.headerDate} (aparece más de una vez)`);
+      skip("FECHA_AMBIGUA", "fecha repetida");
+      continue;
+    } else if (t.declaredDate && t.declaredDate !== header) {
       ambiguous.add(`${t.headerDate} (el total dice ${t.declaredDate})`);
       skip("FECHA_AMBIGUA", `${t.headerDate} ≠ ${t.declaredDate}`);
       continue;
@@ -378,6 +428,17 @@ export async function importTickets(
     });
   }
 
+  const planned = new Map(plans.map((p) => [p.t.key, p.total]));
+  const days = new Map<string, ImportReport["dayChecks"][number]>();
+  for (const t of tickets) {
+    if (t.declaredDayTotal === null) continue;
+    const d = days.get(t.dayId) ?? { headerDate: t.headerDate, declared: t.declaredDayTotal, importable: 0, notImported: 0 };
+    const got = planned.get(t.key);
+    if (got !== undefined) d.importable += got;
+    else d.notImported += t.declaredTotal ?? t.lines.reduce((s, l) => s + l.qty * l.unitPrice, 0);
+    days.set(t.dayId, d);
+  }
+  report.dayChecks = [...days.values()];
   report.unmappedProducts = [...unmapped];
   report.unknownMedios = [...unknown];
   report.ambiguousDates = [...ambiguous];

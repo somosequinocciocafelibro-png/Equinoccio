@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { computeClosing } from "@/domain/cierre";
@@ -35,9 +36,11 @@ interface Props {
   voided: VoidedInfo[];
   openCount: number;
   closing: ClosingRecord | null;
+  /** Cuentas abiertas (de cualquier día) que impiden cerrar: se listan para poder resolverlas. */
+  openTickets?: { id: string; tableId: string; tableName: string; subtotal: number }[];
 }
 
-export function CierreForm({ day, isAdmin, tickets, voided, openCount, closing }: Props) {
+export function CierreForm({ day, isAdmin, tickets, voided, openCount, closing, openTickets = [] }: Props) {
   const router = useRouter();
   const online = useOnline();
   const [pending, startTransition] = useTransition();
@@ -84,6 +87,21 @@ export function CierreForm({ day, isAdmin, tickets, voided, openCount, closing }
         </label>
       </div>
       {error ? <div className="banner bad">{error}</div> : null}
+      {openTickets.length > 0 ? (
+        <div className="card">
+          <h3>Cuentas abiertas</h3>
+          <p className="muted small" style={{ margin: "4px 0 8px" }}>
+            Hay que cobrarlas o anularlas antes de cerrar el día.
+          </p>
+          <div className="chips">
+            {openTickets.map((t) => (
+              <Link key={t.id} className="chip" href={`/mesas/${t.tableId}?ticket=${t.id}`}>
+                {`${t.tableName} · ${fmt(t.subtotal)}`}
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       {locked && closing ? (
         <div className="card scroll">

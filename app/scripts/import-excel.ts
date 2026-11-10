@@ -56,6 +56,14 @@ async function main(): Promise<void> {
   for (const [motivo, items] of porMotivo) console.log(`  - ${motivo}: ${items.length}\n      ${items.join("\n      ")}`);
   if (report.unmappedProducts.length) console.log(`Productos sin equivalencia (agrégalos a import/equivalences.csv o al catálogo):\n  ${report.unmappedProducts.join("\n  ")}`);
   if (report.unknownMedios.length) console.log(`Medios de pago que el sistema no conoce (quedaron como sin_medio):\n  ${report.unknownMedios.join("\n  ")}`);
+  const desiguales = report.dayChecks.filter((d) => d.declared !== d.importable);
+  if (desiguales.length) {
+    console.log(
+      `Días donde "Total ventas" no coincide con lo que se importaría:\n${desiguales
+        .map((d) => `  ${d.headerDate}: el libro dice ${d.declared}, se importan ${d.importable}${d.notImported ? ` (${d.notImported} están en cuentas no importadas)` : ""}`)
+        .join("\n")}`,
+    );
+  }
   if (report.ambiguousDates.length) console.log(`Fechas ambiguas (usa --fix para corregirlas):\n  ${report.ambiguousDates.join("\n  ")}`);
   if (porRazon.size) console.log(`Filas descartadas del libro:\n${[...porRazon].map(([r, n]) => `  ${n} × ${r}`).join("\n")}`);
 }

@@ -65,6 +65,10 @@ describe("closeDay", () => {
     await expect(reopenDay(db, { day: "mañana", reason: "x", userId: user })).rejects.toMatchObject({ code: "INVALID_DAY" });
   });
 
+  test("no deja cerrar un día que todavía no llega", async () => {
+    await expect(cerrar({ day: "2999-01-01", base: 0, real: { efectivo: 0 } })).rejects.toMatchObject({ code: "FUTURE_DAY" });
+  });
+
   test("rechaza un segundo cierre del mismo día con ALREADY_CLOSED", async () => {
     await venta();
     await cerrar();

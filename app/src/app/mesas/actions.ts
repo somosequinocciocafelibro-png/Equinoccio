@@ -44,6 +44,7 @@ export async function addPaymentAction(i: {
   amount: number | null;
   received: number | null;
   idempotencyKey: string;
+  expectedTotal?: number;
 }) {
   const { userId } = await requireRole("charge");
   return safe(async () => {
