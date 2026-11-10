@@ -81,6 +81,8 @@ describe("PaymentPanel: pagos", () => {
     const arg = vi.mocked(addPaymentAction).mock.calls[0][0];
     expect(arg).toMatchObject({ ticketId: "t1", medio: "efectivo", amount: null, received: null });
     expect(arg.idempotencyKey.length).toBeGreaterThan(8);
+    await vi.waitFor(() => expect(onPaid).toHaveBeenCalledTimes(1));
+    expect(addPaymentAction).toHaveBeenCalledTimes(1);
   });
 
   test("avisa con el total y el cambio cuando el pago cierra la cuenta", async () => {
