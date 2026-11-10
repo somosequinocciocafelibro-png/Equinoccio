@@ -11,7 +11,8 @@
     "import": "tsx scripts/import-excel.ts",
     "db:setup": "tsx scripts/setup-db.ts",
     "export": "tsx scripts/export-csv.ts",
-    "e2e": "playwright test --trace off"
+    "e2e": "playwright test --trace off",
+    "db:sql": "tsx scripts/make-setup-sql.ts"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",

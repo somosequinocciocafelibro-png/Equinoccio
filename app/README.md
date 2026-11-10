@@ -32,20 +32,23 @@ con una vista previa antes de tocar `main` (un push a `main` vuelve a publicar e
 
 1. **Supabase.** Crea un proyecto. En *Project Settings → Database → Connection string* copia la cadena del
    *Transaction pooler* y úsala como `DATABASE_URL`. En *Project Settings → API* copia la URL y la clave `anon`.
-2. **Preparar la base.** Con `DATABASE_URL` en tu terminal:
-   ```bash
-   cd app
-   DATABASE_URL='postgres://...' npm run db:setup
-   ```
-   Aplica la migración y carga salones, mesas, extras y los 43 productos. Se puede repetir sin riesgo: no duplica nada.
-3. **Usuarios.** En Supabase, *Authentication → Users → Add user* (correo y contraseña), uno por persona. Luego, en el
-   editor SQL, dale su rol (`caja` o `admin`) con el `id` que muestra Supabase:
+2. **Preparar la base (sin terminal).** En Supabase abre *SQL Editor → New query*, pega todo el contenido de
+   `app/db/setup.sql` y pulsa *Run*. Crea las tablas y carga salones, mesas, extras y los 43 productos. Es una sola
+   transacción: si algo falla, no queda nada a medias. Solo se ejecuta una vez en una base vacía.
+   (Alternativa con terminal: `DATABASE_URL='postgres://...' npm run db:setup`, que se puede repetir sin riesgo.
+   Si cambia una migración o el catálogo inicial, `npm run db:sql` vuelve a generar `db/setup.sql`.)
+3. **Usuarios.** En Supabase, *Authentication → Users → Add user → Create new user* (correo y contraseña, con
+   "Auto Confirm User" activado), uno por persona. Luego, en el editor SQL, dale su rol (`caja` o `admin`) usando su correo:
    ```sql
-   insert into profiles (user_id, role) values ('<id-del-usuario>', 'caja');
+   insert into profiles (user_id, role)
+   select id::text, 'admin' from auth.users where email = 'correo@ejemplo.com';
    ```
-   Quien no tenga fila en `profiles` entra pero no puede hacer nada.
+   Quien no tenga fila en `profiles` entra pero no puede hacer nada. Después, en *Authentication → Sign In / Providers*
+   (sección Email), desactiva "Allow new users to sign up" para que nadie más pueda crearse una cuenta.
 4. **Vercel.** Importa el repositorio, con **Root Directory = `app`**. Agrega las variables `DATABASE_URL`,
-   `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Despliega la rama como vista previa.
+   `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` (se escriben en Vercel, no en el chat ni en el
+   repositorio). En *Settings → Git → Production Branch* pon `app/mvp`: la rama `main` es el sitio web y no tiene
+   carpeta `app`. Despliega y abre el enlace que te dé Vercel.
 5. **Prueba de humo** contra esa vista previa (deja una venta de prueba, úsala solo en un entorno de pruebas):
    ```bash
    E2E_BASE_URL='https://<vista-previa>.vercel.app' E2E_EMAIL='<usuario-caja>' E2E_PASSWORD='...' npm run e2e
