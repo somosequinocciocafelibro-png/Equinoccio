@@ -60,7 +60,9 @@ async function main(): Promise<void> {
   if (porRazon.size) console.log(`Filas descartadas del libro:\n${[...porRazon].map(([r, n]) => `  ${n} × ${r}`).join("\n")}`);
 }
 
-main().catch((e) => {
-  console.error(e instanceof Error ? e.message : e);
-  process.exit(1);
-});
+main()
+  .then(() => process.exit(0)) // la conexión a la base queda abierta; hay que cerrar el proceso
+  .catch((e) => {
+    console.error(e instanceof Error ? e.message : e);
+    process.exit(1);
+  });

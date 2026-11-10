@@ -24,6 +24,7 @@ describe("migración", () => {
       "payments",
       "products",
       "profiles",
+      "schema_migrations",
       "settings",
       "ticket_lines",
       "tickets",

@@ -1,17 +1,19 @@
 import { PGlite } from "@electric-sql/pglite";
 import { randomUUID } from "node:crypto";
-import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import type { Db } from "@/server/db";
 import type { PaymentMedio, TicketStatus } from "@/domain/types";
-import { seedCatalog } from "../../db/seed/catalog";
+import { setupDb } from "@/server/setup";
 
-type Q = { query: (sql: string, params?: unknown[]) => Promise<{ rows: unknown[] }> };
+type Q = { query: (sql: string, params?: unknown[]) => Promise<{ rows: unknown[] }>; exec: (sql: string) => Promise<unknown> };
 
 function adapt(pg: PGlite): Db {
   const wrap = (q: Q, inTx: boolean): Db => {
     const self: Db = {
       query: async <T>(sql: string, params?: unknown[]) => (await q.query(sql, params)).rows as T[],
+      exec: async (sql: string) => {
+        await q.exec(sql);
+      },
       tx: <R>(fn: (t: Db) => Promise<R>): Promise<R> =>
         inTx ? fn(self) : pg.transaction((t) => fn(wrap(t as unknown as Q, true))),
     };
@@ -20,14 +22,12 @@ function adapt(pg: PGlite): Db {
   return wrap(pg as unknown as Q, false);
 }
 
-const MIGRATION = readFileSync(fileURLToPath(new URL("../../db/migrations/001_init.sql", import.meta.url)), "utf8");
+const MIGRATIONS_DIR = fileURLToPath(new URL("../../db/migrations", import.meta.url));
 
 /** Base en memoria con la migración aplicada y, por defecto, la semilla de catálogo. */
 export async function makeTestDb(opts: { seed?: boolean } = {}): Promise<Db> {
-  const pg = new PGlite();
-  await pg.exec(MIGRATION);
-  const db = adapt(pg);
-  if (opts.seed !== false) await seedCatalog(db);
+  const db = adapt(new PGlite());
+  await setupDb(db, { migrationsDir: MIGRATIONS_DIR, seed: opts.seed !== false });
   return db;
 }
 
@@ -72,4 +72,9 @@ export async function seedTicket(db: Db, spec: SeedTicketSpec): Promise<string> 
 /** Vacía las tablas de movimientos para reutilizar la misma base entre pruebas (más rápido que crear una nueva). */
 export async function resetData(db: Db): Promise<void> {
   await db.query(`truncate payments, ticket_lines, tickets, day_closings cascade`);
+}
+
+/** Base en memoria sin nada: ni migración ni semilla. */
+export async function makeEmptyDb(): Promise<Db> {
+  return adapt(new PGlite());
 }
