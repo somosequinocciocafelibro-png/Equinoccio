@@ -19,6 +19,7 @@ const MESSAGES: Record<string, string> = {
   INVALID_QTY: "La cantidad no es válida.",
   AMOUNT_ZERO: "Escribe un monto mayor a cero.",
   EXCEEDS_BALANCE: "El monto no puede ser mayor al saldo.",
+  INVALID_MEDIO: "Ese medio de pago no existe.",
   CASH_SHORT: "El efectivo recibido es menor al monto del pago.",
   EMPTY_TICKET: "La cuenta no tiene productos.",
   NAME_TAKEN: "Ya existe un producto con ese nombre.",

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, useTransition, type ReactNode } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { lineTotal, subtotal } from "@/domain/money";
 import type { Ticket } from "@/domain/types";
 import { errorMessage } from "@/lib/messages";
@@ -10,6 +10,7 @@ import { matchProducts, parseSearch } from "@/lib/parseSearch";
 import { useOnline } from "@/lib/useOnline";
 import type { ExtraInfo, ProductInfo, TableInfo } from "@/server/queries";
 import { addLineAction, setQtyAction, toggleExtraAction } from "../actions";
+import { PaymentPanel } from "./cobro";
 
 const fmt = (n: number) => `$${Math.round(n).toLocaleString("es-CO")}`;
 
@@ -19,11 +20,9 @@ interface Props {
   products: ProductInfo[];
   extras: ExtraInfo[];
   pct: number;
-  /** Panel de cobro (se muestra al pulsar Cobrar). */
-  payment?: ReactNode;
 }
 
-export function TicketScreen({ table, ticket, products, extras, payment }: Props) {
+export function TicketScreen({ table, ticket, products, extras, pct }: Props) {
   const router = useRouter();
   const online = useOnline();
   const [pending, startTransition] = useTransition();
@@ -31,6 +30,7 @@ export function TicketScreen({ table, ticket, products, extras, payment }: Props
   const [cat, setCat] = useState("Todos");
   const [error, setError] = useState<string | null>(null);
   const [cobrando, setCobrando] = useState(false);
+  const [done, setDone] = useState<{ total: number; change: number } | null>(null);
 
   const { qty, text } = parseSearch(q);
   const categories = useMemo(() => ["Todos", ...new Set(products.map((p) => p.category))], [products]);
@@ -51,6 +51,7 @@ export function TicketScreen({ table, ticket, products, extras, payment }: Props
 
   function add(productId: string, n: number) {
     setQ("");
+    setDone(null);
     run(() => addLineAction({ tableId: table.id, ticketId: ticket?.id ?? null, productId, qty: n }));
   }
 
@@ -110,10 +111,19 @@ export function TicketScreen({ table, ticket, products, extras, payment }: Props
 
       <aside className="card cuenta">
         <div className="spread">
-          <h3>{ticket ? "Cuenta abierta" : "Cuenta nueva"}</h3>
-          {ticket ? <span className="pill warn">Abierta</span> : null}
+          <h3>{done ? "Cuenta cerrada" : ticket ? "Cuenta abierta" : "Cuenta nueva"}</h3>
+          {ticket && !done ? <span className="pill warn">Abierta</span> : null}
         </div>
-        {lines.length === 0 ? (
+        {done ? (
+          <div className="stack" style={{ marginTop: 12 }}>
+            <div className="big">{fmt(done.total)}</div>
+            {done.change > 0 ? (
+              <div className="banner">
+                Cambio a devolver: <strong>{fmt(done.change)}</strong>
+              </div>
+            ) : null}
+          </div>
+        ) : lines.length === 0 ? (
           <div className="empty" style={{ marginTop: 12 }}>
             <strong>Cuenta vacía</strong>
             Toca un producto o escribe su nombre y pulsa Enter.
@@ -165,7 +175,7 @@ export function TicketScreen({ table, ticket, products, extras, payment }: Props
             ))}
           </ul>
         )}
-        {ticket ? (
+        {ticket && !done ? (
           <div className="totals">
             <div className="spread">
               <span className="muted">Subtotal</span>
@@ -174,12 +184,23 @@ export function TicketScreen({ table, ticket, products, extras, payment }: Props
           </div>
         ) : null}
         <div className="stack">
-          {payment && lines.length > 0 ? (
+          {ticket && lines.length > 0 && !done ? (
             <button type="button" className="btn primary" disabled={blocked} onClick={() => setCobrando((v) => !v)}>
               {cobrando ? "Ocultar cobro" : "Cobrar"}
             </button>
           ) : null}
-          {cobrando ? payment : null}
+          {ticket && cobrando && !done ? (
+            <PaymentPanel
+              ticket={ticket}
+              pct={pct}
+              onPaid={(r) => {
+                if (r.closed) {
+                  setCobrando(false);
+                  setDone({ total: r.total, change: r.change });
+                }
+              }}
+            />
+          ) : null}
           <Link className="btn" href="/mesas" style={{ textAlign: "center" }}>
             Volver a mesas
           </Link>

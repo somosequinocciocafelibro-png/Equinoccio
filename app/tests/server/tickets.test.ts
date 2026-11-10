@@ -175,6 +175,12 @@ describe("pagos", () => {
     await expect(pagar(id, { amount: 1000 })).rejects.toMatchObject({ code: "DAY_CLOSED" });
   });
 
+  test("rechaza un medio de pago desconocido antes de tocar la base", async () => {
+    const id = await conLatte();
+    await expect(pagar(id, { medio: "cheque" as never })).rejects.toMatchObject({ code: "INVALID_MEDIO" });
+    expect((await leer(id)).payments).toEqual([]);
+  });
+
   test("removePayment solo funciona en cuentas abiertas", async () => {
     const id = await conLatte();
     const r = await pagar(id);

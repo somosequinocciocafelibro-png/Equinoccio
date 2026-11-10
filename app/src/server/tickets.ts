@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { businessDay } from "@/domain/day";
 import { balance, planPayment, serviceAmount } from "@/domain/money";
-import type { Extra, Medio } from "@/domain/types";
+import { MEDIOS, type Extra, type Medio } from "@/domain/types";
 import { isDayClosed, loadTickets } from "./closings";
 import type { Db } from "./db";
 import { AppError } from "./errors";
@@ -137,6 +137,7 @@ export async function addPayment(
     userId: string;
   },
 ): Promise<{ paymentId: string; change: number; closed: boolean }> {
+  if (!MEDIOS.includes(a.medio)) throw new AppError("INVALID_MEDIO");
   return db.tx(async (t) => {
     const [row] = await t.query<{ status: string }>(`select status from tickets where id = $1 for update`, [a.ticketId]);
     if (!row) throw new AppError("TICKET_NOT_FOUND");
