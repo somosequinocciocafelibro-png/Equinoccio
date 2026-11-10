@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "import": "tsx scripts/import-excel.ts"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
@@ -28,7 +29,9 @@
     "eslint": "9.39.5",
     "eslint-config-next": "16.4.6",
     "jsdom": "31.0.0",
+    "tsx": "4.23.15",
     "typescript": "6.0.3",
-    "vitest": "5.1.0"
+    "vitest": "5.1.0",
+    "xlsx": "0.18.5"
   }
 }

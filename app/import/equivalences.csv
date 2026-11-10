@@ -1,0 +1,81 @@
+# Equivalencias entre los nombres escritos en el Excel y los productos del catálogo.
+# Formato: nombre_en_el_excel,id_del_producto[,id_del_extra]
+# Las mayúsculas, las tildes y los espacios extra no importan. Lo que no esté aquí se reporta como "sin equivalencia"
+# y esa cuenta no se importa hasta que se agregue una línea (o el producto al catálogo).
+excel_name,product_id,extra_id
+capuchino,capuchino
+capuccino,capuchino
+cappuccino,capuchino
+capucchino,capuchino
+capucchinos,capuchino
+cappuccino + vainilla,capuchino,vainilla
+espresso,espresso
+espreso,espresso
+expresso,espresso
+americano,americano
+americanos,americano
+latte,latte
+mini latte,mini-latte
+mocca,mocca
+mocha equinoccio,mocca
+affogato,affogato
+macchiato caramelo,macchiato-caramelo
+chocolate,chocolate
+ice latte,ice-latte
+iced latte,ice-latte
+iced latte + caramelo,ice-latte,caramelo
+iced caramel latte,ice-latte,caramelo
+cold brew + chocolate,cold-brew-chocolate
+te frutos rojos,te-frutos-rojos
+te marea de luna,te-marea-de-luna
+aromatica hierbabuena,aromatica-hierbabuena
+aromatica frutos rojos,aromatica-frutos-rojos
+aromatica maracuya,aromatica-maracuya
+aromatica sandia,aromatica-sandia
+soda nectar solar,soda-nectar-solar
+nectar solar,soda-nectar-solar
+soda bosque tropical,soda-bosque-tropical
+soda frutos amarillos,soda-frutos-amarillos
+soda amarillos,soda-frutos-amarillos
+soda frutos rojos,soda-frutos-rojos
+croissant frutos rojos,croissant-frutos-rojos
+croassant frutos rojos,croissant-frutos-rojos
+croissant rojo,croissant-frutos-rojos
+croissant rojos,croissant-frutos-rojos
+croissant chocolate,croissant-chocolate
+crookie,crookie
+croissant crookie,crookie
+rollo canela,rollo-de-canela
+rollo de canela,rollo-de-canela
+rollito canela,rollo-de-canela
+rollo canel,rollo-de-canela
+palito chocolate,palito-chocolate
+palitos chocolate,palito-chocolate
+palito de chocolate,palito-chocolate
+palito queso crema,palito-queso-crema
+palitos queso crema,palito-queso-crema
+palito de queso crema,palito-queso-crema
+palito de bocadillo,palito-bocadillo
+palito queso + bocadillo,palito-queso-bocadillo
+palito queso bocadillo,palito-queso-bocadillo
+almojabana,almojabana
+almojabanas,almojabana
+pastel manzana,pastel-manzana
+pastel de manzana,pastel-manzana
+partel de manzana,pastel-manzana
+pastel espinaca y ricota,pastel-espinaca-ricota
+pastel espinaca ricota,pastel-espinaca-ricota
+pastel espinaca y ricotta,pastel-espinaca-ricota
+pastel ricota y espinaca,pastel-espinaca-ricota
+pastel ricotta,pastel-ricotta
+ricotta,pastel-ricotta
+pastel carne ranchero,pastel-carne-ranchero
+pastel de carne,pastel-carne-ranchero
+pastel de pollo,pastel-pollo
+pastel pollo carbonara,pollo-carbonara
+pastel de pollo carbonara,pollo-carbonara
+pollo carbonara,pollo-carbonara
+pastel de almendras,pastel-almendras
+pastel arequipe pequeno,pastel-arequipe-pequeno
+torta de zanahoria,torta-zanahoria
+torta zanahoria,torta-zanahoria
