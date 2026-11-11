@@ -12,6 +12,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#140D08;font-fam
 .cup{width:120px;height:120px;margin:0 auto 6px;display:block}
 .steam{animation:steam 1.6s ease-in-out infinite}
 .h{font:400 154px/1 "Young Serif",serif;color:#F8DDA6;letter-spacing:.01em;text-shadow:0 6px 24px rgba(0,0,0,.5);animation:pop .55s .45s cubic-bezier(.2,1.6,.4,1) both}
+.h small{display:block;font:400 92px/1.05 "Young Serif",serif;color:#FFF1D2;margin-top:6px;letter-spacing:0}
 .line{width:240px;height:6px;margin:26px auto 34px;background:linear-gradient(90deg,transparent,#E9B873,transparent);animation:grow .5s .8s both;transform-origin:center}
 .t{font:800 62px/1.25 "Nunito Sans",sans-serif;color:#FFF8EE}
 .t span{display:inline-block;opacity:0;animation:word .45s both}
@@ -29,13 +30,13 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#140D08;font-fam
 <img class="logo" src="../../assets/logo.png" alt="">
 <div class="card">
  <svg class="cup" viewBox="0 0 64 64" fill="none" stroke="#E9B873" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 28h34v12a14 14 0 0 1-14 14h-6a14 14 0 0 1-14-14z"/><path d="M46 31h5a5.5 5.5 0 0 1 0 11h-5"/><path d="M8 58h42"/><g class="steam"><path d="M22 10c-4 5 4 6 0 12M31 10c-4 5 4 6 0 12M40 10c-4 5 4 6 0 12"/></g></svg>
- <div class="h">¡ESPERA!</div><div class="line"></div>
+ <div class="h">OYE,<small>sabías que...</small></div><div class="line"></div>
  <p class="t" id="t"></p>
 </div>
 <p class="handle">@equinocciocafelibro</p>
 </div>
 <script>
-const words="Hay un lugar en Cajicá donde el café tiene otra historia...".split(" ");
+const words="hay un lugar en Cajicá donde el café tiene otra historia...".split(" ");
 const t=document.getElementById("t");
 t.innerHTML=words.map((w,i)=>`<span style="animation-delay:${(1.0+i*0.11).toFixed(2)}s">${i>=7?'<em>'+w+'</em>':w}</span>`).join(" ");
 </script></body></html>
