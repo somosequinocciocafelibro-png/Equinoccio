@@ -1,0 +1,45 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Reel · cierre (pregunta)</title>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Nunito+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#140D08;font-family:"Nunito Sans",sans-serif}
+.stage{position:absolute;inset:0;overflow:hidden}
+.bg{position:absolute;inset:-60px;background:url(fondo-biblioteca.jpg) center/cover;animation:kb 4s ease-out both}
+@keyframes kb{from{transform:scale(1.08)}to{transform:scale(1)}}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,12,8,.72) 0%,rgba(20,12,8,.5) 32%,rgba(20,12,8,.58) 64%,rgba(20,12,8,.9) 100%),radial-gradient(90% 55% at 50% 50%,rgba(60,100,170,.16),transparent 70%)}
+.logo{position:absolute;left:50%;top:330px;width:140px;margin-left:-70px;filter:drop-shadow(0 10px 20px rgba(0,0,0,.5));animation:fade .6s .1s both}
+.card{position:absolute;left:60px;right:60px;top:540px;padding:60px 48px 64px;border-radius:44px;background:rgba(27,18,12,.8);border:3px solid rgba(233,184,115,.75);box-shadow:0 30px 70px rgba(0,0,0,.55);text-align:center;animation:rise .7s .1s cubic-bezier(.2,.8,.2,1) both}
+.k{font:800 50px/1.2 "Nunito Sans",sans-serif;color:#FFF8EE;animation:fade .5s .5s both}
+.q{font:400 74px/1.16 "Young Serif",serif;color:#F2C27A;margin:30px 0 44px;text-shadow:0 4px 18px rgba(0,0,0,.45)}
+.q span{display:inline-block;opacity:0;animation:word .45s both}
+.pills{display:flex;justify-content:center;gap:28px}
+.pill{display:flex;align-items:center;gap:16px;padding:20px 38px;border-radius:60px;font:800 44px/1 "Nunito Sans",sans-serif;letter-spacing:.04em;opacity:0;animation:pop .5s cubic-bezier(.2,1.6,.4,1) both}
+.pill svg{width:54px;height:54px}
+.p1{background:rgba(217,140,43,.22);border:3px solid #E9A04A;color:#FFC773;animation-delay:2.0s}
+.p2{background:rgba(70,110,200,.25);border:3px solid #7FA3F0;color:#A9C2FF;animation-delay:2.35s}
+.c{font:700 46px/1.2 "Nunito Sans",sans-serif;color:#F5E6CF;margin-top:44px;animation:fade .6s 2.9s both}
+.info{position:absolute;left:0;right:0;top:1360px;text-align:center;color:#F5E6CF;text-shadow:0 3px 12px rgba(0,0,0,.75);animation:fade .6s 3.2s both}
+.info b{display:block;font:800 44px/1 "Nunito Sans",sans-serif;letter-spacing:.05em;margin-bottom:16px}
+.info span{display:block;font:700 33px/1.5 "Nunito Sans",sans-serif;color:#EBD2A8}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{opacity:0;transform:translateY(70px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes word{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+</style>
+<body><div class="stage"><div class="bg"></div><div class="shade"></div>
+<img class="logo" src="../../assets/logo.png" alt="">
+<div class="card">
+ <p class="k">Tenemos una pregunta para ti...</p>
+ <p class="q" id="q"></p>
+ <div class="pills">
+  <div class="pill p1"><svg viewBox="0 0 64 64" fill="none" stroke="#FFC773" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 28h34v12a14 14 0 0 1-14 14h-6a14 14 0 0 1-14-14z"/><path d="M46 31h5a5.5 5.5 0 0 1 0 11h-5"/><path d="M8 58h42"/><path d="M22 10c-4 5 4 6 0 12M31 10c-4 5 4 6 0 12M40 10c-4 5 4 6 0 12"/></svg>CAFÉ</div>
+  <div class="pill p2"><svg viewBox="0 0 64 64" fill="none" stroke="#A9C2FF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 14c8-3 16-2 24 3 8-5 16-6 24-3v34c-8-3-16-2-24 3-8-5-16-6-24-3z"/><path d="M32 17v34"/></svg>LIBROS</div>
+ </div>
+ <p class="c">¡Te leemos en los comentarios!</p>
+</div>
+<div class="info"><b>@equinocciocafelibro</b><span>Carrera 6 #4B-19, 2.º piso · Cajicá</span><span>Todos los días, 10:00 a. m. a 8:30 p. m.</span></div>
+</div>
+<script>
+const w="¿Eres de los que vienen por el café o por los libros?".split(" ");
+document.getElementById("q").innerHTML=w.map((x,i)=>`<span style="animation-delay:${(0.85+i*0.1).toFixed(2)}s">${x}</span>`).join(" ");
+</script></body></html>
