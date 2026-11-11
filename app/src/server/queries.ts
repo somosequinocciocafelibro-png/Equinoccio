@@ -43,6 +43,12 @@ export async function listExtras(db: Db): Promise<ExtraInfo[]> {
   return db.query<ExtraInfo>(`select id, name, delta from extras where active order by delta, name`);
 }
 
+/** Nombre de cada persona que usa el sistema, por id de usuario. */
+export async function listProfileNames(db: Db): Promise<Record<string, string>> {
+  const rows = await db.query<{ user_id: string; name: string }>(`select user_id, name from profiles`);
+  return Object.fromEntries(rows.map((r) => [r.user_id, r.name]));
+}
+
 export async function getServicePct(db: Db): Promise<number> {
   const [row] = await db.query<{ service_pct: number }>(`select service_pct from settings`);
   return row.service_pct;

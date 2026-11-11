@@ -37,21 +37,33 @@ con una vista previa antes de tocar `main` (un push a `main` vuelve a publicar e
    transacción: si algo falla, no queda nada a medias. Solo se ejecuta una vez en una base vacía.
    (Alternativa con terminal: `DATABASE_URL='postgres://...' npm run db:setup`, que se puede repetir sin riesgo.
    Si cambia una migración o el catálogo inicial, `npm run db:sql` vuelve a generar `db/setup.sql`.)
-3. **Usuarios.** En Supabase, *Authentication → Users → Add user → Create new user* (correo y contraseña, con
-   "Auto Confirm User" activado), uno por persona. Luego, en el editor SQL, dale su rol (`caja` o `admin`) usando su correo:
+3. **Usuarios.** Cada persona entra escribiendo su nombre y su contraseña. Por detrás, el nombre se convierte en un
+   correo de la cuenta del negocio con la forma `somosequinocciocafelibro+nombre@gmail.com` (todos llegan a la misma
+   bandeja; se puede cambiar con la variable `LOGIN_EMAIL_TEMPLATE`, que lleva `{usuario}`). En Supabase,
+   *Authentication → Users → Add user → Create new user*, con "Auto Confirm User" activado, crea tres usuarios con estos
+   correos: `somosequinocciocafelibro+richard@gmail.com`, `somosequinocciocafelibro+carolina@gmail.com` y
+   `somosequinocciocafelibro+marian@gmail.com`, cada uno con su propia contraseña. Luego, en el editor SQL, dales nombre
+   y rol:
    ```sql
-   insert into profiles (user_id, role)
-   select id::text, 'admin' from auth.users where email = 'correo@ejemplo.com';
+   insert into profiles (user_id, role, name, username)
+   select id::text, v.role, v.name, v.username
+   from auth.users u
+   join (values
+     ('somosequinocciocafelibro+richard@gmail.com',   'admin', 'Richard Moreno',  'richard'),
+     ('somosequinocciocafelibro+carolina@gmail.com',  'caja',  'Carolina Yepes',  'carolina'),
+     ('somosequinocciocafelibro+marian@gmail.com',    'caja',  'Marian Yepes',    'marian')
+   ) as v(email, role, name, username) on u.email = v.email;
    ```
-   Quien no tenga fila en `profiles` entra pero no puede hacer nada. Después, en *Authentication → Sign In / Providers*
-   (sección Email), desactiva "Allow new users to sign up" para que nadie más pueda crearse una cuenta.
+   Quien no tenga fila en `profiles` entra pero no puede hacer nada. Tres personas pueden trabajar a la vez, cada una
+   con su sesión. Después, en *Authentication → Sign In / Providers* (sección Email), desactiva "Allow new users to
+   sign up" para que nadie más pueda crearse una cuenta.
 4. **Vercel.** Importa el repositorio, con **Root Directory = `app`**. Agrega las variables `DATABASE_URL`,
    `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` (se escriben en Vercel, no en el chat ni en el
    repositorio). En *Settings → Git → Production Branch* pon `app/mvp`: la rama `main` es el sitio web y no tiene
    carpeta `app`. Despliega y abre el enlace que te dé Vercel.
 5. **Prueba de humo** contra esa vista previa (deja una venta de prueba, úsala solo en un entorno de pruebas):
    ```bash
-   E2E_BASE_URL='https://<vista-previa>.vercel.app' E2E_EMAIL='<usuario-caja>' E2E_PASSWORD='...' npm run e2e
+   E2E_BASE_URL='https://<vista-previa>.vercel.app' E2E_USER='<nombre-de-caja>' E2E_PASSWORD='...' npm run e2e
    ```
 6. **Dominio.** En DreamHost, crea un registro CNAME para `caja.equinoccio.online` con el valor que te indique Vercel
    al agregar el dominio al proyecto, y espera a que Vercel muestre el HTTPS activo.

@@ -60,7 +60,7 @@ function TableCard({ t, ticket, now }: { t: TableInfo; ticket: Ticket | undefine
 }
 
 export default async function MesasPage() {
-  const { role } = await requireRole("sell");
+  const { role, name } = await requireRole("sell");
   const db = getDb();
   const now = nowMs();
   const today = businessDay(new Date(now).toISOString());
@@ -76,7 +76,7 @@ export default async function MesasPage() {
   const openTake = open.filter((t) => tables.find((x) => x.id === t.tableId)?.isTakeout);
 
   return (
-    <AppShell role={role} active="mesas">
+    <AppShell role={role} name={name} active="mesas">
       {locked ? <div className="banner">El día de hoy está cerrado. Un administrador debe reabrirlo para seguir vendiendo.</div> : null}
       <div className="mesas-layout">
         <section>

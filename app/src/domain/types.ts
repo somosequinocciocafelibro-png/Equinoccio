@@ -45,4 +45,6 @@ export interface Ticket {
   payments: Payment[];
   service: Service;
   voidReason: string | null;
+  /** Usuario que abrió la cuenta (para saber quién vendió). */
+  openedBy?: string | null;
 }

@@ -10,9 +10,9 @@ export function LoginForm() {
   return (
     <form action={action} className="card stack" style={{ maxWidth: 360, margin: "10vh auto 0" }}>
       <h1>Caja Equinoccio</h1>
-      <label className="f" htmlFor="email">
-        Correo
-        <input id="email" name="email" type="email" autoComplete="username" required />
+      <label className="f" htmlFor="usuario">
+        Nombre
+        <input id="usuario" name="usuario" type="text" autoComplete="username" autoCapitalize="none" placeholder="Ej. Carolina" required />
       </label>
       <label className="f" htmlFor="password">
         Contraseña

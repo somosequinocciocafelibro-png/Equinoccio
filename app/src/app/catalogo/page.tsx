@@ -7,7 +7,7 @@ import { CatalogEditor } from "./catalog-editor";
 export const metadata = { title: "Catálogo · Caja Equinoccio" };
 
 export default async function CatalogoPage() {
-  const { role } = await requireRole("editCatalog");
+  const { role, name } = await requireRole("editCatalog");
   const db = getDb();
   const [pct, products, extras, tables] = await Promise.all([
     getServicePct(db),
@@ -16,7 +16,7 @@ export default async function CatalogoPage() {
     listAllTables(db),
   ]);
   return (
-    <AppShell role={role} active="catalogo">
+    <AppShell role={role} name={name} active="catalogo">
       <CatalogEditor pct={pct} products={products} extras={extras} tables={tables} />
     </AppShell>
   );

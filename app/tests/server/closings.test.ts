@@ -1,6 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, test } from "vitest";
 import { closeDay, getClosing, isDayClosed, loadTickets, reopenDay } from "@/server/closings";
 import type { Db } from "@/server/db";
+import { openTicket } from "@/server/tickets";
 import { makeTestDb, resetData, seedTicket } from "../helpers/testDb";
 
 const DAY = "2026-11-08";
@@ -188,5 +189,15 @@ describe("loadTickets", () => {
     await venta();
     await seedTicket(db, { tableId: "luna-2", status: "abierto" });
     expect(await loadTickets(db, { status: "abierto" })).toHaveLength(1);
+  });
+});
+
+describe("quién abrió la cuenta", () => {
+  test("loadTickets devuelve openedBy con el usuario que la abrió", async () => {
+    const db = await makeTestDb();
+    await db.query(`insert into profiles (user_id, role, name, username) values ('u-1', 'caja', 'Carolina Yepes', 'carolina')`);
+    const id = await openTicket(db, { tableId: "luna-1", userId: "u-1" });
+    const [t] = await loadTickets(db, { ids: [id] });
+    expect(t.openedBy).toBe("u-1");
   });
 });

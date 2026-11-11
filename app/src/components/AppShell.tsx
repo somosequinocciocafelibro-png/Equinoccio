@@ -12,7 +12,7 @@ const TABS: { id: Section; href: string; label: string; adminOnly: boolean }[] =
   { id: "catalogo", href: "/catalogo", label: "Catálogo", adminOnly: true },
 ];
 
-export function AppShell({ role, active, children }: { role: Role; active: Section; children: ReactNode }) {
+export function AppShell({ role, name, active, children }: { role: Role; name?: string; active: Section; children: ReactNode }) {
   return (
     <>
       <header className="top">
@@ -27,6 +27,7 @@ export function AppShell({ role, active, children }: { role: Role; active: Secti
             </Link>
           ))}
         </nav>
+        {name ? <strong data-testid="usuario">{name}</strong> : null}
         <span className="pill">{role === "admin" ? "Administrador" : "Caja"}</span>
         <form action={logoutAction}>
           <button type="submit" className="btn sm">

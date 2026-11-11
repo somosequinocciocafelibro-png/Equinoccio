@@ -23,7 +23,7 @@ export function authorize(
 }
 
 /** Lee la sesión de Supabase y el rol de `profiles`; sin sesión redirige a /login, sin permiso lanza FORBIDDEN. */
-export async function requireRole(action: Action): Promise<{ userId: string; role: Role }> {
+export async function requireRole(action: Action): Promise<{ userId: string; role: Role; name: string }> {
   const { supabaseServer } = await import("./supabase");
   const { redirect } = await import("next/navigation");
   const { getDb } = await import("./db");
@@ -31,6 +31,6 @@ export async function requireRole(action: Action): Promise<{ userId: string; rol
   const { data } = await supabase.auth.getUser();
   const user = data.user;
   if (!user) return redirect("/login");
-  const [row] = await getDb().query<{ role: Role }>(`select role from profiles where user_id = $1`, [user.id]);
-  return authorize({ userId: user.id }, row?.role ?? null, action);
+  const [row] = await getDb().query<{ role: Role; name: string }>(`select role, name from profiles where user_id = $1`, [user.id]);
+  return { ...authorize({ userId: user.id }, row?.role ?? null, action), name: row?.name ?? "" };
 }

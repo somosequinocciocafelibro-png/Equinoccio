@@ -12,6 +12,8 @@ export interface SalesReport {
   byProduct: { productId: string; name: string; qty: number; sales: number }[];
   bySalon: { salon: string; sales: number }[];
   byTable: { table: string; sales: number }[];
+  /** Ventas por quien abrió la cuenta (null = sin dato, por ejemplo cuentas importadas). */
+  byUser: { userId: string | null; sales: number; count: number }[];
 }
 
 const bySalesDesc = <T extends { sales: number }>(a: T, b: T) => b.sales - a.sales;
@@ -27,6 +29,7 @@ export function reportSales(tickets: Ticket[], range: { from: string; to: string
   const byProduct = new Map<string, { productId: string; name: string; qty: number; sales: number }>();
   const bySalon = new Map<string, number>();
   const byTable = new Map<string, number>();
+  const byUser = new Map<string | null, { sales: number; count: number }>();
   let sales = 0;
   let service = 0;
   for (const t of inRange) {
@@ -40,6 +43,8 @@ export function reportSales(tickets: Ticket[], range: { from: string; to: string
     bySalon.set(salon, (bySalon.get(salon) ?? 0) + sub);
     const table = t.salon ? `${t.salon} · ${t.tableName}` : t.tableName;
     byTable.set(table, (byTable.get(table) ?? 0) + sub);
+    const u = byUser.get(t.openedBy ?? null) ?? { sales: 0, count: 0 };
+    byUser.set(t.openedBy ?? null, { sales: u.sales + sub, count: u.count + 1 });
     for (const l of t.lines) {
       const row = byProduct.get(l.productId) ?? { productId: l.productId, name: l.name, qty: 0, sales: 0 };
       row.qty += l.qty;
@@ -57,5 +62,6 @@ export function reportSales(tickets: Ticket[], range: { from: string; to: string
     byProduct: [...byProduct.values()].sort(bySalesDesc),
     bySalon: [...bySalon].map(([salon, s]) => ({ salon, sales: s })).sort(bySalesDesc),
     byTable: [...byTable].map(([table, s]) => ({ table, sales: s })).sort(bySalesDesc),
+    byUser: [...byUser].map(([userId, v]) => ({ userId, ...v })).sort(bySalesDesc),
   };
 }

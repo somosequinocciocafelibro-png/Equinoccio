@@ -15,7 +15,7 @@ export default async function TablePage({
   params: Promise<{ tableId: string }>;
   searchParams: Promise<{ ticket?: string }>;
 }) {
-  const { role } = await requireRole("sell");
+  const { role, name } = await requireRole("sell");
   const { tableId } = await params;
   const { ticket: ticketParam } = await searchParams;
   const db = getDb();
@@ -37,7 +37,7 @@ export default async function TablePage({
   if (ticket && (ticket.status !== "abierto" || ticket.tableId !== tableId)) ticket = null;
 
   return (
-    <AppShell role={role} active="mesas">
+    <AppShell role={role} name={name} active="mesas">
       <TicketScreen table={table} ticket={ticket} products={products} extras={extras} pct={pct} canVoid={role === "admin"} />
     </AppShell>
   );

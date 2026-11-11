@@ -11,7 +11,7 @@ import { CierreForm } from "./cierre-form";
 export const metadata = { title: "Cierre del día · Caja Equinoccio" };
 
 export default async function CierrePage({ searchParams }: { searchParams: Promise<{ day?: string }> }) {
-  const { role } = await requireRole("closeDay");
+  const { role, name } = await requireRole("closeDay");
   const { day: dayParam } = await searchParams;
   const today = businessDay(new Date(nowMs()).toISOString());
   const day = dayParam && /^\d{4}-\d{2}-\d{2}$/.test(dayParam) ? dayParam : today;
@@ -23,7 +23,7 @@ export default async function CierrePage({ searchParams }: { searchParams: Promi
     getClosing(db, day),
   ]);
   return (
-    <AppShell role={role} active="cierre">
+    <AppShell role={role} name={name} active="cierre">
       <CierreForm
         key={`${day}-${closing?.locked ? "cerrado" : "abierto"}`}
         day={day}

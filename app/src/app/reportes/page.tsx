@@ -8,6 +8,7 @@ import { requireRole } from "@/server/auth";
 import { nowMs } from "@/server/clock";
 import { loadTickets } from "@/server/closings";
 import { getDb } from "@/server/db";
+import { listProfileNames } from "@/server/queries";
 
 export const metadata = { title: "Reportes · Caja Equinoccio" };
 
@@ -34,17 +35,18 @@ function Bars({ items }: { items: { label: string; sub?: string; value: number }
 }
 
 export default async function ReportesPage({ searchParams }: { searchParams: Promise<{ range?: string }> }) {
-  const { role } = await requireRole("viewReports");
+  const { role, name } = await requireRole("viewReports");
   const { range: rangeParam } = await searchParams;
   const key = RANGES.some((r) => r.key === rangeParam) ? (rangeParam as string) : "hoy";
   const today = businessDay(new Date(nowMs()).toISOString());
   const range = rangeFor(key, today);
   const tickets = await loadTickets(getDb(), { status: "cerrado", from: range.from, to: range.to });
   const r = reportSales(tickets, range);
+  const names = await listProfileNames(getDb());
   const maxDay = Math.max(1, ...r.byDay.map((d) => d.sales));
 
   return (
-    <AppShell role={role} active="reportes">
+    <AppShell role={role} name={name} active="reportes">
       <div className="row" style={{ marginBottom: 14 }}>
         <h2 style={{ marginRight: 8 }}>Reportes</h2>
         <div className="chips">
@@ -109,6 +111,19 @@ export default async function ReportesPage({ searchParams }: { searchParams: Pro
             <div className="card">
               <h3>Por salón</h3>
               <Bars items={r.bySalon.map((s) => ({ label: s.salon, value: s.sales }))} />
+            </div>
+            <div className="card">
+              <h3>Por persona</h3>
+              <p className="muted small" style={{ margin: "2px 0 0" }}>
+                Quien abrió la cuenta.
+              </p>
+              <Bars
+                items={r.byUser.map((u) => ({
+                  label: u.userId ? (names[u.userId] ?? "Usuario eliminado") : "Sin dato",
+                  sub: `${u.count} cuentas`,
+                  value: u.sales,
+                }))}
+              />
             </div>
             <div className="card">
               <h3>Por mesa</h3>

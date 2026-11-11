@@ -6,7 +6,9 @@ create table if not exists schema_migrations (name text primary key, applied_at 
 
 create table profiles (
   user_id text primary key,
-  role text not null check (role in ('caja', 'admin'))
+  role text not null check (role in ('caja', 'admin')),
+  name text not null,
+  username text not null unique
 );
 
 create table settings (

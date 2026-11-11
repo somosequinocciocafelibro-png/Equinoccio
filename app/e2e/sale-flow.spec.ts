@@ -1,17 +1,17 @@
 import { expect, test } from "@playwright/test";
 
-const email = process.env.E2E_EMAIL;
+const usuario = process.env.E2E_USER;
 const password = process.env.E2E_PASSWORD;
 
 test.skip(
-  !process.env.E2E_BASE_URL || !email || !password,
-  "Define E2E_BASE_URL, E2E_EMAIL y E2E_PASSWORD (usuario de caja de un entorno de pruebas).",
+  !process.env.E2E_BASE_URL || !usuario || !password,
+  "Define E2E_BASE_URL, E2E_USER y E2E_PASSWORD (usuario de caja de un entorno de pruebas).",
 );
 
 // Deja una venta de prueba en la base del entorno: úsalo solo contra un entorno de pruebas.
 test("venta completa: dos productos, servicio, pago dividido y cuenta cerrada", async ({ page }) => {
   await page.goto("/login");
-  await page.getByLabel("Correo").fill(email as string);
+  await page.getByLabel("Nombre").fill(usuario as string);
   await page.getByLabel("Contraseña").fill(password as string);
   await page.getByRole("button", { name: "Entrar" }).click();
   await expect(page).toHaveURL(/\/mesas$/);

@@ -83,3 +83,22 @@ describe("reportSales", () => {
     expect(reportSales([], range)).toMatchObject({ avg: 0, count: 0, sales: 0 });
   });
 });
+
+describe("reportSales por persona", () => {
+  test("byUser suma ventas y cuentas por quien abrió la cuenta, de mayor a menor", () => {
+    const r = reportSales(
+      [
+        cerrada("2026-11-08", { openedBy: "u-carolina" }),
+        cerrada("2026-11-08", { openedBy: "u-marian", lines: [line({ unitPrice: 30000 })] }),
+        cerrada("2026-11-09", { openedBy: "u-carolina" }),
+        cerrada("2026-11-09"),
+      ],
+      range,
+    );
+    expect(r.byUser).toEqual([
+      { userId: "u-marian", sales: 30000, count: 1 },
+      { userId: "u-carolina", sales: 20000, count: 2 },
+      { userId: null, sales: 10000, count: 1 },
+    ]);
+  });
+});

@@ -25,6 +25,7 @@ type TicketRow = {
   service_custom: number | null;
   service_frozen: number | null;
   void_reason: string | null;
+  created_by: string | null;
 };
 type LineRow = {
   id: string;
@@ -172,6 +173,7 @@ export async function loadTickets(db: Db, f: TicketFilter = {}): Promise<Ticket[
       ),
     service: { enabled: r.service_enabled, custom: r.service_custom, frozenAmount: r.service_frozen },
     voidReason: r.void_reason,
+    openedBy: r.created_by,
   }));
 }
 
