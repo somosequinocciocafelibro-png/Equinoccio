@@ -24,10 +24,10 @@ describe("queries", () => {
   });
 
   test("listProducts devuelve solo los activos, en orden", async () => {
-    expect(await listProducts(db)).toHaveLength(55);
+    expect(await listProducts(db)).toHaveLength(56);
     await db.query(`update products set active = false where id = 'latte'`);
     const after = await listProducts(db);
-    expect(after).toHaveLength(54);
+    expect(after).toHaveLength(55);
     expect(after[0]).toEqual({ id: "espresso", name: "Espresso", category: "Café caliente", price: 4000 });
     await db.query(`update products set active = true where id = 'latte'`);
   });

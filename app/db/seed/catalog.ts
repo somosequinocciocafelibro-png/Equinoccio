@@ -86,11 +86,12 @@ export const PRODUCTS: P[] = [
   ["pastel-carne-ranchero", "Pastel de carne ranchero", "Pastelería y panadería", 6500],
   ["pan-chocolate-mantequilla", "Pan de chocolate mantequilla", "Pastelería y panadería", 3500],
   ["pastel-manzana", "Pastel de manzana", "Pastelería y panadería", 6500],
+  ["torta-zanahoria", "Pastel de zanahoria", "Pastelería y panadería", 6500],
   ["pastel-pollo", "Pastel de pollo", "Pastelería y panadería", 5000],
-  ["croissant-multicereal", "Croissant multicereal mantequilla", "Pastelería y panadería", 3500],
+  ["croissant-multicereal", "Croissant multicereal mantequilla", "Pastelería y panadería", 6500],
   ["pastel-arequipe-pequeno", "Mini roscón de arequipe", "Pastelería y panadería", 2000],
   ["palito-queso-bocadillo", "Palito de bocadillo y queso", "Pastelería y panadería", 6500],
-  ["pastel-arequipe", "Pastel de arequipe", "Pastelería y panadería", 5500],
+  ["pastel-arequipe", "Pastel de arequipe", "Pastelería y panadería", 6500],
   // Productos que ya no están en la carta. Se conservan desactivados para que el historial y la importación del Excel
   // sigan funcionando, y se pueden reactivar desde Catálogo.
   ["mini-latte", "Mini Latte", "Café caliente", 6000, false],
@@ -105,7 +106,6 @@ export const PRODUCTS: P[] = [
   ["palito-bocadillo", "Palito de bocadillo", "Pastelería y panadería", 4000, false],
   ["pastel-ricotta", "Pastel ricotta", "Pastelería y panadería", 4500, false],
   ["pastel-almendras", "Pastel de almendras", "Pastelería y panadería", 6500, false],
-  ["torta-zanahoria", "Torta de zanahoria", "Pastelería y panadería", 6000, false],
 ];
 
 /** Carga salones, mesas, extras y catálogo iniciales. Se ejecuta una sola vez sobre una base vacía. */

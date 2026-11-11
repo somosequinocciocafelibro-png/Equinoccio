@@ -93,7 +93,7 @@ describe("semilla", () => {
       { delta: 2000, n: 1 }, // leche espuma / frutos / soda (Cold Brew)
     ]);
     expect(await db.query(`select service_pct from settings`)).toEqual([{ service_pct: 10 }]);
-    expect(await db.query(`select count(*)::int as n, count(*) filter (where active)::int as activos from products`)).toEqual([{ n: 68, activos: 55 }]);
+    expect(await db.query(`select count(*)::int as n, count(*) filter (where active)::int as activos from products`)).toEqual([{ n: 68, activos: 56 }]);
     expect(await db.query(`select price from products where id = 'capuchino'`)).toEqual([{ price: 9000 }]);
     expect(await db.query(`select count(*)::int as n from products where category = 'Malteadas' and price = 10000 and active`)).toEqual([{ n: 3 }]);
   });
