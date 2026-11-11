@@ -40,7 +40,7 @@ export async function listProducts(db: Db): Promise<ProductInfo[]> {
 }
 
 export async function listExtras(db: Db): Promise<ExtraInfo[]> {
-  return db.query<ExtraInfo>(`select id, name, delta from extras where active order by name`);
+  return db.query<ExtraInfo>(`select id, name, delta from extras where active order by delta, name`);
 }
 
 export async function getServicePct(db: Db): Promise<number> {
@@ -79,7 +79,7 @@ export async function listAllProducts(db: Db): Promise<(ProductInfo & { active: 
 }
 
 export async function listAllExtras(db: Db): Promise<(ExtraInfo & { active: boolean })[]> {
-  return db.query(`select id, name, delta, active from extras order by name`);
+  return db.query(`select id, name, delta, active from extras order by delta, name`);
 }
 
 export async function listAllTables(db: Db): Promise<(TableInfo & { active: boolean })[]> {

@@ -109,7 +109,7 @@ describe("importTickets", () => {
   test("unifica las variantes del nombre y guarda el precio con el que se vendió", async () => {
     await importar();
     const luna = (await loadTickets(db, { status: "cerrado" })).filter((t) => t.salon === "Luna");
-    const capuccino = luna.find((t) => t.lines[0].name === "Capuchino" && t.lines[0].extras.length === 0 && t.payments[0].applied === 9000)!;
+    const capuccino = luna.find((t) => t.lines[0].name === "Cappuccino" && t.lines[0].extras.length === 0 && t.payments[0].applied === 9000)!;
     expect(capuccino.lines[0]).toMatchObject({ productId: "capuchino", unitPrice: 9000, qty: 1 });
   });
 

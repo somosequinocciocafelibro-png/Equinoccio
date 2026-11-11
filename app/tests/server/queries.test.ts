@@ -24,11 +24,11 @@ describe("queries", () => {
   });
 
   test("listProducts devuelve solo los activos, en orden", async () => {
-    expect(await listProducts(db)).toHaveLength(43);
+    expect(await listProducts(db)).toHaveLength(55);
     await db.query(`update products set active = false where id = 'latte'`);
     const after = await listProducts(db);
-    expect(after).toHaveLength(42);
-    expect(after[0]).toEqual({ id: "espresso", name: "Espresso", category: "Café", price: 4000 });
+    expect(after).toHaveLength(54);
+    expect(after[0]).toEqual({ id: "espresso", name: "Espresso", category: "Café caliente", price: 4000 });
     await db.query(`update products set active = true where id = 'latte'`);
   });
 
@@ -45,10 +45,11 @@ describe("queries", () => {
   });
 
   test("listExtras y getServicePct", async () => {
-    expect((await listExtras(db)).map((e) => [e.name, e.delta])).toEqual([
-      ["Caramelo", 0],
-      ["Vainilla", 500],
-    ]);
+    const extras = await listExtras(db);
+    expect(extras).toHaveLength(11);
+    expect(extras.map((e) => e.delta)).toEqual([...extras.map((e) => e.delta)].sort((a, b) => a - b)); // de menor a mayor tarifa
+    expect(extras.slice(0, 4).map((e) => e.name)).toEqual(["Caramelo", "Miel", "Panela", "Vainilla"]);
+    expect(extras[extras.length - 1]).toMatchObject({ name: "Leche espuma / frutos / soda", delta: 2000 });
     expect(await getServicePct(db)).toBe(10);
   });
 });

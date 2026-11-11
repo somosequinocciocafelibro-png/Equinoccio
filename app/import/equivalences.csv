@@ -24,7 +24,7 @@ chocolate,chocolate
 ice latte,ice-latte
 iced latte,ice-latte
 iced latte + caramelo,ice-latte,caramelo
-iced caramel latte,ice-latte,caramelo
+iced caramel latte,iced-caramel-latte
 cold brew + chocolate,cold-brew-chocolate
 te frutos rojos,te-frutos-rojos
 te marea de luna,te-marea-de-luna
@@ -79,3 +79,19 @@ pastel de almendras,pastel-almendras
 pastel arequipe pequeno,pastel-arequipe-pequeno
 torta de zanahoria,torta-zanahoria
 torta zanahoria,torta-zanahoria
+flat white,flat-white
+macchiato,macchiato
+cold brew,cold-brew
+hot chocolate,chocolate
+soda pasion,soda-frutos-rojos
+soda eclipse azul,soda-eclipse-azul
+soda azul,soda-eclipse-azul
+rayo de sol,te-rayo-de-sol
+luz de primavera,te-luz-de-primavera
+croissant almendras,croissant-almendras
+coissant almendras,croissant-almendras
+croissant de almendras,croissant-almendras
+flauta de chocolate,flauta-chocolate
+flauta chocolate,flauta-chocolate
+pan de bono,mini-pan-de-bono
+mini pan de bono,mini-pan-de-bono

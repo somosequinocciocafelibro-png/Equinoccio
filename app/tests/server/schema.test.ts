@@ -87,13 +87,14 @@ describe("semilla", () => {
   });
 
   test("carga los extras, el servicio y el catálogo", async () => {
-    expect(await db.query(`select name, delta from extras order by name`)).toEqual([
-      { name: "Caramelo", delta: 0 },
-      { name: "Vainilla", delta: 500 },
+    expect(await db.query(`select delta, count(*)::int as n from extras group by delta order by delta`)).toEqual([
+      { delta: 500, n: 4 }, // miel, panela, vainilla, caramelo
+      { delta: 1000, n: 6 }, // arequipe, cocoa, chocolate, leche condensada, chantillí, dulce de cereza
+      { delta: 2000, n: 1 }, // leche espuma / frutos / soda (Cold Brew)
     ]);
     expect(await db.query(`select service_pct from settings`)).toEqual([{ service_pct: 10 }]);
-    expect(await db.query(`select count(*)::int as n from products`)).toEqual([{ n: 43 }]);
+    expect(await db.query(`select count(*)::int as n, count(*) filter (where active)::int as activos from products`)).toEqual([{ n: 68, activos: 55 }]);
     expect(await db.query(`select price from products where id = 'capuchino'`)).toEqual([{ price: 9000 }]);
-    expect(await db.query(`select count(*)::int as n from products where category = 'Malteadas' and price = 8000`)).toEqual([{ n: 4 }]);
+    expect(await db.query(`select count(*)::int as n from products where category = 'Malteadas' and price = 10000 and active`)).toEqual([{ n: 3 }]);
   });
 });

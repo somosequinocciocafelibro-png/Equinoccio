@@ -88,3 +88,7 @@ input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent);
 .day b { display: block; width: 100%; background: var(--accent); border-radius: 4px 4px 0 0; min-height: 2px; }
 .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
 @media (max-width: 900px) { .prow { grid-template-columns: 1fr 1fr; } }
+/* Adiciones por tarifa */
+.adic { padding-top: 8px; }
+.adic-grupo { display: flex; gap: 10px; align-items: baseline; margin-top: 6px; flex-wrap: wrap; }
+.adic-tarifa { font-weight: 600; font-size: 13px; min-width: 56px; color: var(--muted); }

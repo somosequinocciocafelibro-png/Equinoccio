@@ -12,7 +12,7 @@ describe("setupDb", () => {
     const db = await makeEmptyDb();
     const r = await setupDb(db, { migrationsDir });
     expect(r).toEqual({ migrated: ["001_init.sql"], seeded: true });
-    expect(await db.query(`select count(*)::int as n from products`)).toEqual([{ n: 43 }]);
+    expect(await db.query(`select count(*)::int as n from products`)).toEqual([{ n: 68 }]);
     expect(await db.query(`select count(*)::int as n from dining_tables`)).toEqual([{ n: 13 }]);
   });
 
@@ -21,7 +21,7 @@ describe("setupDb", () => {
     await setupDb(db, { migrationsDir });
     const r = await setupDb(db, { migrationsDir });
     expect(r).toEqual({ migrated: [], seeded: false });
-    expect(await db.query(`select count(*)::int as n from products`)).toEqual([{ n: 43 }]);
+    expect(await db.query(`select count(*)::int as n from products`)).toEqual([{ n: 68 }]);
   });
 
   test("no vuelve a cargar el catálogo si el dueño ya tiene productos propios", async () => {

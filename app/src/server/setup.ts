@@ -67,9 +67,9 @@ export function buildSetupSql(migrationsDir: string): string {
     parts.push(`insert into extras (id, name, delta) values (${sqlString(e.id)}, ${sqlString(e.name)}, ${e.delta});`);
   }
   let order = 0;
-  for (const [id, name, category, price] of PRODUCTS) {
+  for (const [id, name, category, price, active = true] of PRODUCTS) {
     parts.push(
-      `insert into products (id, name, category, price, sort) values (${sqlString(id)}, ${sqlString(name)}, ${sqlString(category)}, ${price}, ${++order});`,
+      `insert into products (id, name, category, price, active, sort) values (${sqlString(id)}, ${sqlString(name)}, ${sqlString(category)}, ${price}, ${active}, ${++order});`,
     );
   }
   parts.push("commit;");

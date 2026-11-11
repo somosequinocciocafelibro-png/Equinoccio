@@ -37,9 +37,16 @@ export function TicketScreen({ table, ticket, products, extras, pct, canVoid = f
   // Cuenta recién creada por el primer producto: la pantalla tarda en recibir su id y un segundo toque no debe abrir otra.
   const [created, setCreated] = useState<string | null>(null);
   const [voiding, setVoiding] = useState(false);
+  const [openAdic, setOpenAdic] = useState<string | null>(null);
   const [voidReason, setVoidReason] = useState("");
 
   const { qty, text } = parseSearch(q);
+  // Las adiciones llegan ordenadas de menor a mayor tarifa; se agrupan por precio.
+  const tiers = useMemo(() => {
+    const m = new Map<number, ExtraInfo[]>();
+    for (const x of extras) m.set(x.delta, [...(m.get(x.delta) ?? []), x]);
+    return [...m.entries()].sort((a, b) => a[0] - b[0]);
+  }, [extras]);
   const categories = useMemo(() => ["Todos", ...new Set(products.map((p) => p.category))], [products]);
   const shown = matchProducts(products, text, cat);
   const blocked = !online || pending;
@@ -189,28 +196,44 @@ export function TicketScreen({ table, ticket, products, extras, pct, canVoid = f
                       +
                     </button>
                   </div>
-                  <div className="chips">
-                    {extras.map((x) => {
-                      const on = l.extras.some((e) => e.id === x.id);
-                      return (
-                        <button
-                          key={x.id}
-                          type="button"
-                          className={`chip${on ? " on" : ""}`}
-                          aria-pressed={on}
-                          disabled={blocked}
-                          onClick={() => run(() => toggleExtraAction({ lineId: l.id, extraId: x.id }))}
-                        >
-                          {x.name}
-                          {x.delta ? ` +${fmt(x.delta)}` : ""}
-                        </button>
-                      );
-                    })}
-                  </div>
+                  <button
+                    type="button"
+                    className={`chip${l.extras.length ? " on" : ""}`}
+                    aria-expanded={openAdic === l.id}
+                    onClick={() => setOpenAdic(openAdic === l.id ? null : l.id)}
+                  >
+                    {`Adiciones${l.extras.length ? ` (${l.extras.length})` : ""}`}
+                  </button>
                   <button type="button" className="x" aria-label="Quitar producto" disabled={blocked} onClick={() => run(() => setQtyAction({ lineId: l.id, qty: 0 }))}>
                     ✕
                   </button>
                 </div>
+                {openAdic === l.id ? (
+                  <div className="adic">
+                    {tiers.map(([delta, list]) => (
+                      <div className="adic-grupo" data-testid="adicion-grupo" key={delta}>
+                        <span className="adic-tarifa" data-testid="adicion-tarifa">{`+${fmt(delta)}`}</span>
+                        <div className="chips">
+                          {list.map((x) => {
+                            const on = l.extras.some((e) => e.id === x.id);
+                            return (
+                              <button
+                                key={x.id}
+                                type="button"
+                                className={`chip${on ? " on" : ""}`}
+                                aria-pressed={on}
+                                disabled={blocked}
+                                onClick={() => run(() => toggleExtraAction({ lineId: l.id, extraId: x.id }))}
+                              >
+                                {x.name}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
               </li>
             ))}
           </ul>
