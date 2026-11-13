@@ -368,24 +368,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 .item.combo.photo .thumb{cursor:zoom-in;background:#2a1c12;object-fit:cover;width:128px;height:128px}
 .item.combo.photo.has-img{grid-template-columns:128px 1fr}
 @media (max-width:520px){.item.combo.photo.has-img{grid-template-columns:96px 1fr}.item.combo.photo.has-img .thumb{width:96px;height:96px;grid-row:1/span 2}}
-
-/* Bienvenida temporal */
-#bienvenida{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:1.2rem;background:linear-gradient(115deg,rgba(246,203,126,.97) 0%,rgba(250,236,205,.97) 48%,rgba(120,156,226,.97) 100%);transition:opacity .6s}
-#bienvenida.fuera{opacity:0;pointer-events:none}
-#bienvenida .bv{max-width:640px;text-align:center;color:#22314F}
-#bienvenida img{width:clamp(110px,26vw,170px);height:auto;filter:drop-shadow(0 6px 14px rgba(60,40,20,.3));animation:bv-flota 4s ease-in-out infinite}
-#bienvenida small{display:block;margin-top:1rem;font:800 .8rem var(--f-body);letter-spacing:.22em;text-transform:uppercase;color:#7a4a1c}
-#bienvenida h2{margin:.4rem 0 .6rem;font:400 clamp(2.3rem,9vw,4.4rem)/1.05 var(--f-display)}
-#bienvenida p{margin:0 auto;max-width:34ch;font:600 clamp(1.05rem,3.6vw,1.35rem)/1.5 var(--f-body);color:#3B2A20}
-#bienvenida button{margin-top:1.6rem;border:0;border-radius:999px;padding:.8rem 1.8rem;font:800 1rem var(--f-body);background:#3B2A20;color:#fff;cursor:pointer}
-@keyframes bv-flota{50%{transform:translateY(-8px)}}
-@media (prefers-reduced-motion:reduce){#bienvenida img{animation:none}}
 </style>
 </head>
 <body>
-<div id="bienvenida" role="dialog" aria-label="Bienvenida a María José"><div class="bv"><img src="assets/logo.png" alt="Equinoccio Café Libro" width="170" height="170"><small>Equinoccio Café Libro</small><h2>¡Bienvenida, María José!</h2><p>Qué alegría tenerte aquí. Pasa, siéntate y disfruta: el sol, la luna y un buen café te estaban esperando.</p><button type="button" id="bv-cerrar">Ver la carta</button></div></div>
-<script>(function(){var b=document.getElementById("bienvenida");if(!b)return;function c(){b.classList.add("fuera");setTimeout(function(){b.remove()},700)}document.getElementById("bv-cerrar").onclick=c;setTimeout(c,120000)})();</script>
-
 <div class="cosmos" aria-hidden="true">
   <svg class="moon" viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="hairM" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1B2F80"/><stop offset="1" stop-color="#3F68C8"/></linearGradient><radialGradient id="crM" cx="30%" cy="30%" r="80%"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#BFCDEB"/></radialGradient></defs><path d="M268 58 C110 70 52 240 120 350 C145 392 200 420 262 426 C170 388 150 220 268 58 Z" fill="url(#crM)"/><g class="mh"><path d="M236 34 C150 20 60 90 62 200 C64 270 100 330 96 450 L196 450 C176 380 180 310 196 250 C190 190 200 120 236 34 Z" fill="url(#hairM)"/><path d="M226 52 C130 40 44 124 72 226 C92 296 46 346 98 430" fill="none" stroke="#5B86D8" stroke-width="14" stroke-linecap="round" opacity=".9"/><path d="M212 86 C128 90 86 160 108 232 C124 282 96 332 138 392" fill="none" stroke="#7FA6EA" stroke-width="11" stroke-linecap="round" opacity=".9"/><path d="M200 124 C152 134 132 190 144 242" fill="none" stroke="#9DBBF2" stroke-width="9" stroke-linecap="round" opacity=".9"/><path d="M236 70 C170 64 108 120 114 190" fill="none" stroke="#2A4BA0" stroke-width="8" stroke-linecap="round" opacity=".9"/><path d="M150 300 C120 330 150 360 128 410" fill="none" stroke="#5B86D8" stroke-width="9" stroke-linecap="round" opacity=".9"/><path d="M72 262 c-34 -10 -40 -56 -6 -64 c28 -6 46 24 28 44 c-14 14 -34 6 -32 -10" fill="none" stroke="#9DBBF2" stroke-width="7" stroke-linecap="round"/><path d="M100 120 c-30 -14 -22 -52 8 -50 c22 2 28 28 12 38" fill="none" stroke="#7FA6EA" stroke-width="6" stroke-linecap="round"/><g fill="#FFF"><circle cx="120" cy="150" r="3"/><circle cx="86" cy="260" r="2.4"/><circle cx="150" cy="330" r="2.6"/><circle cx="170" cy="200" r="2"/><circle cx="110" cy="360" r="2.2"/><circle cx="196" cy="110" r="2"/></g></g><defs><linearGradient id="skM" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A9C6F6"/><stop offset="1" stop-color="#4C74CC"/></linearGradient>
 <linearGradient id="skMh" x1="170" y1="0" x2="232" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
