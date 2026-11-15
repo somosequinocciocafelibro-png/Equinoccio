@@ -383,17 +383,18 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 @media (max-width:520px){.nodisp{display:table;margin:.3rem 0 0}}
 
 /* Encabezado de la carta: quiénes somos, qué vendemos, fotos y videos */
-.carta-hero .quienes{display:grid;gap:.55rem;margin-top:1rem;max-width:62ch}
-.carta-hero .quienes h2{margin:0;font:800 .78rem var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:#F2B766}
-.carta-hero .quienes p{margin:0;max-width:none;color:#EAE2D0;font-size:1rem;line-height:1.55}
-.carta-hero .quienes .vendemos{font:400 clamp(1.25rem,2.5vw,1.65rem)/1.3 var(--f-display);color:#fff}
-.carta-hero .quienes .vendemos b{color:#F2B766;font-weight:400}
-.carta-hero .quienes .ofrecemos b{color:#fff}
+.carta-hero .quienes{display:grid;gap:.55rem;margin-top:1rem;max-width:62ch;justify-items:start}
+.carta-hero .quienes h2{margin:.5rem 0 0;font:800 .8rem var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:#F2B766}
+.carta-hero .quienes h2:first-child{margin-top:0}
+.carta-hero .quienes p{margin:0;max-width:none;color:#EAE2D0;font-size:1.05rem;line-height:1.6}
+.carta-hero .quienes p b{color:#fff}
+.carta-hero .quienes .eventos-grande{display:inline;color:#fff;font:400 1.5rem/1.35 var(--f-display)}
+.carta-hero .quienes-link{margin-top:.5rem}
 .video-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;width:100%;max-width:none;margin-top:1rem;min-width:0}
 .video-strip .vid{margin:0;border-radius:16px;overflow:hidden;background:#0e1630;border:1px solid #F2D9A8;box-shadow:0 6px 18px rgba(10,16,34,.35)}
 .video-strip video{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#0e1630}
 .video-strip figcaption{padding:.4rem .7rem .5rem;font:400 .95rem/1.2 var(--f-display);color:#fff}
-@media (max-width:760px){.carta-hero .quienes{text-align:center}.video-strip{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:84%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.4rem;-webkit-overflow-scrolling:touch}.video-strip .vid{scroll-snap-align:center;text-align:left}}
+@media (max-width:760px){.carta-hero .quienes{text-align:center;justify-items:center}.carta-hero .quienes .eventos-grande{font-size:1.35rem}.carta-hero .quienes p{font-size:1.1rem}.video-strip{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:84%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.4rem;-webkit-overflow-scrolling:touch}.video-strip .vid{scroll-snap-align:center;text-align:left}}
 </style>
 </head>
 <body>
@@ -595,11 +596,13 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
       <p class="eyebrow" style="color:#F2B766">La carta</p>
       <h1>Equinoccio Café Libro</h1>
       <p>Un espacio para disfrutar, leer, y compartir...</p>
-      <div class="quienes" role="region" aria-labelledby="quienes-t">
-        <h2 id="quienes-t">Quiénes somos</h2>
+      <div class="quienes" role="region" aria-label="Quiénes somos y qué vendemos">
+        <h2>¿Quiénes somos?</h2>
         <p>Somos Equinoccio Café Libro, en Cajicá: el punto exacto de equilibrio entre buen café, libros y alta repostería, donde el sol y la luna se encuentran para compartir.</p>
-        <p class="vendemos"><b>Qué vendemos:</b> café de especialidad, repostería y panadería de alta gama.</p>
-        <p class="ofrecemos">Y ofrecemos <b>salones temáticos</b>: salones para eventos de cumpleaños y eventos empresariales, y <b>bibliotecas</b> con libros para adultos y niños.</p>
+        <h2>¿Qué vendemos?</h2>
+        <p>Café de especialidad, repostería y panadería de alta gama.</p>
+        <p>Y ofrecemos <b>salones temáticos</b>: <span class="eventos-grande">salones para eventos de cumpleaños y eventos empresariales</span>, y <b>bibliotecas</b> con libros para adultos y niños.</p>
+        <a class="btn btn-primary quienes-link" href="eventos/">Ver el menú para eventos especiales</a>
       </div>
       <div class="salon-strip vida-strip" aria-label="La vida en Equinoccio">
         <a class="v" href="#visitanos"><img src="assets/vida/barista.jpg" alt="Nuestro barista sonriendo detrás de la vitrina de repostería" loading="lazy" width="640" height="640"><b>Te atendemos</b></a>
