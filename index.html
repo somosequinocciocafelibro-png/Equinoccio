@@ -381,6 +381,19 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 .nodisp{display:inline-block;margin-left:.6rem;padding:.14rem .65rem;border-radius:999px;background:#7a2e1d;color:#fff;font:800 .68rem var(--f-body);letter-spacing:.1em;text-transform:uppercase;vertical-align:.12em}
 .item.combo.nodisp-item>*:not(h3){opacity:.55}.item.combo.nodisp-item .thumb{filter:grayscale(.6)}
 @media (max-width:520px){.nodisp{display:table;margin:.3rem 0 0}}
+
+/* Encabezado de la carta: quiénes somos, qué vendemos, fotos y videos */
+.carta-hero .quienes{display:grid;gap:.55rem;margin-top:1rem;max-width:62ch}
+.carta-hero .quienes h2{margin:0;font:800 .78rem var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:#F2B766}
+.carta-hero .quienes p{margin:0;max-width:none;color:#EAE2D0;font-size:1rem;line-height:1.55}
+.carta-hero .quienes .vendemos{font:400 clamp(1.25rem,2.5vw,1.65rem)/1.3 var(--f-display);color:#fff}
+.carta-hero .quienes .vendemos b{color:#F2B766;font-weight:400}
+.carta-hero .quienes .ofrecemos b{color:#fff}
+.video-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;width:100%;max-width:none;margin-top:1rem;min-width:0}
+.video-strip .vid{margin:0;border-radius:16px;overflow:hidden;background:#0e1630;border:1px solid #F2D9A8;box-shadow:0 6px 18px rgba(10,16,34,.35)}
+.video-strip video{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#0e1630}
+.video-strip figcaption{padding:.4rem .7rem .5rem;font:400 .95rem/1.2 var(--f-display);color:#fff}
+@media (max-width:760px){.carta-hero .quienes{text-align:center}.video-strip{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:84%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.4rem;-webkit-overflow-scrolling:touch}.video-strip .vid{scroll-snap-align:center;text-align:left}}
 </style>
 </head>
 <body>
@@ -582,6 +595,12 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
       <p class="eyebrow" style="color:#F2B766">La carta</p>
       <h1>Equinoccio Café Libro</h1>
       <p>Un espacio para disfrutar, leer, y compartir...</p>
+      <div class="quienes" role="region" aria-labelledby="quienes-t">
+        <h2 id="quienes-t">Quiénes somos</h2>
+        <p>Somos Equinoccio Café Libro, en Cajicá: el punto exacto de equilibrio entre buen café, libros y alta repostería, donde el sol y la luna se encuentran para compartir.</p>
+        <p class="vendemos"><b>Qué vendemos:</b> café de especialidad, repostería y panadería de alta gama.</p>
+        <p class="ofrecemos">Y ofrecemos <b>salones temáticos</b>: salones para eventos de cumpleaños y eventos empresariales, y <b>bibliotecas</b> con libros para adultos y niños.</p>
+      </div>
       <div class="salon-strip vida-strip" aria-label="La vida en Equinoccio">
         <a class="v" href="#visitanos"><img src="assets/vida/barista.jpg" alt="Nuestro barista sonriendo detrás de la vitrina de repostería" loading="lazy" width="640" height="640"><b>Te atendemos</b></a>
         <a class="v" href="#carta"><img src="assets/vida/capuchino.jpg" alt="Cappuccino con una carita sonriente de chocolate sobre la espuma" loading="lazy" width="640" height="640"><b>Con cariño</b></a>
@@ -591,6 +610,11 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
         <a class="l" href="#salones"><img src="assets/salon-luna-logo.jpg" alt="Salón Luna" loading="lazy" width="1800" height="1013"><b>Salón Luna</b></a>
         <a class="e" href="#salones"><img src="assets/salon-equinoccio.jpg" alt="Salón Equinoccio" loading="lazy" width="1600" height="900"><b>Salón Equinoccio</b></a>
         <a class="s" href="#salones"><img src="assets/salon-sol-logo.jpg" alt="Salón Sol" loading="lazy" width="1800" height="1013"><b>Salón Sol</b></a>
+      </div>
+      <div class="video-strip" aria-label="Videos de Equinoccio">
+        <figure class="vid"><video controls playsinline preload="none" poster="assets/videos/marca-equinoccio.jpg" aria-label="Video: la marca Equinoccio entre la luna, el sol y los libros"><source src="assets/videos/marca-equinoccio.mp4" type="video/mp4"><source src="assets/videos/marca-equinoccio.webm" type="video/webm"></video><figcaption>Equinoccio</figcaption></figure>
+        <figure class="vid"><video controls playsinline preload="none" poster="assets/videos/cappuccino-canela.jpg" aria-label="Video: cappuccino con el logo de Equinoccio y un rollo de canela"><source src="assets/videos/cappuccino-canela.mp4" type="video/mp4"><source src="assets/videos/cappuccino-canela.webm" type="video/webm"></video><figcaption>Café de especialidad</figcaption></figure>
+        <figure class="vid"><video controls playsinline preload="none" poster="assets/videos/cafe-helado-croissant.jpg" aria-label="Video: café helado y croissant de almendras en una bandeja"><source src="assets/videos/cafe-helado-croissant.mp4" type="video/mp4"><source src="assets/videos/cafe-helado-croissant.webm" type="video/webm"></video><figcaption>Repostería y panadería</figcaption></figure>
       </div>
       </div>
     </div>
