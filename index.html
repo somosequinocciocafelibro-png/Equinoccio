@@ -271,7 +271,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 .flavors span{font-size:.8rem;padding:.2rem .6rem;border-radius:999px;border:1px solid var(--line)}
 .carta-foot{padding-block:2rem 3rem;display:grid;gap:1rem;justify-items:center;text-align:center;color:var(--fg-soft);font-size:var(--s-small)}
 @media (max-width:520px){.item .desc,.item .add{grid-column:1/-1}.cols span,.prices span{width:3.9rem}.prices{gap:.5rem;font-size:.95rem}.cols{gap:.5rem}.cols span{font-size:.58rem;letter-spacing:.05em;line-height:1.2}.item h3{font-size:1rem}.cat-head h2{font-size:1.6rem}.item.has-img{grid-template-columns:64px 1fr auto}.item.has-img .thumb{width:64px;height:64px}}
-.cat-img{display:block;width:100%;height:auto;aspect-ratio:4/3;max-height:360px;object-fit:cover;border-radius:16px;border:1px solid var(--line);margin:.9rem 0 .3rem}
+.cat-img{display:block;width:100%;max-width:640px;height:auto;object-fit:contain;border-radius:16px;border:1px solid var(--line);margin:.9rem auto .3rem}
 .item.has-img{grid-template-columns:128px 1fr auto;column-gap:1.1rem;align-items:center}
 .item.has-img .thumb{grid-row:1/span 3;grid-column:1;width:128px;height:128px;border-radius:18px;background:#fff;object-fit:cover;border:1px solid var(--line);cursor:zoom-in;box-shadow:0 4px 14px rgba(60,40,20,.12);transition:transform .2s}
 .item.has-img .thumb:hover{transform:scale(1.03)}
@@ -696,7 +696,7 @@ MENU.categories.forEach(cat => {
   }).join("");
   menuEl.insertAdjacentHTML("beforeend", `<section class="cat" id="${id}" style="padding-inline:0">
     <div class="cat-head"><div><h2>${esc(cat.name)}</h2>${cat.note?`<small>${esc(cat.note)}</small>`:""}</div>
-</div>${CAT_IMGS[cat.name]?`<img class="cat-img" src="${CAT_IMGS[cat.name][0]}" alt="${esc(CAT_IMGS[cat.name][1])}" loading="lazy" width="1200" height="900">`:""}${items}</section>`);
+</div>${CAT_IMGS[cat.name]?`<img class="cat-img" src="${CAT_IMGS[cat.name][0]}" alt="${esc(CAT_IMGS[cat.name][1])}" loading="lazy" width="1200" height="896">`:""}${items}</section>`);
 });
 document.getElementById("carta-count").textContent = `${total} preparaciones y horneados, de ${fmt(2500)} a ${fmt(15000)}. Y ${MENU.categories.filter(c=>c.combo).reduce((n,c)=>n+c.items.length,0)} combos literarios.`;
 tabsEl.addEventListener("click", e => {
