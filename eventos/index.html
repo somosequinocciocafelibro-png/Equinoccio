@@ -1,27 +1,71 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Menú para eventos especiales · Equinoccio Café Libro</title>
-<meta name="description" content="Menú para eventos de cumpleaños y eventos empresariales en Equinoccio Café Libro, Cajicá.">
+<meta name="description" content="Menú para eventos especiales de Equinoccio Café Libro, Cajicá: combos infantiles y más.">
 <link rel="icon" href="/assets/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Nunito+Sans:wght@400;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:1.5rem;font-family:"Nunito Sans",system-ui,sans-serif;color:#3B2A20;background:linear-gradient(120deg,#FFF1D6 0%,#FCF1DD 48%,#E4ECFA 100%)}
-main{max-width:34rem;text-align:center}
-img{width:clamp(110px,30vw,160px);height:auto;filter:drop-shadow(0 6px 14px rgba(60,40,20,.3))}
-small{display:block;margin-top:1rem;font-weight:800;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;color:#B85A1E}
-h1{margin:.4rem 0 .8rem;font:400 clamp(1.9rem,7vw,2.8rem)/1.1 "Young Serif",Georgia,serif;color:#22314F}
-p{margin:0 auto 1.4rem;font-size:1.1rem;line-height:1.6}
-.btns{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center}
-a.b{display:inline-flex;align-items:center;padding:.85rem 1.5rem;border-radius:999px;font-weight:800;text-decoration:none;font-size:1rem;border:2px solid #B85A1E}
-a.p{background:#B85A1E;color:#fff}a.s{color:#B85A1E;background:transparent}
+*{box-sizing:border-box;margin:0}
+:root{--navy:#22314F;--amber:#B85A1E;--ink:#3B2A20;--line:#E7D5B3}
+body{font-family:"Nunito Sans",system-ui,sans-serif;color:var(--ink);line-height:1.55;background:linear-gradient(165deg,#FFE9BD 0%,#FFF3DC 30%,#FCEFD8 60%,#DCE7FA 100%);background-attachment:fixed;min-height:100vh}
+.wrap{max-width:860px;margin:0 auto;padding:0 1.2rem}
+header{padding:1.4rem 0 .4rem}
+.top{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:.8rem;text-decoration:none;color:var(--navy)}
+.brand img{width:56px;height:56px;filter:drop-shadow(0 3px 6px rgba(60,40,20,.3))}
+.brand b{display:block;font:400 1.45rem/1 "Young Serif",serif;letter-spacing:.05em}
+.brand span{display:block;margin-top:.25rem;font:800 .66rem "Nunito Sans";letter-spacing:.3em;color:var(--amber)}
+.nav a{font-weight:800;font-size:.92rem;color:var(--amber);text-decoration:none;margin-left:1rem}
+.hero{padding:2.2rem 0 .6rem}
+.hero small{font:800 .8rem "Nunito Sans";letter-spacing:.24em;text-transform:uppercase;color:var(--amber)}
+h1{margin:.4rem 0 .7rem;font:400 clamp(2.1rem,6.5vw,3.4rem)/1.05 "Young Serif",serif;color:var(--navy)}
+h1 em{font-style:normal;color:var(--amber)}
+.lead{max-width:40rem;font-size:1.12rem;font-weight:600}
+h2{display:flex;align-items:center;gap:.7rem;font:400 clamp(1.5rem,4vw,2rem)/1.1 "Young Serif",serif;color:var(--navy);margin:2.4rem 0 .4rem}
+h2 .n{display:grid;place-items:center;width:40px;height:40px;flex:none;border-radius:50%;background:var(--amber);color:#fff;font:800 1.1rem "Nunito Sans"}
+.sec-sub{color:#5a4538;margin-bottom:1rem}
+.item{display:grid;grid-template-columns:96px 1fr auto;gap:1rem;align-items:center;background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:24px;padding:1.2rem 1.3rem;box-shadow:0 8px 22px rgba(60,40,20,.1)}
+.item svg{width:96px;height:96px}
+.item h3{font:400 1.35rem/1.15 "Young Serif",serif;color:var(--navy);margin-bottom:.35rem}
+.item p{font-size:1rem}.item ul{margin:.4rem 0 0 1.1rem}.item li+li{margin-top:.15rem}
+.pr{font:400 1.9rem/1 "Young Serif",serif;color:var(--amber);white-space:nowrap;text-align:right}
+.pr small{display:block;margin-top:.3rem;font:800 .72rem "Nunito Sans";letter-spacing:.12em;text-transform:uppercase;color:#6b5a4c}
+.note{margin-top:1.4rem;font-size:.95rem;color:#5a4538}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.5rem;border-radius:999px;font-weight:800;text-decoration:none;font-size:1rem;border:2px solid var(--amber);margin:.4rem .5rem 0 0}
+.btn.p{background:var(--amber);color:#fff}.btn.s{color:var(--amber)}
+.cta{margin:2.4rem 0 0;padding:1.6rem;border-radius:26px;background:linear-gradient(100deg,#1D3470,#2F4F98 45%,#B5582A 85%,#D98C2B);color:#fff;text-align:center}
+.cta h2{color:#fff;margin:0 0 .4rem;justify-content:center}.cta .btn{border-color:#FFD58A}.cta .btn.p{background:#FFD58A;color:var(--navy)}.cta .btn.s{color:#FFD58A}
+footer{padding:2rem 0 2.4rem;text-align:center;font-size:.92rem;color:#5a4538}
+@media(max-width:620px){.item{grid-template-columns:1fr;text-align:left}.item svg{width:84px;height:84px}.pr{text-align:left}.nav a{margin:0 .8rem 0 0}.top{align-items:flex-start}}
 </style></head>
-<body><main>
-<img src="/assets/logo.png" alt="Equinoccio Café Libro" width="160" height="160">
-<small>Equinoccio Café Libro</small>
-<h1>Menú para eventos especiales</h1>
-<p>Muy pronto encontrarás aquí el menú para eventos de cumpleaños y eventos empresariales. Mientras tanto, cuéntanos tu evento por WhatsApp y te ayudamos a prepararlo.</p>
-<div class="btns">
-<a class="b p" href="https://wa.me/573102922345?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20eventos%20en%20Equinoccio%20Caf%C3%A9%20Libro" rel="noopener">Escribir por WhatsApp</a>
-<a class="b s" href="/#carta">Ver la carta</a>
+<body>
+<header><div class="wrap top">
+<a class="brand" href="/"><img src="/assets/logo.png" alt="" width="56" height="56"><div><b>EQUINOCCIO</b><span>CAFÉ LIBRO · CAJICÁ</span></div></a>
+<nav class="nav"><a href="/#carta">Ver la carta</a><a href="/">Inicio</a></nav>
+</div></header>
+<main class="wrap">
+<section class="hero">
+<small>Eventos en Equinoccio</small>
+<h1>Menú para <em>eventos especiales</em></h1>
+<p class="lead">Opciones pensadas para celebraciones, talleres y encuentros en nuestros salones.</p>
+</section>
+
+<h2><span class="n">1</span>Combos infantiles</h2>
+<p class="sec-sub">Frescos y coloridos, pensados para los más pequeños.</p>
+<article class="item">
+<svg viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="46" fill="#FFF3DC" stroke="#E7D5B3" stroke-width="2"/><path d="M22 44h52a2 2 0 0 1 2 2c0 15-12 26-28 26S20 61 20 46a2 2 0 0 1 2-2z" fill="#F6CB7E" stroke="#B85A1E" stroke-width="2.2" stroke-linejoin="round"/><path d="M28 44c2-8 8-12 14-8 3-7 12-8 16-1 5-3 10 1 10 9z" fill="#FFFBF2" stroke="#B85A1E" stroke-width="2" stroke-linejoin="round"/><circle cx="36" cy="56" r="4.2" fill="#E2677B"/><circle cx="50" cy="60" r="4.2" fill="#F6B73C"/><circle cx="62" cy="55" r="4.2" fill="#7DBB6A"/><path d="M60 30c2-9 10-12 16-10-1 7-8 12-16 10z" fill="#7DBB6A" stroke="#3f7a35" stroke-width="1.6"/><circle cx="26" cy="26" r="6" fill="#E2677B"/><path d="M23 21c1-4 6-4 7 0" fill="none" stroke="#3f7a35" stroke-width="2" stroke-linecap="round"/></svg>
+<div>
+<h3>Frutas, yogurt y granola</h3>
+<p>Porción de frutas:</p>
+<ul><li>Banano</li><li>Papaya</li><li>Melón</li><li>Mango dulce</li><li>Fresa</li></ul>
+<p style="margin-top:.5rem">Con <b>yogurt griego o saborizado</b> y <b>granola</b>.</p>
 </div>
-</main></body></html>
+<div class="pr">$14.000<small>por combo</small></div>
+</article>
+<p class="note">Cuéntanos si algún niño tiene alergias (frutos secos, lácteos o gluten) para ajustar el combo. Los precios incluyen IVA.</p>
+
+<section class="cta"><h2>¿Hablamos de tu evento?</h2><p>Escríbenos y te respondemos con una cotización a tu medida.</p>
+<a class="btn p" href="https://wa.me/573102922345?text=Hola%2C%20quiero%20cotizar%20un%20evento%20en%20Equinoccio%20Caf%C3%A9%20Libro" rel="noopener">WhatsApp 310 292 2345</a><a class="btn s" href="/#carta">Ver la carta</a></section>
+</main>
+<footer class="wrap">Equinoccio Café Libro · NIT 79486830-1<br>Cra. 6 #4B-19, 2.º piso, Cajicá · Todos los días de 10:00 a. m. a 8:30 p. m.</footer>
+</body></html>
