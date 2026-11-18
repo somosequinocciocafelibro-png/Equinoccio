@@ -25,7 +25,7 @@ h2{display:flex;align-items:center;gap:.7rem;font:400 clamp(1.5rem,4vw,2rem)/1.1
 h2 .n{display:grid;place-items:center;width:40px;height:40px;flex:none;border-radius:50%;background:var(--amber);color:#fff;font:800 1.1rem "Nunito Sans"}
 .sec-sub{color:#5a4538;margin-bottom:1rem}
 .item{display:grid;grid-template-columns:96px 1fr auto;gap:1rem;align-items:center;background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:24px;padding:1.2rem 1.3rem;box-shadow:0 8px 22px rgba(60,40,20,.1)}
-.item svg{width:96px;height:96px}
+.item svg{width:96px;height:96px}.item.photo{grid-template-columns:1fr auto}@media(max-width:620px){.item.photo{grid-template-columns:1fr}}.item .ph{grid-column:1/-1;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:16px;display:block}
 .item h3{font:400 1.35rem/1.15 "Young Serif",serif;color:var(--navy);margin-bottom:.35rem}
 .item p{font-size:1rem}.item ul{margin:.4rem 0 0 1.1rem}.item li+li{margin-top:.15rem}
 .pr{font:400 1.9rem/1 "Young Serif",serif;color:var(--amber);white-space:nowrap;text-align:right}
@@ -53,8 +53,8 @@ footer{padding:2rem 0 2.4rem;text-align:center;font-size:.92rem;color:#5a4538}
 
 <h2><span class="n">1</span>Combos infantiles</h2>
 <p class="sec-sub">Frescos y coloridos, pensados para los más pequeños.</p>
-<article class="item">
-<svg viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="46" fill="#FFF3DC" stroke="#E7D5B3" stroke-width="2"/><path d="M22 44h52a2 2 0 0 1 2 2c0 15-12 26-28 26S20 61 20 46a2 2 0 0 1 2-2z" fill="#F6CB7E" stroke="#B85A1E" stroke-width="2.2" stroke-linejoin="round"/><path d="M28 44c2-8 8-12 14-8 3-7 12-8 16-1 5-3 10 1 10 9z" fill="#FFFBF2" stroke="#B85A1E" stroke-width="2" stroke-linejoin="round"/><circle cx="36" cy="56" r="4.2" fill="#E2677B"/><circle cx="50" cy="60" r="4.2" fill="#F6B73C"/><circle cx="62" cy="55" r="4.2" fill="#7DBB6A"/><path d="M60 30c2-9 10-12 16-10-1 7-8 12-16 10z" fill="#7DBB6A" stroke="#3f7a35" stroke-width="1.6"/><circle cx="26" cy="26" r="6" fill="#E2677B"/><path d="M23 21c1-4 6-4 7 0" fill="none" stroke="#3f7a35" stroke-width="2" stroke-linecap="round"/></svg>
+<article class="item photo">
+<img class="ph" src="/assets/combos/snow-white-evento.jpg" alt="Combo Snow White: porción de frutas con yogurt y granola, con pan de bono y galleta" width="1400" height="1045" loading="lazy">
 <div>
 <h3>Snow White · Blanca Nieves</h3>
 <p>Porción de frutas:</p>
