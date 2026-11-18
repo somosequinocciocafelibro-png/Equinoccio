@@ -29,7 +29,8 @@ h2 .n{display:grid;place-items:center;width:40px;height:40px;flex:none;border-ra
 .item h3{font:400 1.35rem/1.15 "Young Serif",serif;color:var(--navy);margin-bottom:.35rem}
 .item p{font-size:1rem}.item ul{margin:.4rem 0 0 1.1rem}.item li+li{margin-top:.15rem}
 .pr{font:400 1.9rem/1 "Young Serif",serif;color:var(--amber);white-space:nowrap;text-align:right}
-.pr small{display:block;margin-top:.3rem;font:800 .72rem "Nunito Sans";letter-spacing:.12em;text-transform:uppercase;color:#6b5a4c}
+.pr .p1+.p1{margin-top:.8rem}.pr small{display:block;margin:0 0 .2rem;font:800 .72rem "Nunito Sans";letter-spacing:.12em;text-transform:uppercase;color:#6b5a4c}
+.combo-line{margin-top:.8rem}.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem}.chips span{font-size:.88rem;font-weight:700;padding:.25rem .7rem;border-radius:999px;background:color-mix(in srgb,#E9A04A 25%,transparent);border:1px solid var(--line)}
 .note{margin-top:1.4rem;font-size:.95rem;color:#5a4538}
 .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.5rem;border-radius:999px;font-weight:800;text-decoration:none;font-size:1rem;border:2px solid var(--amber);margin:.4rem .5rem 0 0}
 .btn.p{background:var(--amber);color:#fff}.btn.s{color:var(--amber)}
@@ -55,12 +56,14 @@ footer{padding:2rem 0 2.4rem;text-align:center;font-size:.92rem;color:#5a4538}
 <article class="item">
 <svg viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="46" fill="#FFF3DC" stroke="#E7D5B3" stroke-width="2"/><path d="M22 44h52a2 2 0 0 1 2 2c0 15-12 26-28 26S20 61 20 46a2 2 0 0 1 2-2z" fill="#F6CB7E" stroke="#B85A1E" stroke-width="2.2" stroke-linejoin="round"/><path d="M28 44c2-8 8-12 14-8 3-7 12-8 16-1 5-3 10 1 10 9z" fill="#FFFBF2" stroke="#B85A1E" stroke-width="2" stroke-linejoin="round"/><circle cx="36" cy="56" r="4.2" fill="#E2677B"/><circle cx="50" cy="60" r="4.2" fill="#F6B73C"/><circle cx="62" cy="55" r="4.2" fill="#7DBB6A"/><path d="M60 30c2-9 10-12 16-10-1 7-8 12-16 10z" fill="#7DBB6A" stroke="#3f7a35" stroke-width="1.6"/><circle cx="26" cy="26" r="6" fill="#E2677B"/><path d="M23 21c1-4 6-4 7 0" fill="none" stroke="#3f7a35" stroke-width="2" stroke-linecap="round"/></svg>
 <div>
-<h3>Frutas, yogurt y granola</h3>
+<h3>Snow White · Blanca Nieves</h3>
 <p>Porción de frutas:</p>
-<ul><li>Banano</li><li>Papaya</li><li>Melón</li><li>Mango dulce</li><li>Fresa</li></ul>
+<ul><li>Banano</li><li>Papaya</li><li>Melón</li><li>Mango dulce</li><li>Piña</li><li>Fresa</li></ul>
 <p style="margin-top:.5rem">Con <b>yogurt griego o saborizado</b> y <b>granola</b>.</p>
+<p class="combo-line"><b>En combo ($16.000),</b> se agrega un dulce pequeño del menú a elección:</p>
+<div class="chips"><span>Mini pan de bono</span><span>Mini almojábana</span><span>Mini roscón de arequipe</span><span>Galleta con chips de chocolate</span></div>
 </div>
-<div class="pr">$14.000<small>por combo</small></div>
+<div class="pr"><div class="p1"><small>Porción</small>$14.000</div><div class="p1"><small>En combo</small>$16.000</div></div>
 </article>
 <p class="note">Cuéntanos si algún niño tiene alergias (frutos secos, lácteos o gluten) para ajustar el combo. Los precios incluyen IVA.</p>
 
