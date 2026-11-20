@@ -224,6 +224,22 @@ section{padding-block:clamp(3.5rem,8vw,6rem)}
 .ig-card span{display:block;font-size:.95rem;margin-top:.2rem;color:#6B5A4C}
 .ig-card em{display:block;font-style:normal;font-weight:800;color:#B85A1E;margin-top:.35rem;font-size:.95rem}
 .ig-wrap{margin-top:1.6rem}.carta-foot .ig-card{margin:0 auto 1.2rem}
+.ev-band{background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--bg-2) 45%,transparent) 30%,transparent)}
+.ev-block{margin-top:2.6rem}
+.ev-block:first-of-type{margin-top:0}
+.ev-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.4rem 1rem;margin-bottom:1rem}
+.ev-head h3{font-size:1.5rem}
+.ev-head time{font-weight:800;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.ev-block>p{color:var(--fg-soft);max-width:46rem;margin-bottom:1.1rem}
+.ev-gal{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem}
+.ev-gal figure{margin:0;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:0 8px 22px rgba(60,40,20,.14);cursor:zoom-in;background:#fff;min-height:0}
+.ev-gal img{display:block;width:100%;height:100%;object-fit:cover}
+.ev-gal figure.l{aspect-ratio:4/3}
+.ev-gal figure.p{grid-row:span 2}
+.ev-gal.two{grid-template-columns:repeat(2,1fr)}.ev-gal.b{grid-auto-flow:column;grid-template-rows:auto auto}
+#eventos{scroll-margin-top:72px}
+.ev-cta{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:2.2rem}
+@media (max-width:760px){.ev-gal{grid-template-columns:repeat(2,1fr);gap:.6rem}.ev-gal figure{border-radius:14px}.ev-gal figure.p{grid-row:auto;aspect-ratio:3/4}.ev-gal.two{grid-template-columns:1fr}.ev-gal.b{grid-auto-flow:row;grid-template-rows:none}}
 .visit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem}
 .visit-grid > div{display:grid;gap:.35rem;align-content:start;min-width:0}
 .visit-grid h3{font-size:1.2rem;color:#F2B766}
@@ -457,6 +473,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
     </a>
     <nav class="nav" aria-label="Principal">
       <a href="#salones">Salones</a>
+      <a href="#eventos">Eventos</a>
       <a href="#biblioteca">Biblioteca</a>
       <a href="#visitanos">Visítanos</a>
       <a class="btn btn-primary" href="#carta" id="nav-carta">Ver la carta</a>
@@ -564,6 +581,39 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
         <li><b>Tostión por pedido</b><span>Bolsa con válvula y fecha de tueste</span></li>
         <li><b>Cata lote a lote</b><span>Revisada por un Q-Grader</span></li>
       </ul>
+    </div>
+  </section>
+
+  <section id="eventos" class="ev-band">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Nuestros eventos</p>
+        <h2>Celebramos y nos encontramos en nuestros salones</h2>
+        <p>El 19 de noviembre de 2026 vivimos dos eventos distintos en Equinoccio: un cumpleaños y un encuentro literario.</p>
+      </div>
+      <div class="ev-block">
+        <div class="ev-head"><h3>Cumpleaños en el Salón Luna</h3><time datetime="2026-11-19">19 de noviembre de 2026</time></div>
+        <p>Globos, banderines y una mesa de dulces bajo el cielo estrellado del Salón Luna para celebrar entre amigas.</p>
+        <div class="ev-gal b">
+          <figure class="l"><img src="assets/eventos/cumple-grupo.jpg" alt="Grupo de invitadas posando en el Salón Luna durante un cumpleaños, con globos y una mesa de pasabocas" width="1448" height="1086" loading="lazy" data-zoom></figure>
+          
+          <figure class="l"><img src="assets/eventos/cumple-salon.jpg" alt="Salón Luna decorado para un cumpleaños, con sofá turquesa, mesa de pasabocas y silla rosada con banda de Feliz Cumpleaños" width="1400" height="1050" loading="lazy" data-zoom></figure>
+          <figure class="p"><img src="assets/eventos/cumple-rincon.jpg" alt="Rincón decorado del Salón Luna con banderines de Feliz Cumpleaños, globos plateados y mesa de dulces" width="1200" height="1600" loading="lazy" data-zoom></figure>
+          <figure class="p"><img src="assets/eventos/cumple-mesa.jpg" alt="Mesa alta con globos plateados y rosados bajo los banderines de Feliz Cumpleaños" width="1200" height="1600" loading="lazy" data-zoom></figure>
+        </div>
+      </div>
+      <div class="ev-block">
+        <div class="ev-head"><h3>Encuentro literario</h3><time datetime="2026-11-19">19 de noviembre de 2026</time></div>
+        <p>Una tarde de lectura, conversación y café junto a la chimenea del Salón Equinoccio, con nuestras lectoras.</p>
+        <div class="ev-gal two">
+          <figure class="l"><img src="assets/eventos/literario-1.jpg" alt="Grupo de lectoras sonriendo en el Salón Equinoccio durante un encuentro literario" width="1400" height="1050" loading="lazy" data-zoom></figure>
+          <figure class="l"><img src="assets/eventos/literario-2.jpg" alt="Encuentro literario en el Salón Equinoccio: lectoras conversando alrededor de las mesas junto a la chimenea" width="1400" height="1050" loading="lazy" data-zoom></figure>
+        </div>
+      </div>
+      <div class="ev-cta">
+        <a class="btn btn-primary" href="eventos/">Ver el menú para eventos especiales</a>
+        <a class="btn btn-ghost" href="https://wa.me/573102922345?text=Hola%2C%20quiero%20cotizar%20un%20evento%20en%20Equinoccio%20Caf%C3%A9%20Libro" target="_blank" rel="noopener">Cotizar mi evento</a>
+      </div>
     </div>
   </section>
 
