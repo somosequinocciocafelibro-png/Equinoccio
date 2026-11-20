@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Menú para eventos especiales · Equinoccio Café Libro</title>
-<meta name="description" content="Menú para eventos especiales de Equinoccio Café Libro, Cajicá: combos infantiles y más.">
+<title>Eventos en Equinoccio Café Libro · Cumpleaños, reuniones y más</title>
+<meta name="description" content="Celebra tu cumpleaños, reunión empresarial o encuentro en los salones de Equinoccio Café Libro, Cajicá. Salón sin costo de alquiler con consumo mínimo por persona, servicio de mesero y menú para eventos.">
 <link rel="icon" href="/assets/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
@@ -37,6 +37,20 @@ h2 .n{display:grid;place-items:center;width:40px;height:40px;flex:none;border-ra
 .cta{margin:2.4rem 0 0;padding:1.6rem;border-radius:26px;background:linear-gradient(100deg,#1D3470,#2F4F98 45%,#B5582A 85%,#D98C2B);color:#fff;text-align:center}
 .cta h2{color:#fff;margin:0 0 .4rem;justify-content:center}.cta .btn{border-color:#FFD58A}.cta .btn.p{background:#FFD58A;color:var(--navy)}.cta .btn.s{color:#FFD58A}
 footer{padding:2rem 0 2.4rem;text-align:center;font-size:.92rem;color:#5a4538}
+.types{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.9rem;margin-top:1rem}
+.type{background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:22px;padding:1.1rem 1.1rem 1.2rem;box-shadow:0 8px 22px rgba(60,40,20,.1)}
+.type .ic{font-size:1.9rem;line-height:1}.type h3{font:400 1.2rem/1.15 "Young Serif",serif;color:var(--navy);margin:.5rem 0 .3rem}.type p{font-size:.95rem;color:#5a4538}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.9rem;margin-top:1rem}
+.how div{background:#fff;border:1px solid var(--line);border-radius:22px;padding:1.2rem;box-shadow:0 8px 22px rgba(60,40,20,.1)}
+.how small{font:800 .72rem "Nunito Sans";letter-spacing:.14em;text-transform:uppercase;color:#6b5a4c}
+.how b{display:block;font:400 1.7rem/1.1 "Young Serif",serif;color:var(--amber);margin:.3rem 0 .4rem}
+.how p{font-size:.95rem;color:#5a4538}
+.salons{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.9rem;margin-top:1rem}
+.salons a{position:relative;display:block;border-radius:20px;overflow:hidden;aspect-ratio:4/3;color:#fff;text-decoration:none;box-shadow:0 8px 22px rgba(60,40,20,.2)}
+.salons img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.salons a::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(10,16,34,.8))}
+.salons b{position:absolute;left:1rem;bottom:.8rem;z-index:1;font:400 1.3rem/1.1 "Young Serif",serif}.salons span{position:absolute;left:1rem;bottom:.2rem;z-index:1;font-size:.8rem;opacity:.9;display:none}
+.egal{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-top:1rem}.egal img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:16px;border:1px solid var(--line)}
+@media(max-width:620px){.egal{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){.item{grid-template-columns:1fr;text-align:left}.item svg{width:84px;height:84px}.pr{text-align:left}.nav a{margin:0 .8rem 0 0}.top{align-items:flex-start}}
 </style></head>
 <body>
@@ -47,9 +61,44 @@ footer{padding:2rem 0 2.4rem;text-align:center;font-size:.92rem;color:#5a4538}
 <main class="wrap">
 <section class="hero">
 <small>Eventos en Equinoccio</small>
-<h1>Menú para <em>eventos especiales</em></h1>
-<p class="lead">Opciones pensadas para celebraciones, talleres y encuentros en nuestros salones.</p>
+<h1>Celebra en <em>Equinoccio</em></h1>
+<p class="lead">Cumpleaños, reuniones empresariales, talleres y celebraciones privadas en tres salones con identidad propia, café de origen y alta repostería.</p>
+<a class="btn p" href="https://wa.me/573102922345?text=Hola%2C%20quiero%20cotizar%20un%20evento%20en%20Equinoccio%20Caf%C3%A9%20Libro" rel="noopener">Cotizar mi evento</a><a class="btn s" href="#como-se-cobra">¿Cómo se cobra?</a>
 </section>
+
+<h2 style="margin-top:2rem">¿Qué celebramos?</h2>
+<div class="types">
+<div class="type"><div class="ic">🎂</div><h3>Cumpleaños</h3><p>Decoración, pasabocas, torta y bebidas en tu salón privado, para grandes y pequeños.</p></div>
+<div class="type"><div class="ic">💼</div><h3>Reuniones empresariales</h3><p>Un espacio tranquilo para equipos, con café, refrigerios y proyector en el tercer piso.</p></div>
+<div class="type"><div class="ic">📚</div><h3>Talleres y clubes</h3><p>Encuentros literarios, club de conversación en inglés y talleres para niños.</p></div>
+<div class="type"><div class="ic">🥂</div><h3>Otras celebraciones</h3><p>Despedidas, baby showers, grados y reuniones de amigos, a tu medida.</p></div>
+</div>
+
+<h2 id="como-se-cobra" style="margin-top:2.4rem">¿Cómo se cobra?</h2>
+<p class="sec-sub">Sin sorpresas: tres conceptos claros.</p>
+<div class="how">
+<div><small>Alquiler del salón</small><b>Sin costo</b><p>El salón es una cortesía de la casa cuando se cumple el consumo mínimo.</p></div>
+<div><small>Consumo mínimo</small><b>$25.000 <span style="font:800 .9rem 'Nunito Sans'">por persona</span></b><p>Lo consumen en bebidas, pastelería y pasabocas de nuestra carta o del menú de eventos.</p></div>
+<div><small>Servicio de mesero</small><b>Según tu evento</b><p>Un mesero dedicado a tu grupo, con valor según las horas y el número de invitados.</p></div>
+</div>
+<p class="note">Los precios incluyen IVA. Reserva con anticipación: la disponibilidad depende de la fecha y del salón. Escríbenos y te enviamos la cotización.</p>
+
+<h2 style="margin-top:2.4rem">Elige tu salón</h2>
+<div class="salons">
+<a href="/#salones"><img src="/assets/salon-luna-logo.jpg" alt="Salón Luna" loading="lazy"><b>Salón Luna</b></a>
+<a href="/#salones"><img src="/assets/salon-equinoccio.jpg" alt="Salón Equinoccio con chimenea" loading="lazy"><b>Salón Equinoccio</b></a>
+<a href="/#salones"><img src="/assets/salon-sol-logo.jpg" alt="Salón Sol" loading="lazy"><b>Salón Sol</b></a>
+</div>
+
+<h2 style="margin-top:2.4rem">Ya lo hemos vivido</h2>
+<div class="egal">
+<img src="/assets/eventos/cumple-grupo.jpg" alt="Cumpleaños en el Salón Luna" loading="lazy">
+<img src="/assets/eventos/cumple-salon.jpg" alt="Salón Luna decorado para un cumpleaños" loading="lazy">
+<img src="/assets/eventos/literario-1.jpg" alt="Encuentro literario en el Salón Equinoccio" loading="lazy">
+</div>
+
+<h2 style="margin-top:2.6rem">Menú para eventos especiales</h2>
+<p class="sec-sub">Opciones pensadas para celebraciones, talleres y encuentros.</p>
 
 <h2><span class="n">1</span>Combos infantiles</h2>
 <p class="sec-sub">Frescos y coloridos, pensados para los más pequeños.</p>
@@ -60,10 +109,10 @@ footer{padding:2rem 0 2.4rem;text-align:center;font-size:.92rem;color:#5a4538}
 <p>Porción de frutas:</p>
 <ul><li>Banano</li><li>Papaya</li><li>Melón</li><li>Mango dulce</li><li>Piña</li><li>Fresa</li></ul>
 <p style="margin-top:.5rem">Con <b>yogurt griego o saborizado</b> y <b>granola</b>.</p>
-<p class="combo-line"><b>En combo ($16.000),</b> se agrega un dulce pequeño del menú a elección:</p>
-<div class="chips"><span>Mini pan de bono</span><span>Mini almojábana</span><span>Mini roscón de arequipe</span><span>Galleta con chips de chocolate</span></div>
+<p class="combo-line"><b>En combo ($18.000),</b> se agrega un producto pequeño de $4.500 a elección:</p>
+<div class="chips"><span>Palito de queso crema pequeño</span><span>Pastel de carne pequeño</span></div>
 </div>
-<div class="pr"><div class="p1"><small>Porción</small>$14.000</div><div class="p1"><small>En combo</small>$16.000</div></div>
+<div class="pr"><div class="p1"><small>Porción</small>$14.000</div><div class="p1"><small>En combo</small>$18.000</div></div>
 </article>
 <p class="note">Cuéntanos si algún niño tiene alergias (frutos secos, lácteos o gluten) para ajustar el combo. Los precios incluyen IVA.</p>
 
