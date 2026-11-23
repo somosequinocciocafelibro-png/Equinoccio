@@ -724,6 +724,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 </footer>
 
 <script>
+const BITEPHOTO = {"Flauta de chocolate":"assets/pasteleria/flauta-de-chocolate-combo.jpg","Palito queso crema":"assets/pasteleria/palito-queso-crema-combo.jpg"};
 const BITEDESC = {"Palito queso crema": "Palito horneado relleno de queso crema.", "Croissant bicolor frutos rojos": "Croissant bicolor de mantequilla con frutos rojos.", "Flauta de chocolate": "Flauta horneada rellena de chocolate.", "Crookie": "La mezcla de un croissant y una galleta (cookie).", "Pastel de arequipe": "Pastel de hojaldre relleno de arequipe.", "Rollo de canela": "Rollo de canela horneado, suave y aromático.", "Pan de chocolate mantequilla": "Pan de mantequilla con chocolate."};
 const PHOTOS = {"Croissant bicolor chocolate mantequilla": "assets/pasteleria/croissant-bicolor-chocolate-mantequilla.jpg", "Croissant de almendras": "assets/pasteleria/croissant-de-almendras.jpg", "Croissant bicolor frutos rojos": "assets/pasteleria/croissant-bicolor-frutos-rojos.jpg", "Rollo de canela": "assets/pasteleria/rollo-de-canela.jpg", "Crookie": "assets/pasteleria/crookie.jpg", "Palito queso crema": "assets/pasteleria/palito-queso-crema.jpg", "Flauta de chocolate": "assets/pasteleria/flauta-de-chocolate.jpg", "Pastel de pollo carbonara": "assets/pasteleria/pastel-de-pollo-carbonara.jpg", "Pastel de espinaca y queso ricotta": "assets/pasteleria/pastel-de-espinaca-y-queso-ricotta.jpg", "Pastel de carne ranchero": "assets/pasteleria/pastel-de-carne-ranchero.jpg", "Pan de chocolate mantequilla": "assets/pasteleria/pan-de-chocolate-mantequilla.jpg", "Pastel de manzana": "assets/pasteleria/pastel-de-manzana.jpg", "Pastel de pollo": "assets/pasteleria/pastel-de-pollo.jpg", "Croissant multicereal mantequilla": "assets/pasteleria/croissant-multicereal-mantequilla.jpg", "Croissant Jardín Secreto": "assets/pasteleria/croissant-jardin-secreto.jpg", "Quiche Sol de Otoño": "assets/pasteleria/quiche-sol-de-otono.jpg", "Palito de bocadillo y queso": "assets/pasteleria/palito-de-bocadillo-y-queso.jpg", "Pastel de arequipe": "assets/pasteleria/pastel-de-arequipe.jpg", "Pastel de zanahoria": "assets/pasteleria/pastel-de-zanahoria.jpg"};
 const DRINK_IMGS = {"Cappuccino Clásico":"assets/menu/cappuccino.jpg","Mocha Equinoccio Clásico":"assets/menu/mocha-equinoccio.jpg","Frappé":"assets/menu/frappe.jpg","Soda Noche de Insomnio":"assets/menu/soda-noche-de-insomnio.jpg"};
@@ -816,7 +817,7 @@ document.getElementById("bake").innerHTML = BAKE.map(n=>{const it=all.find(i=>i.
   document.addEventListener("click",e=>{
     const b=e.target.closest(".bite-btn"); if(!b) return;
     const it=all.find(i=>i.name===b.dataset.bite); if(!it) return;
-    const im=document.getElementById("bite-img"); im.src=PHOTOS[it.name]; im.alt=b.dataset.label;
+    const im=document.getElementById("bite-img"); im.src=BITEPHOTO[it.name]||PHOTOS[it.name]; im.alt=b.dataset.label;
     document.getElementById("bite-t").textContent=b.dataset.label;
     document.getElementById("bite-d").textContent=it.description||BITEDESC[it.name]||"";
     document.getElementById("bite-p").textContent="Incluido en el combo · en la carta: "+(it.priceSmall?`pequeño ${fmt(it.priceSmall)} · grande ${fmt(it.price)}`:fmt(it.price));
