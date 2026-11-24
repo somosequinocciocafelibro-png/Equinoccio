@@ -1,0 +1,89 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Equinoccio Café Libro · Sube, estamos aquí arriba</title>
+<meta name="description" content="Café de especialidad, libros y alta repostería en Cajicá. Segundo piso, Cra. 6 #4B-19. Abierto todos los días de 10:00 a. m. a 8:30 p. m.">
+<meta name="theme-color" content="#22314F"><link rel="icon" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Nunito+Sans:wght@400;600;800&display=swap">
+<style>
+:root{--noche:#22314F;--oro:#D98C2B;--hueso:#FBF6EE;--cafe:#3B2A20;--acc:#B1561F;--line:#E2D2BD;--soft:#6E5546;--serif:"Young Serif",Georgia,serif;--sans:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{font:400 1.0625rem/1.55 var(--sans);color:var(--cafe);background:var(--hueso);padding-bottom:5.2rem;-webkit-text-size-adjust:100%}
+a{color:inherit}img{display:block;max-width:100%}
+.wrap{max-width:720px;margin:0 auto;padding:0 1.1rem}
+/* hero */
+.hero{position:relative;min-height:88svh;display:flex;align-items:flex-end;color:#fff;background:#22314F url(/assets/hola/salon.jpg) 42% 50%/cover}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,28,46,.55) 0%,rgba(20,28,46,.15) 30%,rgba(20,28,46,.78) 72%,rgba(20,28,46,.95) 100%)}
+.hero .wrap{position:relative;width:100%;padding-bottom:1.6rem}
+.brand{position:absolute;top:1rem;left:1.1rem;right:1.1rem;display:flex;align-items:center;gap:.7rem;z-index:2}
+.brand img{width:46px;height:46px;border-radius:50%;box-shadow:0 2px 10px rgba(0,0,0,.4)}.brand b{font:400 1.15rem var(--serif);text-shadow:0 1px 8px rgba(0,0,0,.5)}.brand small{display:block;font:800 .62rem var(--sans);letter-spacing:.22em;opacity:.9}
+.pill{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:.4rem .9rem;font:800 .92rem var(--sans);margin-bottom:.9rem}
+.dot{width:.7rem;height:.7rem;border-radius:50%;background:#aaa}.dot.open{background:#4ADE80;box-shadow:0 0 0 4px rgba(74,222,128,.3)}.dot.closed{background:#F59E0B}
+h1{font:400 clamp(2.1rem,9vw,3.2rem)/1.08 var(--serif);text-shadow:0 2px 14px rgba(0,0,0,.45)}
+.lead{margin:.7rem 0 1.1rem;font-size:1.12rem;max-width:34ch;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;min-height:3.3rem;border-radius:14px;font:800 1.02rem var(--sans);text-decoration:none;text-align:center;padding:.5rem .8rem}
+.btn.p{background:var(--acc);color:#fff8ee}.btn.s{background:#fff;color:var(--noche)}.btn svg{width:22px;height:22px;flex:none}
+/* secciones */
+section{padding:2.2rem 0 .4rem}
+.eb{font:800 .72rem var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--acc)}
+h2{font:400 1.8rem/1.15 var(--serif);margin:.2rem 0 .6rem}
+.how{display:grid;gap:1rem;grid-template-columns:1fr}
+.how img{border-radius:20px;width:100%;max-height:430px;object-fit:cover;object-position:50% 40%;box-shadow:0 8px 24px rgba(60,40,20,.18)}
+ol{list-style:none;padding:0;display:grid;gap:.75rem;counter-reset:s}
+ol li{counter-increment:s;display:flex;gap:.8rem;align-items:flex-start;background:#fffdf8;border:1px solid var(--line);border-radius:16px;padding:.8rem 1rem}
+ol li::before{content:counter(s);flex:none;width:2rem;height:2rem;border-radius:50%;background:var(--noche);color:#fff;font:800 1rem var(--sans);display:grid;place-items:center}
+ol li b{display:block}ol li span{color:var(--soft);font-size:.96rem}
+.rail{display:flex;gap:.8rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:.2rem 1.1rem 1rem;margin:0 -1.1rem;-webkit-overflow-scrolling:touch}
+.card{flex:none;width:62%;max-width:250px;min-width:190px;scroll-snap-align:start;text-decoration:none;background:#fffdf8;border:1px solid var(--line);border-radius:18px;padding:.5rem .5rem .8rem;box-shadow:0 4px 14px rgba(60,40,20,.08)}
+.card img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:13px;margin-bottom:.5rem}
+.card .k{display:block;font:800 .62rem var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.card b{display:block;font:400 1.02rem/1.2 var(--serif);margin:.15rem 0}.card em{font-style:normal;font-weight:800;color:var(--noche)}
+.more{display:block;text-align:center;margin:.2rem 0 0;font-weight:800;color:var(--acc)}
+.promo{display:flex;gap:.85rem;align-items:flex-start;background:linear-gradient(135deg,#FCEBCB,#F6D79A);border:1px solid #E6B96A;border-radius:20px;padding:1rem 1.1rem;margin-top:1.6rem}
+.promo svg{width:36px;height:36px;flex:none;color:var(--acc)}.promo b{font:400 1.2rem/1.2 var(--serif)}.promo p{font-size:.96rem;margin-top:.2rem}
+.info{display:grid;gap:.9rem;background:var(--noche);color:#fff;border-radius:22px;padding:1.3rem 1.2rem;margin-top:.6rem}
+.info h3{font:800 .7rem var(--sans);letter-spacing:.2em;text-transform:uppercase;color:#F2B766;margin-bottom:.15rem}
+.info a.btn{margin-top:.2rem}
+footer{text-align:center;color:var(--soft);font-size:.85rem;padding:1.6rem 1rem 1rem}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;padding:.55rem .7rem calc(.55rem + env(safe-area-inset-bottom));background:rgba(251,246,238,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+.bar a{display:flex;flex-direction:column;align-items:center;gap:.1rem;font:800 .78rem var(--sans);text-decoration:none;color:var(--noche);padding:.3rem}.bar a svg{width:22px;height:22px}.bar a.main{background:var(--acc);color:#fff;border-radius:12px}
+@media (min-width:700px){.bar{display:none}body{padding-bottom:0}.how{grid-template-columns:1fr 1fr;align-items:center}.card{width:30%}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style></head><body>
+<header class="hero"><div class="brand"><img src="/assets/logo.png" alt="" width="46" height="46"><div><b>Equinoccio</b><small>CAFÉ LIBRO</small></div></div>
+<div class="wrap">
+<span class="pill"><i class="dot" id="dot"></i><span id="abierto">Todos los días · 10:00 a. m. a 8:30 p. m.</span></span>
+<h1>Café, libros y repostería.<br>Estamos aquí arriba.</h1>
+<p class="lead">Sube al <b>2.º piso</b> · Cra. 6 #4B-19, Cajicá, a dos cuadras del parque principal.</p>
+<div class="btns"><a class="btn p" href="https://maps.google.com/maps?cid=13207318301799707814" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.800 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.6"/></svg>Cómo llegar</a>
+<a class="btn s" href="/#carta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.500 3H20v16H6.500A2.5 2.5 0 0 0 4 21.500z"/><path d="M8 7h8M8 11h6"/></svg>Ver la carta</a></div>
+</div></header>
+<main class="wrap">
+<section><p class="eb">Cómo subir</p><h2>Sube por el árbol: te esperamos arriba</h2>
+<div class="how"><img src="/assets/hola/escalera.jpg" alt="La escalera de Equinoccio con el árbol pintado y el cartel de Bienvenidos" width="900" height="1264" loading="lazy">
+<ol><li><div><b>Busca la puerta</b><span>Cra. 6 #4B-19, a dos cuadras del parque principal.</span></div></li>
+<li><div><b>Sube al segundo piso</b><span>Sigue el árbol de la escalera: <i>vive el encuentro, siente el equilibrio</i>.</span></div></li>
+<li><div><b>Escoge tu salón</b><span>Luna, Sol o Equinoccio, con chimenea y libros.</span></div></li></ol></div></section>
+<section><p class="eb">Lo que te espera</p><h2>Café, combos y repostería</h2>
+<div class="rail"><a class="card" href="/#carta"><img src="/assets/combos/charlie.jpg" alt="Charlie y la Fábrica de Chocolate" loading="lazy" width="360" height="270"><span class="k">Combo para pequeños</span><b>Charlie y la Fábrica de Chocolate</b><em>$14.000</em></a><a class="card" href="/#carta"><img src="/assets/combos/starwars.jpg" alt="Star Wars" loading="lazy" width="360" height="270"><span class="k">Combo literario</span><b>Star Wars</b><em>$20.000</em></a><a class="card" href="/#carta"><img src="/assets/combos/harrypotter.jpg" alt="Harry Potter" loading="lazy" width="360" height="270"><span class="k">Combo literario</span><b>Harry Potter</b><em>$24.000</em></a><a class="card" href="/#carta"><img src="/assets/pasteleria/crookie.jpg" alt="Crookie" loading="lazy" width="360" height="270"><span class="k">Repostería</span><b>Crookie</b><em>$7.500</em></a><a class="card" href="/#carta"><img src="/assets/pasteleria/flauta-de-chocolate.jpg" alt="Flauta de chocolate" loading="lazy" width="360" height="270"><span class="k">Repostería</span><b>Flauta de chocolate</b><em>$7.500</em></a><a class="card" href="/#carta"><img src="/assets/menu/soda-noche-de-insomnio.jpg" alt="Noche de Insomnio" loading="lazy" width="360" height="270"><span class="k">Soda artesanal</span><b>Noche de Insomnio</b><em>desde $10.000</em></a><a class="card" href="/#carta"><img src="/assets/menu/cappuccino.jpg" alt="Cappuccino" loading="lazy" width="360" height="270"><span class="k">Café</span><b>Cappuccino</b><em>$9.000</em></a></div><a class="more" href="/#carta">Ver toda la carta →</a>
+<div class="promo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.500A1.500 1.500 0 0 1 5.500 7h2.200l1.200-1.800h6.200L16.300 7h2.200A1.500 1.500 0 0 1 20 8.500v9a1.500 1.500 0 0 1-1.500 1.500h-13A1.500 1.500 0 0 1 4 17.500z"/><circle cx="12" cy="13" r="3.400"/></svg>
+<div><b>Tu foto vale un 10%</b><p>Tómate una foto dentro, síguenos y etiquétanos en Instagram <b>@equinocciocafelibro</b> y recibe 10% en cualquier combo literario. <a href="/#carta">Ver condiciones</a></p></div></div></section>
+<section><p class="eb">Visítanos</p><h2>Todos los días, hasta las 8:30 p. m.</h2>
+<div class="info"><div><h3>Dirección</h3>Carrera 6 #4B-19, segundo piso<br>Cajicá, Cundinamarca</div>
+<div><h3>Horario</h3>Todos los días · 10:00 a. m. a 8:30 p. m.</div>
+<div><h3>WhatsApp</h3>310 292 2345</div>
+<a class="btn p" href="https://maps.google.com/maps?cid=13207318301799707814" target="_blank" rel="noopener">Abrir en Google Maps</a>
+<a class="btn s" href="https://www.instagram.com/equinocciocafelibro/" target="_blank" rel="noopener">Síguenos en Instagram</a></div></section>
+</main>
+<footer>Equinoccio Café Libro · donde el sol y la luna se encuentran.<br>Precios en pesos colombianos, impuestos incluidos.</footer>
+<nav class="bar" aria-label="Acciones rápidas">
+<a href="https://wa.me/573102922345" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.500 8.500 0 0 1-12.500 7.500L3 21l1.600-5.300A8.500 8.500 0 1 1 21 12z"/></svg>WhatsApp</a>
+<a class="main" href="https://maps.google.com/maps?cid=13207318301799707814" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.200 7-11.500A7 7 0 0 0 5 9.500C5 14.800 12 21 12 21z"/><circle cx="12" cy="9.500" r="2.600"/></svg>Cómo llegar</a>
+<a href="/#carta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.500A2.500 2.500 0 0 1 6.500 3H20v16H6.500A2.500 2.500 0 0 0 4 21.500z"/><path d="M8 7h8M8 11h6"/></svg>La carta</a></nav>
+<script>
+(function(){try{var p=Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:"America/Bogota",hourCycle:"h23",hour:"numeric",minute:"numeric"}).formatToParts(new Date()).map(function(x){return[x.type,x.value]}));
+var m=+p.hour*60+ +p.minute,o=m>=600&&m<1230;
+document.getElementById("dot").className="dot "+(o?"open":"closed");
+document.getElementById("abierto").textContent=o?"Abierto ahora · hasta las 8:30 p. m.":(m<600?"Abrimos hoy a las 10:00 a. m.":"Abrimos mañana a las 10:00 a. m.");}catch(e){}})();
+</script></body></html>
