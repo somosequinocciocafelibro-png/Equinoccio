@@ -421,6 +421,18 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 @media (max-width:520px){.nodisp{display:table;margin:.3rem 0 0}}
 
 /* Encabezado de la carta: quiénes somos, qué vendemos, fotos y videos */
+.carta-hero .promo-foto{display:flex;gap:.85rem;align-items:flex-start;max-width:62ch;margin:1rem 0 .2rem;padding:.85rem 1.05rem;border-radius:18px;border:1px solid rgba(242,183,102,.55);background:linear-gradient(135deg,rgba(242,183,102,.16),rgba(255,255,255,.06));backdrop-filter:blur(3px);text-align:left}
+.carta-hero .pf-ico{flex:none;width:34px;height:34px;color:#F2B766;margin-top:.1rem}
+.carta-hero .pf-t{display:block;font:400 1.2rem/1.25 var(--f-display);color:#fff;margin-bottom:.2rem}
+.carta-hero .promo-foto p{margin:0;max-width:none;color:#EAE2D0;font-size:.98rem;line-height:1.5}
+.carta-hero .promo-foto p b{color:#fff}.carta-hero .promo-foto a{color:#F2B766;font-weight:700}
+.carta-hero .pf-det{margin-top:.45rem}
+.carta-hero .pf-det summary{cursor:pointer;font:800 .72rem var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:#F2B766;list-style:none}
+.carta-hero .pf-det summary::-webkit-details-marker{display:none}
+.carta-hero .pf-det summary::after{content:" +"}.carta-hero .pf-det[open] summary::after{content:" –"}
+.carta-hero .pf-det ul{margin:.5rem 0 0;padding-left:1.1rem;display:grid;gap:.35rem;color:#EAE2D0;font-size:.88rem;line-height:1.45}
+.carta-hero .pf-det li b{color:#fff}
+@media (max-width:760px){.carta-hero .promo-foto{margin-left:auto;margin-right:auto}}
 .carta-hero .quienes{display:grid;gap:.55rem;margin-top:1rem;max-width:62ch;justify-items:start}
 .carta-hero .quienes h2{margin:.5rem 0 0;font:800 .8rem var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:#F2B766}
 .carta-hero .quienes h2:first-child{margin-top:0}
@@ -675,6 +687,21 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
       <p class="eyebrow" style="color:#F2B766">La carta</p>
       <h1>Equinoccio Café Libro</h1>
       <p>Un espacio para disfrutar, leer, y compartir...</p>
+      <aside class="promo-foto" aria-label="Promoción: 10% de descuento en combos por compartir tu foto">
+        <svg class="pf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.2l1.2-1.8h6.2L16.3 7h2.2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="13" r="3.4"/></svg>
+        <div class="pf-body">
+          <b class="pf-t">Tu foto en Equinoccio vale un 10%</b>
+          <p>Tómate una foto aquí, <b>síguenos y etiquétanos</b> en Instagram <a href="https://www.instagram.com/equinocciocafelibro/" target="_blank" rel="noopener">@equinocciocafelibro</a> y recibe <b>10% de descuento en cualquier combo literario</b> que hayas consumido.</p>
+          <details class="pf-det"><summary>Ver condiciones</summary>
+            <ul>
+              <li>Muéstranos tu publicación en caja al pagar: el descuento se aplica en esa cuenta.</li>
+              <li>La publicación debe etiquetar a @equinocciocafelibro y debes seguir nuestra cuenta.</li>
+              <li><b>Menores de edad:</b> si en la foto aparecen niños, la publicación y la etiqueta deben ser hechas por su adulto responsable.</li>
+              <li><b>Rostros:</b> cada persona decide qué publica y a quién etiqueta. Equinoccio no se hace responsable si en la foto aparece alguien ajeno a quien la publica; te pedimos contar con el consentimiento de quienes salgan.</li>
+            </ul>
+          </details>
+        </div>
+      </aside>
       <div class="quienes" role="region" aria-label="Quiénes somos y qué vendemos">
         <h2>¿Quiénes somos?</h2>
         <p>Somos Equinoccio Café Libro, en Cajicá: el punto exacto de equilibrio entre buen café, libros y alta repostería, donde el sol y la luna se encuentran para compartir.</p>
