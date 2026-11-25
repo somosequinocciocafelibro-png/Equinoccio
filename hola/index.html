@@ -51,6 +51,8 @@ footer{text-align:center;color:var(--soft);font-size:.85rem;padding:1.6rem 1rem 
 .desde{display:block;margin:0 0 .7rem;padding:.38rem .9rem;border-radius:12px;background:linear-gradient(100deg,#FFD27A,#F6B445 50%,#FFD27A);border:1.5px solid #FFF1C9;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.28)}.desde b{font:800 1.02rem/1.2 var(--sans);letter-spacing:.03em;color:#3a1f0c}
 .trio{list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin:0 0 .85rem}
 .trio li{background:rgba(255,255,255,.14);backdrop-filter:blur(5px);border:1px solid rgba(255,255,255,.4);border-radius:16px;padding:.4rem .4rem .55rem;text-align:center;color:#fff}
+.trio{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:38%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.3rem;-webkit-overflow-scrolling:touch;scrollbar-width:none}.trio::-webkit-scrollbar{display:none}.trio li{scroll-snap-align:center}
+@media (min-width:700px){.trio{grid-auto-flow:row;grid-template-columns:repeat(5,1fr);grid-auto-columns:auto;overflow:visible}.hero .wrap{max-width:900px}}
 .trio img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:12px;margin-bottom:.35rem}
 .trio b{display:block;font:800 .8rem/1.15 var(--sans);text-shadow:0 1px 6px rgba(0,0,0,.5)}
 .trio em.duo{white-space:nowrap;font-size:.7rem;letter-spacing:-.01em}@media (max-width:380px){.trio em.duo{font-size:.64rem}}
@@ -88,9 +90,11 @@ footer{text-align:center;color:var(--soft);font-size:.85rem;padding:1.6rem 1rem 
 <p class="lead">Sube al <b>2.º piso</b> · Cra. 6 #4B-19, Cajicá, a dos cuadras del parque principal.</p>
 <p class="desde"><b>Productos desde $4.000</b></p>
 <ul class="trio" aria-label="Lo que vendemos">
+<li><img src="/assets/hola/harrypotter.jpg" alt="Combo Harry Potter: hot chocolate con croissant" width="360" height="360"><b>Combo Harry Potter</b><em>$24.000</em></li>
 <li><img src="/assets/hola/soda.jpg" alt="Sodas frutales artesanales" width="360" height="360"><b>Soda artesanal</b><em>desde $10.000</em></li>
 <li><img src="/assets/hola/frappe.jpg" alt="Frappé con crema" width="360" height="360"><b>Frappé</b><em>$14.000</em></li>
 <li><img src="/assets/hola/croissant.jpg" alt="Croissant de chocolate" width="360" height="360"><b>Croissant de chocolate</b><em>$7.500</em></li>
+<li><img src="/assets/hola/shrek.jpg" alt="Combo Shrek: soda con croissant de frutos rojos" width="360" height="360"><b>Combo Shrek</b><em>$20.500</em></li>
 </ul>
 <a class="cta" href="/#carta" aria-label="Ver la carta de Equinoccio: combos, cafés y repostería">
 <span class="cta-shine" aria-hidden="true"></span>
