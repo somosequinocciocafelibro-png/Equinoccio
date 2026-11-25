@@ -471,6 +471,16 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 #bv .bv-trio em.bv-duo{font-size:.7rem}
 @media (min-width:700px){#bv .bv-hero .wrap2{max-width:900px;padding-top:2.4rem;padding-bottom:1rem}#bv .bv-trio img{aspect-ratio:16/10}#bv .bv-desde{margin-bottom:.5rem}#bv .bv-lead{margin:.4rem 0 .7rem}#bv .bv-pill{margin-bottom:.5rem}#bv h1{font-size:2.3rem}#bv .bv-cta{padding:.7rem 1.1rem;margin-bottom:.5rem}#bv .bv-btn{min-height:2.6rem}#bv .bv-hc{margin-top:.4rem}}
 @media (max-height:700px){#bv .bv-hero{min-height:0}#bv .bv-hero .wrap2{padding-top:3.2rem}#bv .bv-desde{margin-bottom:.45rem}#bv .bv-trio img{aspect-ratio:4/3}}
+#bv .bv-seal-wrap{position:absolute;top:.8rem;right:1rem;z-index:2;width:clamp(84px,24vw,128px);aspect-ratio:1;display:grid;place-items:center;animation:bvfloat 7s ease-in-out 1.6s infinite}
+#bv .bv-seal-wrap::before{content:"";position:absolute;inset:-16%;border-radius:50%;z-index:0;filter:blur(14px);opacity:.6;background:conic-gradient(from 0deg,#F6C77E,#E39A38,#9DB4E6,#E4ECFF,#9DB4E6,#E39A38,#F6C77E);animation:bvhalo 24s linear infinite}
+#bv .bv-seal-wrap::after{content:"";position:absolute;inset:3%;border-radius:50%;z-index:2;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.85) 50%,transparent 65%) -150% 0/250% 100% no-repeat;animation:bvshine 6s ease-in-out 2.2s infinite}
+#bv .bv-seal{position:relative;z-index:1;width:100%;height:auto;filter:drop-shadow(0 8px 14px rgba(0,0,0,.45));animation:bvspin 1.4s cubic-bezier(.2,.7,.2,1) both;rotate:var(--tilt,0deg);transition:rotate .5s ease-out}
+@keyframes bvfloat{0%,100%{translate:0 0}50%{translate:0 -6px}}
+@keyframes bvhalo{to{transform:rotate(360deg)}}
+@keyframes bvshine{0%,55%{background-position:-150% 0}100%{background-position:250% 0}}
+@keyframes bvspin{from{transform:rotate(-120deg) scale(.7);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){#bv .bv-seal-wrap,#bv .bv-seal-wrap::before,#bv .bv-seal-wrap::after,#bv .bv-seal{animation:none}}
+#bv .bv-visits{right:auto;left:1.1rem}
 </style>
 </head>
 <body>
@@ -525,6 +535,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 <button type="button" class="ig-fab" id="ig-fab" aria-label="Ir al Instagram de Equinoccio (QR y enlace) al final de la página" title="Nuestro Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg></button>
 <main id="view-home">
   <div id="bv"><section class="bv-hero" id="inicio" aria-label="Bienvenida">
+  <div class="bv-seal-wrap" id="bv-seal-wrap" aria-hidden="true"><img class="bv-seal" src="assets/hola/sello.webp" alt="" width="420" height="420"></div>
   <div class="bv-visits" id="bv-visits" hidden aria-label="Visitas a esta página"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b id="bv-visits-n">0</b><span>visitas</span></div>
   <div class="wrap2">
     <span class="bv-pill"><i class="bv-dot" id="bv-dot"></i><span id="bv-abierto">Todos los días · 10:00 a. m. a 8:30 p. m.</span></span>
@@ -912,6 +923,11 @@ function show(v){v=Math.round(+v);if(!(v>=0))return;el.hidden=false;num.textCont
 fetch(BASE+(hit?"hit/":"get/")+NS+"/visitas",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(j){
  if(j&&typeof j.value==="number"){if(hit){try{sessionStorage.setItem("hola_contada","1")}catch(e){}}show(j.value)}}).catch(function(){});
 }catch(e){}})();
+
+(function(){var h=document.getElementById("inicio"),sl=document.querySelector("#bv .bv-seal");
+if(!h||!sl||matchMedia("(pointer:coarse), (prefers-reduced-motion: reduce)").matches)return;
+h.addEventListener("pointermove",function(e){var r=h.getBoundingClientRect();sl.style.setProperty("--tilt",(((e.clientX-r.left)/r.width-.5)*14).toFixed(1)+"deg")});
+h.addEventListener("pointerleave",function(){sl.style.setProperty("--tilt","0deg")});})();
 /* ---- Zoom de fotos de repostería ---- */
 (function(){
   const dlg = document.getElementById("zoom"), img = document.getElementById("zoom-img"), cap = document.getElementById("zoom-cap");
