@@ -68,6 +68,9 @@ footer{text-align:center;color:var(--soft);font-size:.85rem;padding:1.6rem 1rem 
 @keyframes ctaGo{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
 @keyframes ctaWiggle{0%,86%,100%{transform:rotate(0)}90%{transform:rotate(-10deg)}94%{transform:rotate(9deg)}98%{transform:rotate(-5deg)}}
 @media (prefers-reduced-motion:reduce){.cta,.cta-ico,.cta-go,.cta-shine{animation:none}}
+.visits{position:absolute;top:1.15rem;right:1.1rem;z-index:3;display:inline-flex;align-items:center;gap:.4rem;padding:.38rem .8rem;border-radius:999px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.45);color:#fff;font:800 .85rem var(--sans);text-shadow:0 1px 6px rgba(0,0,0,.45)}
+.visits[hidden]{display:none}.visits svg{width:18px;height:18px;color:#FFD27A}.visits b{font-variant-numeric:tabular-nums;color:#FFD27A}.visits span{font-weight:600;opacity:.95}
+@media (max-width:360px){.visits span{display:none}}
 .hero .wrap{padding-top:5rem}
 .more{padding:.8rem 0;min-height:44px}
 .card .k{font-size:.7rem}.eb{font-size:.76rem}.info h3{font-size:.74rem}.trio b{font-size:.82rem}
@@ -76,7 +79,8 @@ footer{text-align:center;color:var(--soft);font-size:.85rem;padding:1.6rem 1rem 
 @media (min-width:700px){.bar{display:none}body{padding-bottom:0}.how{grid-template-columns:1fr 1fr;align-items:center}.card{width:30%}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style></head><body>
-<header class="hero"><div class="brand"><img src="/assets/logo.png" alt="" width="46" height="46"><div><b>Equinoccio</b><small>CAFÉ LIBRO</small></div></div>
+<header class="hero"><div class="visits" id="visits" hidden aria-label="Visitas a esta página"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.600-7 10-7 10 7 10 7-3.600 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b id="visits-n">0</b><span>visitas</span></div>
+<div class="brand"><img src="/assets/logo.png" alt="" width="46" height="46"><div><b>Equinoccio</b><small>CAFÉ LIBRO</small></div></div>
 <div class="wrap">
 <span class="pill"><i class="dot" id="dot"></i><span id="abierto">Todos los días · 10:00 a. m. a 8:30 p. m.</span></span>
 <h1>Café, libros y repostería.<br>Estamos aquí arriba.</h1>
@@ -125,4 +129,21 @@ footer{text-align:center;color:var(--soft);font-size:.85rem;padding:1.6rem 1rem 
 var m=+p.hour*60+ +p.minute,o=m>=600&&m<1230;
 document.getElementById("dot").className="dot "+(o?"open":"closed");
 document.getElementById("abierto").textContent=o?"Abierto ahora · hasta las 8:30 p. m.":(m<600?"Abrimos hoy a las 10:00 a. m.":"Abrimos mañana a las 10:00 a. m.");}catch(e){}})();
+
+(function(){try{
+var el=document.getElementById("visits"),num=document.getElementById("visits-n");
+var NS="ve2f0e371b305e5",KEY="visitas",BASE="https://abacus.jasoncameron.dev/";
+var prod=location.hostname==="equinoccio.online";
+var counted=false;try{counted=sessionStorage.getItem("hola_contada")==="1"}catch(e){}
+var bot=navigator.webdriver||/bot|crawl|spider|preview|facebookexternalhit|whatsapp/i.test(navigator.userAgent);
+var hit=prod&&!counted&&!bot;
+function show(v){v=Math.round(+v);if(!(v>=0))return;el.hidden=false;
+ var fmt=function(n){return n.toLocaleString("es-CO")};
+ if(matchMedia("(prefers-reduced-motion:reduce)").matches||v<20){num.textContent=fmt(v);return}
+ var t0=performance.now(),d=900;(function step(t){var p=Math.min(1,(t-t0)/d);num.textContent=fmt(Math.round(v*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(step)})(t0)}
+fetch(BASE+(hit?"hit/":"get/")+NS+"/"+KEY,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(j){
+ if(j&&typeof j.value==="number"){if(hit){try{sessionStorage.setItem("hola_contada","1")}catch(e){}}show(j.value)}
+ else if(!hit){return null}
+}).catch(function(){});
+}catch(e){}})();
 </script></body></html>
