@@ -495,6 +495,18 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
 @keyframes bvspin{from{transform:rotate(-120deg) scale(.7);opacity:0}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){#bv .bv-seal-wrap,#bv .bv-seal-wrap::before,#bv .bv-seal-wrap::after,#bv .bv-seal{animation:none}}
 #bv .bv-visits{right:auto;left:1.1rem}
+#bv .bv-flash{display:grid;grid-template-columns:38% 1fr;gap:.7rem;align-items:stretch;margin:0 0 .8rem;padding:.5rem;border-radius:18px;background:linear-gradient(135deg,#FFE29A,#F6B445);border:2px solid #FFF1C9;box-shadow:0 0 0 0 rgba(255,200,87,.7),0 10px 26px rgba(0,0,0,.4);color:#2b1a0e;animation:bvctaPulse 1.8s ease-out infinite}
+#bv .bv-flash[hidden]{display:none}
+#bv .bv-flash-img{width:100%;height:100%;min-height:120px;object-fit:cover;border-radius:13px}
+#bv .bv-flash-body{display:flex;flex-direction:column;gap:.15rem;justify-content:center;min-width:0}
+#bv .bv-flash-tag{display:inline-flex;align-items:center;gap:.3rem;font:800 .68rem var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#7a2e05}
+#bv .bv-flash-tag svg{width:14px;height:14px}
+#bv .bv-flash-t{font:400 1.05rem/1.2 var(--serif)}
+#bv .bv-flash-p{font:800 .95rem var(--sans)}#bv .bv-flash-p s{opacity:.6;font-weight:600}#bv .bv-flash-p strong{font-size:1.45rem;color:#7a2e05}
+#bv .bv-flash-g{font:700 .78rem/1.25 var(--sans);color:#4a2a10}
+#bv .bv-flash-c{align-self:flex-start;margin-top:.2rem;padding:.15rem .6rem;border-radius:999px;background:#22314F;color:#FFD27A;font:800 .95rem var(--sans);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+@media (max-width:360px){#bv .bv-flash{grid-template-columns:34% 1fr}#bv .bv-flash-t{font-size:.95rem}}
+@media (prefers-reduced-motion:reduce){#bv .bv-flash{animation:none}}
 </style>
 </head>
 <body>
@@ -552,6 +564,16 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
   <div class="bv-seal-wrap" id="bv-seal-wrap" aria-hidden="true"><img class="bv-seal" src="assets/hola/sello.webp" alt="" width="420" height="420"></div>
   <div class="bv-visits" id="bv-visits" hidden aria-label="Visitas a esta página"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b id="bv-visits-n">0</b><span>visitas</span></div>
   <div class="wrap2">
+    <aside class="bv-flash" id="bv-flash" hidden aria-live="polite">
+      <img class="bv-flash-img" src="assets/hola/flash.jpg" alt="Combo Flash: latte con pastel de carne ranchero pequeño" width="520" height="378">
+      <div class="bv-flash-body">
+        <span class="bv-flash-tag"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg><span id="bv-flash-tag">Promo flash</span></span>
+        <b class="bv-flash-t">Latté + pastel de carne ranchero pequeño</b>
+        <span class="bv-flash-p"><s>$12.500</s> <strong>$10.000</strong></span>
+        <span class="bv-flash-g">🎄 Con galleta de Navidad de bienvenida</span>
+        <span class="bv-flash-c" id="bv-flash-c">--:--:--</span>
+      </div>
+    </aside>
     <span class="bv-pill"><i class="bv-dot" id="bv-dot"></i><span id="bv-abierto">Todos los días · 10:00 a. m. a 8:30 p. m.</span></span>
     <h1>Café, libros y repostería.<br>Estamos aquí arriba.</h1>
     <p class="bv-lead">Sube al <b>2.º piso</b> · Cra. 6 #4B-19, Cajicá, a dos cuadras del parque principal.</p>
@@ -946,6 +968,24 @@ h.addEventListener("pointerleave",function(){sl.style.setProperty("--tilt","0deg
 (function(){var el=document.getElementById("promo-foto");if(!el)return;
 function tog(e){if(e.target.closest("a,summary"))return;var o=el.classList.toggle("open");el.setAttribute("aria-expanded",o?"true":"false")}
 el.addEventListener("click",tog);el.addEventListener("keydown",function(e){if((e.key==="Enter"||e.key===" ")&&e.target===el){e.preventDefault();tog(e)}});})();
+
+/* ---- Promo flash: se muestra solo en su horario (hora de Bogotá) y se acaba sola ---- */
+(function(){
+var FLASH={inicio:"12:50",fin:"14:30",dias:[0,1,2,3,4,5,6],desde:null,hasta:null}; /* dias: 0=domingo ... 6=sábado; desde/hasta: "AAAA-MM-DD" opcional */
+var box=document.getElementById("bv-flash"),tag=document.getElementById("bv-flash-tag"),cr=document.getElementById("bv-flash-c");if(!box)return;
+function hm(t){var a=t.split(":");return (+a[0])*3600+(+a[1])*60}
+var DIAS={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+function fmt(n){n=Math.max(0,n);var h=Math.floor(n/3600),m=Math.floor(n%3600/60),s=n%60;return (h?String(h).padStart(2,"0")+":":"00:")+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0")}
+function hoy(){var f=new Intl.DateTimeFormat("en-US",{timeZone:"America/Bogota",weekday:"short",year:"numeric",month:"2-digit",day:"2-digit",hourCycle:"h23",hour:"numeric",minute:"numeric",second:"numeric"}).formatToParts(new Date()),p={};f.forEach(function(x){p[x.type]=x.value});
+return {dia:DIAS[p.weekday],fecha:p.year+"-"+p.month+"-"+p.day,seg:(+p.hour)*3600+(+p.minute)*60+(+p.second)}}
+function tick(){try{var n=hoy(),a=hm(FLASH.inicio),b=hm(FLASH.fin);
+ var ok=FLASH.dias.indexOf(n.dia)>-1&&(!FLASH.desde||n.fecha>=FLASH.desde)&&(!FLASH.hasta||n.fecha<=FLASH.hasta);
+ if(!ok||n.seg>=b){box.hidden=true;return}
+ box.hidden=false;
+ if(n.seg<a){tag.textContent="Promo flash · empieza a las 12:50 p. m.";cr.textContent="Empieza en "+fmt(a-n.seg)}
+ else{tag.textContent="Promo flash · hasta las 2:30 p. m.";cr.textContent="Termina en "+fmt(b-n.seg)}
+}catch(e){box.hidden=true}}
+tick();setInterval(tick,1000);})();
 /* ---- Zoom de fotos de repostería ---- */
 (function(){
   const dlg = document.getElementById("zoom"), img = document.getElementById("zoom-img"), cap = document.getElementById("zoom-cap");
