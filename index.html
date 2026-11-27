@@ -991,8 +991,9 @@ el.addEventListener("click",tog);el.addEventListener("keydown",function(e){if((e
 
 /* ---- Promo flash: se muestra solo en su horario (hora de Bogotá) y se acaba sola ---- */
 (function(){
-var FLASH={inicio:"12:50",fin:"14:30",dias:[0,1,2,3,4,5,6],desde:null,hasta:null}; /* dias: 0=domingo ... 6=sábado; desde/hasta: "AAAA-MM-DD" opcional */
+var FLASH={inicio:"12:30",fin:"14:30",dias:[1,2,3,4,5],desde:null,hasta:null}; /* dias: 0=domingo ... 6=sábado; desde/hasta: "AAAA-MM-DD" opcional */
 var box=document.getElementById("bv-flash"),tag=document.getElementById("bv-flash-tag"),cr=document.getElementById("bv-flash-c");if(!box)return;
+function hora(t){var a=t.split(":"),h=+a[0];return ((h%12)||12)+":"+a[1]+(h>=12?" p. m.":" a. m.")}
 function hm(t){var a=t.split(":");return (+a[0])*3600+(+a[1])*60}
 var DIAS={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
 function fmt(n){n=Math.max(0,n);var h=Math.floor(n/3600),m=Math.floor(n%3600/60),s=n%60;return (h?String(h).padStart(2,"0")+":":"00:")+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0")}
@@ -1002,8 +1003,8 @@ function tick(){try{var n=hoy(),a=hm(FLASH.inicio),b=hm(FLASH.fin);
  var ok=FLASH.dias.indexOf(n.dia)>-1&&(!FLASH.desde||n.fecha>=FLASH.desde)&&(!FLASH.hasta||n.fecha<=FLASH.hasta);
  if(!ok||n.seg>=b){box.hidden=true;return}
  box.hidden=false;
- if(n.seg<a){tag.textContent="Promo flash · empieza a las 12:50 p. m.";cr.textContent="Empieza en "+fmt(a-n.seg)}
- else{tag.textContent="Promo flash · hasta las 2:30 p. m.";cr.textContent="Termina en "+fmt(b-n.seg)}
+ if(n.seg<a){tag.textContent="Promo flash · empieza a las "+hora(FLASH.inicio);cr.textContent="Empieza en "+fmt(a-n.seg)}
+ else{tag.textContent="Promo flash · hasta las "+hora(FLASH.fin);cr.textContent="Termina en "+fmt(b-n.seg)}
 }catch(e){box.hidden=true}}
 tick();setInterval(tick,1000);})();
 
